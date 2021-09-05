@@ -12,4 +12,8 @@ public interface ExamRepository {
 
 	public void save(Exam exam);
 
+	public void delete(String id);
+
+	public void update(Exam exam);
+
 }
