@@ -34,8 +34,4 @@ class LibrettoControllerTest {
 		librettoController.allExams();
 		verify(librettoView).showAllExams(exams);
 	}
-	
-	
-	
-
 }
