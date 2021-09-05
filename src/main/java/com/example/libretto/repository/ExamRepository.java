@@ -8,4 +8,8 @@ public interface ExamRepository {
 
 	public List<Exam> findAll();
 
+	public Exam findById(String id);
+
+	public void save(Exam exam);
+
 }

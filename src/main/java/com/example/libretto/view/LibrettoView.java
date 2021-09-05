@@ -8,4 +8,6 @@ public interface LibrettoView {
 
 	void showAllExams(List<Exam> exams);
 
+	void examAdded(Exam exam);
+
 }
