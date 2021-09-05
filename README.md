@@ -30,13 +30,14 @@ MariaDB
 - ID
 - description
 - weight
-- grade (voto?)
+- grade
 - date
+- getNumericalGrade()
 
 **Libretto**
 - List \<Exam\>
-- getMean()
-- getWeightedMean()
+- mean()
+- weightedMean()
 
 **Repository**
 - Interface Respository
