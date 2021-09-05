@@ -16,5 +16,13 @@ class ExamModelTest {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, "30", examDate);
 		assertThat(exam).isNotNull();
 	}
+	
+	@Test
+	void testCreateNewExamWithInsufficientGradeThrows() {
+		LocalDate examDate = LocalDate.of(2020, 1, 29);
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, "17", examDate);
+		assertThat(exam).isNotNull();
+		
+	}
 
 }

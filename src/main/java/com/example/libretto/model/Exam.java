@@ -17,5 +17,6 @@ public class Exam {
 		this.grade = grade;
 		this.date = date;
 	}
-
+	
+	
 }
