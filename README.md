@@ -1,3 +1,9 @@
+[![Build on linux with Coveralls and SonarCloud](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux.yaml)
+
+[![Coverage Status](https://coveralls.io/repos/github/MassimilianoMancini/libretto/badge.svg?branch=f4c4b87b183ad41c39d19e016cf5fa9265bf7f40)](https://coveralls.io/github/MassimilianoMancini/libretto?branch=f4c4b87b183ad41c39d19e016cf5fa9265bf7f40)
+
+
+
 # Libretto
 Questo progetto è realizzato nell'ambito del corso di laurea magistrale di Informatica dell'Università di Firenze, Advanced Programming Techniques. Scopo principale del progetto è mostrare l'utilizzo corretto delle tecniche avanzate di programmazione studiate durante le lezioni. Il progetto realizza la semplice gestione di un libretto universitario con operazioni CRUD sugli esami sostenuti con successo nonché il calcolo della media aritmetica e la media ponderata.
 
