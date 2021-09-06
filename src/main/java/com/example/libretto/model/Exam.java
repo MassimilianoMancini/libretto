@@ -3,6 +3,8 @@ package com.example.libretto.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.example.libretto.Generated;
+
 public class Exam {
 	
 	private String id;
@@ -22,38 +24,47 @@ public class Exam {
 		this.date = date;
 	}
 
+	@Generated
 	public String getId() {
 		return id;
 	}
 
+	@Generated
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	@Generated
 	public String getDescription() {
 		return description;
 	}
 
+	@Generated
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	@Generated
 	public int getWeight() {
 		return weight;
 	}
 
+	@Generated
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 
+	@Generated
 	public Grade getGrade() {
 		return grade;
 	}
 
+	@Generated
 	public void setGrade(Grade grade) {
 		this.grade = grade;
 	}
 
+	@Generated
 	public LocalDate getDate() {
 		return date;
 	}
@@ -65,11 +76,13 @@ public class Exam {
 		this.date = date;
 	}
 
+	@Generated
 	@Override
 	public int hashCode() {
 		return Objects.hash(date, description, grade, id, weight);
 	}
 
+	@Generated
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
