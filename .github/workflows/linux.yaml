@@ -29,7 +29,7 @@ jobs:
             mvn verify sonar:sonar
             -Pcoveralls 
             -DrepoToken=$COVERALLS_REPO_TOKEN 
-            -Dsonar.projectKey=MassimilianoMancini_sonarqube-example
+            -Dsonar.projectKey=MassimilianoMancini_libretto
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.organization=massimilianomancini
           env: 
