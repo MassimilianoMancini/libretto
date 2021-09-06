@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 import com.example.libretto.model.Exam;
@@ -52,6 +53,20 @@ class LibrettoModelTest {
 		Libretto libretto = new Libretto(exams);
 		
 		assertThat(libretto.getWeightedAverage()).isEqualTo((30*12+27*6+26*6)/(12.0+6.0+6.0));		
+	}
+	
+	@Test
+	void testAverageOnEmptyListIsZero() {
+		List<Exam> exams = Lists.emptyList();
+		Libretto libretto = new Libretto(exams);
+		assertThat(libretto.getAverage()).isZero();
+	}
+	
+	@Test
+	void testWeightedAverageOnEmptyListIsZero() {
+		List<Exam> exams = Lists.emptyList();
+		Libretto libretto = new Libretto(exams);
+		assertThat(libretto.getWeightedAverage()).isZero();
 	}
 	
 }

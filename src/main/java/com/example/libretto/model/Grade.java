@@ -2,6 +2,8 @@ package com.example.libretto.model;
 
 import java.util.Objects;
 
+import com.example.libretto.Generated;
+
 public class Grade {
 	
 	private String value;
@@ -24,6 +26,7 @@ public class Grade {
 		
 	}
 
+	@Generated
 	public String getValue() {
 		return value;
 	}
@@ -35,11 +38,13 @@ public class Grade {
 		return Integer.parseInt(this.value);
 	}
 
+	@Generated
 	@Override
 	public int hashCode() {
 		return Objects.hash(value);
 	}
 
+	@Generated
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
