@@ -1,6 +1,6 @@
 name: Build on linux with Coveralls and SonarCloud
 
-on: [push, pull_request]
+on: pull_request
  
 jobs:
     build:
