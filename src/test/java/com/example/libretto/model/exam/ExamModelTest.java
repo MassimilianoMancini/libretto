@@ -66,7 +66,7 @@ class ExamModelTest {
 		LocalDate examDate = LocalDate.of(2021, 1, 29);
 		Grade grade = new Grade("30L");
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
-		assertThat(exam.toString()).isEqualTo(
+		assertThat(exam).hasToString(
 				"Exam [id=B027500, description=Data Mining and Organization, weight=12, grade=30L" + 
 		        ", date=" + examDate + "]");
 		
