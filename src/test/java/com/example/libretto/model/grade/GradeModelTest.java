@@ -13,6 +13,10 @@ class GradeModelTest {
 	void testCreateNewGradeWithCorrectArgumentIsOk() {
 		Grade grade = new Grade("20");
 		assertThat(grade).isNotNull();
+		Grade grade2 = new Grade("18");
+		assertThat(grade2).isNotNull();
+		Grade grade3 = new Grade("30");
+		assertThat(grade3).isNotNull();
 	}
 	
 	@Test
