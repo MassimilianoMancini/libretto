@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import static java.util.Arrays.asList;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,7 +37,7 @@ class LibrettoControllerTest {
 	private LibrettoController librettoController;
 	
 	@Test
-	void testAllExams() {
+	void testAllExams() throws SQLException {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
 		Grade grade = new Grade("30");
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
@@ -48,7 +49,7 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
-	void testNewExamWhenExamDoesNotAlreadyExists() {
+	void testNewExamWhenExamDoesNotAlreadyExists() throws SQLException {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
 		Grade grade = new Grade("30");
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
@@ -59,7 +60,7 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
-	void testNewExamWhenExamAlreadyExists() {
+	void testNewExamWhenExamAlreadyExists() throws SQLException {
 		LocalDate examDate1 = LocalDate.of(2020, 1, 29);
 		Grade grade1 = new Grade("30");
 		Exam examToAdd = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
@@ -75,7 +76,7 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
-	void testDeleteExamWhenExamExists() {
+	void testDeleteExamWhenExamExists() throws SQLException {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
 		Grade grade = new Grade("30");
 		Exam examToDelete = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
@@ -87,7 +88,7 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
-	void testDeleteExamWhenExamDoesNotExists() {
+	void testDeleteExamWhenExamDoesNotExists() throws SQLException {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
 		Grade grade = new Grade("30");
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
@@ -98,7 +99,7 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
-	void testUpdateExamWhenExamExists() {
+	void testUpdateExamWhenExamExists() throws SQLException {
 		LocalDate examDate1 = LocalDate.of(2020, 1, 29);
 		Grade grade1 = new Grade("30");
 		Exam existingExam = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
@@ -117,7 +118,7 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
-	void testUpdateExamWhenExamDoesNotExists() {
+	void testUpdateExamWhenExamDoesNotExists() throws SQLException {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
 		Grade grade = new Grade("28");
 		Exam updatedExam = new Exam("B027500", "Parallel Computing", 6, grade, examDate);
