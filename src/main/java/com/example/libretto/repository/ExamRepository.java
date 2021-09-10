@@ -13,7 +13,7 @@ public interface ExamRepository {
 
 	public void save(Exam exam) throws SQLException;
 
-	public void delete(String id);
+	public void delete(String id) throws SQLException;
 
 	public void update(Exam exam);
 

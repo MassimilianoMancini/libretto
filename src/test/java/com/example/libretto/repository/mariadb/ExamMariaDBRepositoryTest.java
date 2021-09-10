@@ -150,6 +150,19 @@ class ExamMariaDBRepositoryTest {
 		assertThat(readAllExamsFromDatabase()).containsExactly(exam);
 		
 	}
+	
+	@Test
+	void testDelete() throws SQLException {
+		stmt.executeUpdate("insert into libretto values ("
+				+ "'B027500', "
+				+ "'Data Mining and Organization', "
+				+ "12, "
+				+ "'30L', "
+				+ "'2020-01-29')");
+		examRepository.delete("B027500");
+		assertThat(readAllExamsFromDatabase()).isEmpty();;
+		
+	}
 
 	private List<Exam> readAllExamsFromDatabase() throws SQLException, IllegalArgumentException {
 		List<Exam> examList = new ArrayList<>();
