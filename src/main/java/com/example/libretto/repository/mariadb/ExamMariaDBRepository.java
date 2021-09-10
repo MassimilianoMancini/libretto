@@ -64,8 +64,12 @@ public class ExamMariaDBRepository implements ExamRepository {
 	}
 
 	@Override
-	public void delete(String id) {
-		// TODO Auto-generated method stub
+	public void delete(String id) throws SQLException {
+		String query = "delete from libretto where id = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.setString(1, id);
+			pstmt.executeQuery();
+		}
 		
 	}
 
