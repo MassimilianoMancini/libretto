@@ -74,8 +74,16 @@ public class ExamMariaDBRepository implements ExamRepository {
 	}
 
 	@Override
-	public void update(Exam exam) {
-		// TODO Auto-generated method stub
+	public void update(Exam exam) throws SQLException {
+		String query = "update libretto set description=?, weight=?, grade=?, date=? where id=?";
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {			
+			pstmt.setString(1, exam.getDescription()); 
+			pstmt.setInt(2, exam.getWeight());
+			pstmt.setString(3, exam.getGrade().getValue());
+			pstmt.setDate(4, Date.valueOf(exam.getDate()));
+			pstmt.setString(5, exam.getId());
+			pstmt.executeQuery();
+		}
 		
 	}
 

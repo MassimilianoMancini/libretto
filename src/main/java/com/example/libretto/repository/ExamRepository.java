@@ -15,6 +15,6 @@ public interface ExamRepository {
 
 	public void delete(String id) throws SQLException;
 
-	public void update(Exam exam);
+	public void update(Exam exam) throws SQLException;
 
 }
