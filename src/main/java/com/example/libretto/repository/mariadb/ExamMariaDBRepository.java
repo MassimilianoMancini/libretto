@@ -28,13 +28,7 @@ public class ExamMariaDBRepository implements ExamRepository {
 			stmt.executeUpdate("select * from libretto");
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
-				examList.add(new Exam(
-					rs.getString("id"), 
-					rs.getString("description"),
-					rs.getInt("weight"),
-					new Grade(rs.getString("grade")),
-					LocalDate.parse(rs.getString("date"))
-				));
+				examList.add(newExamFromResultset(rs));
 			}
 		}
 		return examList;
@@ -47,17 +41,13 @@ public class ExamMariaDBRepository implements ExamRepository {
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				return new Exam(
-					rs.getString("id"), 
-					rs.getString("description"),
-					rs.getInt("weight"),
-					new Grade(rs.getString("grade")),
-					LocalDate.parse(rs.getString("date")));
+				return newExamFromResultset(rs);
 			} else {
 				return null;
 			}
 		}
 	}
+
 
 	@Override
 	public void save(Exam exam) {
@@ -77,4 +67,12 @@ public class ExamMariaDBRepository implements ExamRepository {
 		
 	}
 
+	private Exam newExamFromResultset(ResultSet rs) throws IllegalArgumentException, SQLException {
+		return new Exam(
+				rs.getString("id"), 
+				rs.getString("description"),
+				rs.getInt("weight"),
+				new Grade(rs.getString("grade")),
+				LocalDate.parse(rs.getString("date")));
+	}
 }
