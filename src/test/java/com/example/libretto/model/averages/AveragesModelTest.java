@@ -1,4 +1,4 @@
-package com.example.libretto.model.libretto;
+package com.example.libretto.model.averages;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import com.example.libretto.model.Exam;
 import com.example.libretto.model.Grade;
-import com.example.libretto.model.Libretto;
+import com.example.libretto.model.Averages;
 
-class LibrettoModelTest {
+class AveragesModelTest {
 	
 	@Test
 	void testGetAverage() {
@@ -30,9 +30,9 @@ class LibrettoModelTest {
 		Exam exam3 = new Exam("B027500", "Numerical Methods for Graphics", 6, grade3, examDate3);
 		
 		List<Exam> exams = asList(exam1, exam2, exam3);
-		Libretto libretto = new Libretto(exams);
+		Averages averages = new Averages(exams);
 		
-		assertThat(libretto.getAverage()).isEqualTo((30+27+26)/3.0);		
+		assertThat(averages.getAverage()).isEqualTo((30+27+26)/3.0);		
 	}
 	
 	@Test
@@ -50,23 +50,23 @@ class LibrettoModelTest {
 		Exam exam3 = new Exam("B027500", "Numerical Methods for Graphics", 6, grade3, examDate3);
 		
 		List<Exam> exams = asList(exam1, exam2, exam3);
-		Libretto libretto = new Libretto(exams);
+		Averages averages = new Averages(exams);
 		
-		assertThat(libretto.getWeightedAverage()).isEqualTo((30*12+27*6+26*6)/(12.0+6.0+6.0));		
+		assertThat(averages.getWeightedAverage()).isEqualTo((30*12+27*6+26*6)/(12.0+6.0+6.0));		
 	}
 	
 	@Test
 	void testAverageOnEmptyListIsZero() {
 		List<Exam> exams = Lists.emptyList();
-		Libretto libretto = new Libretto(exams);
-		assertThat(libretto.getAverage()).isZero();
+		Averages averages = new Averages(exams);
+		assertThat(averages.getAverage()).isZero();
 	}
 	
 	@Test
 	void testWeightedAverageOnEmptyListIsZero() {
 		List<Exam> exams = Lists.emptyList();
-		Libretto libretto = new Libretto(exams);
-		assertThat(libretto.getWeightedAverage()).isZero();
+		Averages averages = new Averages(exams);
+		assertThat(averages.getWeightedAverage()).isZero();
 	}
 	
 }

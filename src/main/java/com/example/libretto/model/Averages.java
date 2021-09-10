@@ -2,11 +2,11 @@ package com.example.libretto.model;
 
 import java.util.List;
 
-public class Libretto {
+public class Averages {
 	
 	private List<Exam> exams;
 
-	public Libretto(List<Exam> exams) {
+	public Averages(List<Exam> exams) {
 		this.exams = exams;
 	}
 
