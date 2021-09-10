@@ -11,7 +11,7 @@ public interface ExamRepository {
 
 	public Exam findById(String id) throws SQLException;
 
-	public void save(Exam exam);
+	public void save(Exam exam) throws SQLException;
 
 	public void delete(String id);
 

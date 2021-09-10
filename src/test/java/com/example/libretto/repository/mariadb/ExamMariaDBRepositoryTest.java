@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -138,6 +140,36 @@ class ExamMariaDBRepositoryTest {
 		assertThat(examRepository.findById("B027507")).isEqualTo(
 			new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 		
+	}
+	
+	@Test
+	void testSave() throws IllegalArgumentException, SQLException {
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)); 
+		
+		examRepository.save(exam);
+		assertThat(readAllExamsFromDatabase()).containsExactly(exam);
+		
+	}
+
+	private List<Exam> readAllExamsFromDatabase() throws SQLException, IllegalArgumentException {
+		List<Exam> examList = new ArrayList<>();
+		try (Statement stmt = conn.createStatement()) {
+			stmt.executeUpdate("select * from libretto");
+			ResultSet rs = stmt.getResultSet();
+			while (rs.next()) {
+				examList.add(newExamFromResultset(rs));
+			}
+		}
+		return examList;
+	}
+	
+	private Exam newExamFromResultset(ResultSet rs) throws IllegalArgumentException, SQLException {
+		return new Exam(
+				rs.getString("id"), 
+				rs.getString("description"),
+				rs.getInt("weight"),
+				new Grade(rs.getString("grade")),
+				LocalDate.parse(rs.getString("date")));
 	}
           
 }

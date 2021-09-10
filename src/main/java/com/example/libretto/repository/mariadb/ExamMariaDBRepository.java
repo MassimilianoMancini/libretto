@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,9 +51,16 @@ public class ExamMariaDBRepository implements ExamRepository {
 
 
 	@Override
-	public void save(Exam exam) {
-		// TODO Auto-generated method stub
-		
+	public void save(Exam exam) throws SQLException {
+		String query = "insert into libretto values (?, ?, ?, ?, ?)";
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.setString(1, exam.getId());
+			pstmt.setString(2, exam.getDescription()); 
+			pstmt.setInt(3, exam.getWeight());
+			pstmt.setString(4, exam.getGrade().getValue());
+			pstmt.setDate(5, Date.valueOf(exam.getDate()));
+			pstmt.executeQuery();
+		}
 	}
 
 	@Override
