@@ -24,8 +24,7 @@ public class ExamMariaDBRepository implements ExamRepository {
 	@Override
 	public List<Exam> findAll() throws SQLException {
 		List<Exam> examList = new ArrayList<>();
-		Statement stmt = conn.createStatement();
-		try {
+		try (Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate("select * from libretto");
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
@@ -37,22 +36,14 @@ public class ExamMariaDBRepository implements ExamRepository {
 					LocalDate.parse(rs.getString("date"))
 				));
 			}
-		} finally {
-			stmt.close();
 		}
 		return examList;
-
-		
 	}
 
 	@Override
 	public Exam findById(String id) throws SQLException {
-		Statement stmt = null;
-		PreparedStatement pstmt = null;
 		String query = "select * from libretto where id = ?";
-		try {
-			stmt = conn.createStatement();
-			pstmt = conn.prepareStatement(query);
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -65,9 +56,6 @@ public class ExamMariaDBRepository implements ExamRepository {
 			} else {
 				return null;
 			}
-		} finally {
-			stmt.close();
-			pstmt.close();
 		}
 	}
 
