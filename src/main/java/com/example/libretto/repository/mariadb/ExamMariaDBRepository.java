@@ -1,6 +1,7 @@
 package com.example.libretto.repository.mariadb;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,10 +47,14 @@ public class ExamMariaDBRepository implements ExamRepository {
 
 	@Override
 	public Exam findById(String id) throws SQLException {
-		Statement stmt = conn.createStatement();
+		Statement stmt = null;
+		PreparedStatement pstmt = null;
+		String query = "select * from libretto where id = ?";
 		try {
-			stmt.executeUpdate("select * from libretto where id = '" + id + "'");
-			ResultSet rs = stmt.getResultSet();
+			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return new Exam(
 					rs.getString("id"), 
@@ -62,6 +67,7 @@ public class ExamMariaDBRepository implements ExamRepository {
 			}
 		} finally {
 			stmt.close();
+			pstmt.close();
 		}
 	}
 
