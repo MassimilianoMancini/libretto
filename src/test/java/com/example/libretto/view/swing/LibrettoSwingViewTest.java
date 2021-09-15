@@ -61,7 +61,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		window.button("btnSave").requireEnabled();
+		assertThat(window.button("btnSave").isEnabled()).isTrue();
 	}
 	
 	@Test
@@ -70,7 +70,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		window.button("btnSave").requireDisabled();
+		assertThat(window.button("btnSave").isEnabled()).isFalse();
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		window.button("btnSave").requireDisabled();
+		assertThat(window.button("btnSave").isEnabled()).isFalse();
 	}
 	
 	@Test
@@ -88,7 +88,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		window.button("btnSave").requireDisabled();
+		assertThat(window.button("btnSave").isEnabled()).isFalse();
 	}
 	
 	@Test
@@ -97,7 +97,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.textBox("txtWeight").setText("6");
 		window.textBox("txtDate").setText("09-01-2020");
-		window.button("btnSave").requireDisabled();
+		assertThat(window.button("btnSave").isEnabled()).isFalse();
 	}
 	
 	@Test
@@ -106,7 +106,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
-		window.button("btnSave").requireDisabled();
+		assertThat(window.button("btnSave").isEnabled()).isFalse();
 	}
 	
 
