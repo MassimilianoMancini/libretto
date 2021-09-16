@@ -44,6 +44,10 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	private JButton btnDelete;
 	private List<JTextField> fieldList = new ArrayList<>();
 	private JScrollPane scrollPane;
+	
+	private JTextField txtAverage;
+	private JTextField txtWeightedAverage;
+	private JLabel lblErrorMessage;
 
 	
 	public LibrettoSwingView() {
@@ -71,10 +75,9 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		lstExam = new JList<>(lstExamModel);
 		scrollPane.setViewportView(lstExam);
 		lstExam.setName("lstExam");
+		lstExam.addListSelectionListener(e -> btnDelete.setEnabled(lstExam.getSelectedIndex() != -1));
 		
-		
-		
-		JLabel lblAverage = new JLabel("Media: " + (new Averages(lstExamModel).getAverage()).toString());
+		JLabel lblAverage = new JLabel("Media");
 		lblAverage.setName("lblAverage");
 		GridBagConstraints gbcLblAverage = new GridBagConstraints();
 		gbcLblAverage.fill = GridBagConstraints.HORIZONTAL;
@@ -83,14 +86,36 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblAverage.gridy = 1;
 		getContentPane().add(lblAverage, gbcLblAverage);
 		
-		JLabel lblWeightedAverage = new JLabel("Media pesata: " + (new Averages(lstExamModel).getWeightedAverage()).toString());
+		txtAverage = new JTextField();
+		txtAverage.setName("txtAverage");
+		txtAverage.setText("0.0");
+		txtAverage.setEditable(false);
+		GridBagConstraints gbcTxtAverage = new GridBagConstraints();
+		gbcTxtAverage.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtAverage.insets = new Insets(0, 0, 5, 5);
+		gbcTxtAverage.gridx = 1;
+		gbcTxtAverage.gridy = 1;
+		getContentPane().add(txtAverage, gbcTxtAverage);
+		
+		JLabel lblWeightedAverage = new JLabel("Media pesata");
 		lblWeightedAverage.setName("lblWeightedAverage");
 		GridBagConstraints gbcLblWeightedAverage = new GridBagConstraints();
 		gbcLblWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
 		gbcLblWeightedAverage.insets = new Insets(0, 0, 5, 5);
-		gbcLblWeightedAverage.gridx = 1;
+		gbcLblWeightedAverage.gridx = 2;
 		gbcLblWeightedAverage.gridy = 1;
 		getContentPane().add(lblWeightedAverage, gbcLblWeightedAverage);
+		
+		txtWeightedAverage = new JTextField();
+		txtWeightedAverage.setName("txtWeightedAverage");
+		txtWeightedAverage.setText("0.0");
+		txtWeightedAverage.setEditable(false);
+		GridBagConstraints gbcTxtWeightedAverage = new GridBagConstraints();
+		gbcTxtWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
+		gbcTxtWeightedAverage.insets = new Insets(0, 0, 5, 5);
+		gbcTxtWeightedAverage.gridx = 3;
+		gbcTxtWeightedAverage.gridy = 1;
+		getContentPane().add(txtWeightedAverage, gbcTxtWeightedAverage);
 		
 		btnDelete = new JButton("Elimina");
 		btnDelete.setEnabled(false);
@@ -101,7 +126,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcBtnDelete.gridy = 1;
 		getContentPane().add(btnDelete, gbcBtnDelete);
 		
-		JLabel lblErrorMessage = new JLabel(" ");
+		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName("lblErrorMessage");
 		GridBagConstraints gbcLblErrorMessage = new GridBagConstraints();
 		gbcLblErrorMessage.fill = GridBagConstraints.HORIZONTAL;
@@ -257,19 +282,21 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	@Override
 	public void showAllExams(List<Exam> exams) {
-		// TODO Auto-generated method stub
-		
+		exams.stream().forEach(lstExamModel::addElement);
+		updateAverages(exams);
+
 	}
 
 	@Override
 	public void examAdded(Exam exam) {
-		// TODO Auto-generated method stub
-		
+		lstExamModel.addElement(exam);
+		lblErrorMessage.setText(" ");
+		updateAverages(getListOfExams());
 	}
 
 	@Override
 	public void showError(String message, Exam exam) {
-		// TODO Auto-generated method stub
+		lblErrorMessage.setText(message + ": " + exam);
 		
 	}
 
@@ -284,4 +311,18 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private List<Exam> getListOfExams() {
+		ArrayList<Exam> concreteList = new ArrayList<>();
+		for (int i = 0; i < lstExamModel.getSize(); i++) {
+			concreteList.add(lstExamModel.get(i));
+		}
+		return concreteList;
+	}
+	
+	private void updateAverages(List<Exam> exams) {
+		txtAverage.setText((new Averages(exams).getAverage()).toString());
+		txtWeightedAverage.setText((new Averages(exams).getWeightedAverage()).toString());		
+	}
+
 }
