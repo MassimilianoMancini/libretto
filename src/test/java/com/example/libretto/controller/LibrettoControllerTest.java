@@ -97,37 +97,4 @@ class LibrettoControllerTest {
 		verify(librettoView).showError("No existing exam with id B027500", exam);
 		verifyNoMoreInteractions(ignoreStubs(examRepository));	
 	}
-	
-	@Test
-	void testUpdateExamWhenExamExists() throws SQLException {
-		LocalDate examDate1 = LocalDate.of(2020, 1, 29);
-		Grade grade1 = new Grade("30");
-		Exam existingExam = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
-		
-		LocalDate examDate2 = LocalDate.of(2020, 1, 29);
-		Grade grade2 = new Grade("28");
-		Exam updatedExam = new Exam("B027500", "Parallel Computing", 6, grade2, examDate2);
-		
-		when(examRepository.findById("B027500")).thenReturn(existingExam);
-		
-		librettoController.updateExam(updatedExam);
-		InOrder inOrder = inOrder(examRepository, librettoView);
-		inOrder.verify(examRepository).update(updatedExam);
-		inOrder.verify(librettoView).examUpdated(updatedExam);
-		verifyNoMoreInteractions(ignoreStubs(examRepository));		
-	}
-	
-	@Test
-	void testUpdateExamWhenExamDoesNotExists() throws SQLException {
-		LocalDate examDate = LocalDate.of(2020, 1, 29);
-		Grade grade = new Grade("28");
-		Exam updatedExam = new Exam("B027500", "Parallel Computing", 6, grade, examDate);
-		
-		when(examRepository.findById("B027500")).thenReturn(null);
-		
-		librettoController.updateExam(updatedExam);
-		
-		verify(librettoView).showError("No existing exam with id B027500", updatedExam);
-		verifyNoMoreInteractions(ignoreStubs(examRepository));	
-	}
 }

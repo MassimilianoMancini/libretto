@@ -34,15 +34,4 @@ public class LibrettoController {
 		examRepository.delete(exam.getId());
 		librettoView.examRemoved(exam);
 	}
-
-	public void updateExam(Exam exam) throws SQLException {
-		if (examRepository.findById(exam.getId()) == null) {
-			librettoView.showError("No existing exam with id " + exam.getId(), exam);
-			return;
-		}
-		examRepository.update(exam);
-		librettoView.examUpdated(exam);
-		
-	}
-
 }

@@ -3,8 +3,9 @@ package com.example.libretto.view.swing;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -23,20 +23,22 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.model.Averages;
 import com.example.libretto.model.Exam;
+import com.example.libretto.model.Grade;
 import com.example.libretto.view.LibrettoView;
 
 public class LibrettoSwingView extends JFrame implements LibrettoView {
-	
+
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtId;
 	private JTextField txtDescription;
-	private JFormattedTextField txtWeight;
+	private JTextField txtWeight;
 	private JComboBox<String> cmbGrade;
-	private JFormattedTextField txtDate;
-	
+	private JTextField txtDate;
+
 	private JList<Exam> lstExam;
 	private DefaultListModel<Exam> lstExamModel;
 
@@ -44,24 +46,25 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	private JButton btnDelete;
 	private List<JTextField> fieldList = new ArrayList<>();
 	private JScrollPane scrollPane;
-	
+
 	private JTextField txtAverage;
 	private JTextField txtWeightedAverage;
 	private JLabel lblErrorMessage;
 
-	
+	private LibrettoController librettoController;
+
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gblContentPane = new GridBagLayout();
-		
-		gblContentPane.columnWidths = new int[] {20, 70, 10, 50, 10, 70, 50, 90, 70};
-		gblContentPane.rowHeights = new int[]{354, 0, 0, 0, 0, 0};
+		gblContentPane.columnWidths = new int[] { 20, 70, 10, 50, 10, 70, 50, 90, 70 };
+		gblContentPane.rowHeights = new int[] { 354, 0, 0, 0, 0, 0 };
 		contentPane.setLayout(gblContentPane);
-		
+
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbcScrollPane = new GridBagConstraints();
 		gbcScrollPane.gridwidth = 9;
@@ -70,13 +73,13 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcScrollPane.gridx = 0;
 		gbcScrollPane.gridy = 0;
 		contentPane.add(scrollPane, gbcScrollPane);
-		
+
 		lstExamModel = new DefaultListModel<>();
 		lstExam = new JList<>(lstExamModel);
-		scrollPane.setViewportView(lstExam);
 		lstExam.setName("lstExam");
 		lstExam.addListSelectionListener(e -> btnDelete.setEnabled(lstExam.getSelectedIndex() != -1));
-		
+		scrollPane.setViewportView(lstExam);
+
 		JLabel lblAverage = new JLabel("Media");
 		lblAverage.setName("lblAverage");
 		GridBagConstraints gbcLblAverage = new GridBagConstraints();
@@ -85,7 +88,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblAverage.gridx = 0;
 		gbcLblAverage.gridy = 1;
 		getContentPane().add(lblAverage, gbcLblAverage);
-		
+
 		txtAverage = new JTextField();
 		txtAverage.setName("txtAverage");
 		txtAverage.setText("0.0");
@@ -96,7 +99,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtAverage.gridx = 1;
 		gbcTxtAverage.gridy = 1;
 		getContentPane().add(txtAverage, gbcTxtAverage);
-		
+
 		JLabel lblWeightedAverage = new JLabel("Media pesata");
 		lblWeightedAverage.setName("lblWeightedAverage");
 		GridBagConstraints gbcLblWeightedAverage = new GridBagConstraints();
@@ -105,7 +108,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblWeightedAverage.gridx = 2;
 		gbcLblWeightedAverage.gridy = 1;
 		getContentPane().add(lblWeightedAverage, gbcLblWeightedAverage);
-		
+
 		txtWeightedAverage = new JTextField();
 		txtWeightedAverage.setName("txtWeightedAverage");
 		txtWeightedAverage.setText("0.0");
@@ -116,16 +119,24 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtWeightedAverage.gridx = 3;
 		gbcTxtWeightedAverage.gridy = 1;
 		getContentPane().add(txtWeightedAverage, gbcTxtWeightedAverage);
-		
+
 		btnDelete = new JButton("Elimina");
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
+		btnDelete.addActionListener(e -> {
+			try {
+				librettoController.deleteExam(lstExam.getSelectedValue());
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		GridBagConstraints gbcBtnDelete = new GridBagConstraints();
 		gbcBtnDelete.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnDelete.gridx = 8;
 		gbcBtnDelete.gridy = 1;
 		getContentPane().add(btnDelete, gbcBtnDelete);
-		
+
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName("lblErrorMessage");
 		GridBagConstraints gbcLblErrorMessage = new GridBagConstraints();
@@ -135,7 +146,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblErrorMessage.gridx = 0;
 		gbcLblErrorMessage.gridy = 2;
 		getContentPane().add(lblErrorMessage, gbcLblErrorMessage);
-		
+
 		JLabel lblDescription = new JLabel("Descrizione");
 		lblDescription.setName("lblDescription");
 		GridBagConstraints gbcLblDescription = new GridBagConstraints();
@@ -144,7 +155,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblDescription.gridx = 0;
 		gbcLblDescription.gridy = 3;
 		getContentPane().add(lblDescription, gbcLblDescription);
-		
+
 		txtDescription = new JTextField();
 		txtDescription.setName("txtDescription");
 		GridBagConstraints gbcTxtDescription = new GridBagConstraints();
@@ -156,7 +167,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		getContentPane().add(txtDescription, gbcTxtDescription);
 		txtDescription.setColumns(10);
 		fieldList.add(txtDescription);
-		
+
 		JLabel lblId = new JLabel("Codice");
 		lblId.setName("lblId");
 		GridBagConstraints gbcLblId = new GridBagConstraints();
@@ -165,7 +176,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblId.gridx = 0;
 		gbcLblId.gridy = 4;
 		getContentPane().add(lblId, gbcLblId);
-		
+
 		txtId = new JTextField();
 		txtId.setName("txtId");
 		GridBagConstraints gbcTxtId = new GridBagConstraints();
@@ -175,7 +186,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtId.gridy = 4;
 		getContentPane().add(txtId, gbcTxtId);
 		fieldList.add(txtId);
-		
+
 		JLabel lblWeight = new JLabel("Peso");
 		lblWeight.setName("lblWeight");
 		GridBagConstraints gbcLblWeight = new GridBagConstraints();
@@ -184,8 +195,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblWeight.gridx = 2;
 		gbcLblWeight.gridy = 4;
 		getContentPane().add(lblWeight, gbcLblWeight);
-		
-		txtWeight = new JFormattedTextField(NumberFormat.getIntegerInstance());
+
+		txtWeight = new JTextField();
 		txtWeight.setName("txtWeight");
 		GridBagConstraints gbcTxtWeight = new GridBagConstraints();
 		gbcTxtWeight.fill = GridBagConstraints.HORIZONTAL;
@@ -194,7 +205,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtWeight.gridy = 4;
 		getContentPane().add(txtWeight, gbcTxtWeight);
 		fieldList.add(txtWeight);
-		
+
 		JLabel lblGrade = new JLabel("Voto");
 		lblGrade.setName("lblGrade");
 		GridBagConstraints gbcLblGrade = new GridBagConstraints();
@@ -203,10 +214,11 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblGrade.gridx = 4;
 		gbcLblGrade.gridy = 4;
 		getContentPane().add(lblGrade, gbcLblGrade);
-		
+
 		cmbGrade = new JComboBox<>();
 		cmbGrade.setName("cmbGrade");
-		cmbGrade.setModel(new DefaultComboBoxModel<String>(new String[] {"", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "30L"}));
+		cmbGrade.setModel(new DefaultComboBoxModel<String>(new String[] { "", "18", "19", "20", "21", "22", "23", "24",
+				"25", "26", "27", "28", "29", "30", "30L" }));
 		GridBagConstraints gbcCmbGrade = new GridBagConstraints();
 		gbcCmbGrade.fill = GridBagConstraints.HORIZONTAL;
 		gbcCmbGrade.anchor = GridBagConstraints.NORTH;
@@ -214,7 +226,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcCmbGrade.gridx = 5;
 		gbcCmbGrade.gridy = 4;
 		getContentPane().add(cmbGrade, gbcCmbGrade);
-		
+
 		JLabel lblDate = new JLabel("Data");
 		lblDate.setName("lblDate");
 		GridBagConstraints gbcLblDate = new GridBagConstraints();
@@ -223,8 +235,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblDate.gridx = 6;
 		gbcLblDate.gridy = 4;
 		getContentPane().add(lblDate, gbcLblDate);
-		
-		txtDate = new JFormattedTextField(new SimpleDateFormat("dd-MM-yyyy"));
+
+		txtDate = new JTextField();
 		txtDate.setName("txtDate");
 		GridBagConstraints gbcTxtDate = new GridBagConstraints();
 		gbcTxtDate.fill = GridBagConstraints.HORIZONTAL;
@@ -233,49 +245,56 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtDate.gridy = 4;
 		getContentPane().add(txtDate, gbcTxtDate);
 		fieldList.add(txtDate);
-		
+
 		btnSave = new JButton("Salva");
 		btnSave.setEnabled(false);
 		btnSave.setName("btnSave");
+		btnSave.addActionListener(e -> {
+				try {
+					librettoController.newExam(
+							new Exam(txtId.getText(), txtDescription.getText(), Integer.parseInt(txtWeight.getText()),
+									new Grade((String) cmbGrade.getSelectedItem()), getDateInLocalDate(txtDate.getText())));
+				} catch (IllegalArgumentException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		});
+
 		GridBagConstraints gbcBtnSave = new GridBagConstraints();
 		gbcBtnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnSave.anchor = GridBagConstraints.NORTH;
 		gbcBtnSave.gridx = 8;
 		gbcBtnSave.gridy = 4;
 		getContentPane().add(btnSave, gbcBtnSave);
-		
 
-		
 		// Add a document listener
 		DocumentListener listener = new DocumentListener() {
-		    @Override
-		    public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
-		    @Override
-		    public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				changedUpdate(e);
+			}
 
-		    @Override
-		    public void changedUpdate(DocumentEvent e) {
-		        boolean canEnable = true;
-		        for (JTextField tf : fieldList) {
-		            if (tf.getText().isEmpty()) {
-		                canEnable = false;
-		                break;
-		            }
-		        }
-		        
-		        canEnable = canEnable && cmbGrade.getSelectedIndex() != 0;
-		        
-		        btnSave.setEnabled(canEnable);
-		    }
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				changedUpdate(e);
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				checkFieldsNotEmpty();
+			}
+
 		};
-		
+
 		// Attach documentListener to all text fields and to combo
 		for (JTextField tf : fieldList) {
-		    tf.getDocument().addDocumentListener(listener);
+			tf.getDocument().addDocumentListener(listener);
 		}
-		
+
+		cmbGrade.addActionListener(e -> checkFieldsNotEmpty());
+
 	}
-	
+
 	DefaultListModel<Exam> getLstExamModel() {
 		return lstExamModel;
 	}
@@ -297,21 +316,23 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	@Override
 	public void showError(String message, Exam exam) {
 		lblErrorMessage.setText(message + ": " + exam);
-		
+
 	}
 
 	@Override
 	public void examRemoved(Exam exam) {
-		// TODO Auto-generated method stub
-		
+		lstExamModel.removeElement(exam);
+		lblErrorMessage.setText(" ");
+		updateAverages(getListOfExams());
+
 	}
 
 	@Override
 	public void examUpdated(Exam exam) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private List<Exam> getListOfExams() {
 		ArrayList<Exam> concreteList = new ArrayList<>();
 		for (int i = 0; i < lstExamModel.getSize(); i++) {
@@ -319,10 +340,32 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		}
 		return concreteList;
 	}
-	
+
 	private void updateAverages(List<Exam> exams) {
 		txtAverage.setText((new Averages(exams).getAverage()).toString());
-		txtWeightedAverage.setText((new Averages(exams).getWeightedAverage()).toString());		
+		txtWeightedAverage.setText((new Averages(exams).getWeightedAverage()).toString());
 	}
 
+	private LocalDate getDateInLocalDate(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return LocalDate.parse(date, formatter);
+	}
+
+	public void setLibrettoController(LibrettoController librettoController) {
+		this.librettoController = librettoController;
+	}
+
+	private void checkFieldsNotEmpty() {
+		boolean canEnable = true;
+		for (JTextField tf : fieldList) {
+			if (tf.getText().isEmpty()) {
+				canEnable = false;
+				break;
+			}
+		}
+
+		canEnable = canEnable && cmbGrade.getSelectedIndex() != 0;
+
+		btnSave.setEnabled(canEnable);
+	}
 }
