@@ -9,9 +9,9 @@ import java.util.List;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
+import com.example.libretto.model.Averages;
 import com.example.libretto.model.Exam;
 import com.example.libretto.model.Grade;
-import com.example.libretto.model.Averages;
 
 class AveragesModelTest {
 	

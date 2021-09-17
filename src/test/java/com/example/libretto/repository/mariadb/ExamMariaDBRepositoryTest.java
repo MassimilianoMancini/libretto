@@ -71,10 +71,9 @@ class ExamMariaDBRepositoryTest {
 	}
 
 	@AfterAll
-	static void shutdownServer() throws ManagedProcessException{
-		db.stop();
+	static void shutdownServer() throws ManagedProcessException {
+		db.stop();		
 	}
-	
 	
 	@Test
 	void testEmbeddedMariaDB4j() throws SQLException {
