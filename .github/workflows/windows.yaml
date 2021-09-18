@@ -1,9 +1,7 @@
 name: Build on Win
 
-on:
-    push:
-      tags:
-        - v*
+on: 
+   push
     
 jobs:
     build:
