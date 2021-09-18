@@ -215,7 +215,7 @@
         <configuration>
           <images>
             <image>
-              <name>connorlanigan/mariadb-windows:10.3.7</name>
+              <name>awesomecontainer/wdocker-mariadb:r1</name>
               <run>
                 <ports>
                   <port>mariadb.mapped.port:3306</port>
