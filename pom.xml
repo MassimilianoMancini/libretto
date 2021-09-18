@@ -215,7 +215,7 @@
         <configuration>
           <images>
             <image>
-              <name>connorlanigan/mariadb-windows</name>
+              <name>connorlanigan/mariadb-windows:10.3.7</name>
               <run>
                 <ports>
                   <port>mariadb.mapped.port:3306</port>
