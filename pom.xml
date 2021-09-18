@@ -223,6 +223,11 @@
                 <env>
                   <MARIADB_ROOT_PASSWORD>password</MARIADB_ROOT_PASSWORD>
                 </env>
+                <entryPoint>
+                  <exec>
+                    <arg>--skip-network</arg>
+                  </exec>
+                </entryPoint>
               </run>
             </image>
           </images>
