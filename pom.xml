@@ -215,7 +215,7 @@
         <configuration>
           <images>
             <image>
-              <name>dalverson/mariadb</name>
+              <name>dalverson/mariadb:windows</name>
               <run>
                 <ports>
                   <port>mariadb.mapped.port:3306</port>
