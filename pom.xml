@@ -283,10 +283,7 @@
               <verbose>build</verbose>
               <images>
                 <image>
-                  <name>windocker-mariadb</name>
-                  <build>
-                    <contextDir>${project.basedir}</contextDir>
-                  </build>
+                  <name>massimilianomancini/windocker-mariadb:windocker-mariadb</name>
                   <run>
                     <ports>
                       <port>mariadb.mapped.port:3306</port>
