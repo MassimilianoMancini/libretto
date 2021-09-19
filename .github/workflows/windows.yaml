@@ -6,8 +6,6 @@ on:
 jobs:
     build:
         runs-on: windows-2019
-        env:
-          DOCKER_HOST: tcp://localhost:2375
         strategy:
           matrix:
             java: [ 11, 15 ]
