@@ -313,16 +313,5 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <id>mac</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.craftercms.mariaDB4j</groupId>
-          <artifactId>mariaDB4j-db-mac64</artifactId>
-          <version>10.4.20E</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
   </profiles>
 </project>
