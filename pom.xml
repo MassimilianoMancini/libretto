@@ -279,11 +279,9 @@
             <artifactId>docker-maven-plugin</artifactId>
             <version>0.37.0</version>
             <configuration>
-              <showLogs>true</showLogs>
-              <verbose>build</verbose>
               <images>
                 <image>
-                  <name>massimilianomancini/windocker-mariadb:windocker-mariadb</name>
+                  <name>massimilianomancini/windocker-mariadb</name>
                   <run>
                     <ports>
                       <port>mariadb.mapped.port:3306</port>

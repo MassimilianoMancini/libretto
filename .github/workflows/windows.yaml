@@ -5,7 +5,7 @@ on:
     
 jobs:
     build:
-        runs-on: windows-latest
+        runs-on: windows-2019
         env:
           DOCKER_HOST: tcp://localhost:2375
         strategy:
@@ -25,14 +25,6 @@ jobs:
             path: ~/.m2
             key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
             restore-keys: ${{ runner.os }}-m2-
-        - name: Docker config
-          run: >
-            sc config docker
-            binpath="dockerd.exe --run-service -H tcp://localhost:2375"
-        - name: Docker restart
-          run: restart-service *docker*
-        - name: Docker info
-          run: docker info
         - name: Build with Maven
           run: mvn verify -P windows-container
       
