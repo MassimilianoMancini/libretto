@@ -215,7 +215,7 @@
         <configuration>
           <images>
             <image>
-              <name>awesomecontainer/wdocker-mariadb:r1</name>
+              <name>mariadb:10.6.4</name>
               <run>
                 <ports>
                   <port>mariadb.mapped.port:3306</port>
@@ -223,11 +223,6 @@
                 <env>
                   <MARIADB_ROOT_PASSWORD>password</MARIADB_ROOT_PASSWORD>
                 </env>
-                <entryPoint>
-                  <exec>
-                    <arg>--skip-network</arg>
-                  </exec>
-                </entryPoint>
               </run>
             </image>
           </images>
@@ -268,6 +263,54 @@
                 <phase>verify</phase>
                 <goals>
                   <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>windows-container</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.37.0</version>
+            <configuration>
+              <showLogs>true</showLogs>
+              <verbose>build</verbose>
+              <images>
+                <image>
+                  <name>windocker-mariadb</name>
+                  <build>
+                    <contextDir>${project.basedir}</contextDir>
+                  </build>
+                  <run>
+                    <ports>
+                      <port>mariadb.mapped.port:3306</port>
+                    </ports>
+                    <env>
+                      <MARIADB_ROOT_PASSWORD>password</MARIADB_ROOT_PASSWORD>
+                    </env>
+                  </run>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>docker-start</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                  <goal>start</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>docker-stop</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>stop</goal>
                 </goals>
               </execution>
             </executions>

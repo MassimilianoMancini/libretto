@@ -34,5 +34,5 @@ jobs:
         - name: Docker info
           run: docker info
         - name: Build with Maven
-          run: mvn verify
+          run: mvn verify -P windows-container
       
