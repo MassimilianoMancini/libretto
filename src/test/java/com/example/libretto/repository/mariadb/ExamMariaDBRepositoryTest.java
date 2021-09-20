@@ -2,7 +2,11 @@ package com.example.libretto.repository.mariadb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,7 +41,10 @@ class ExamMariaDBRepositoryTest {
 	private ExamMariaDBRepository examRepository;
 	
 	@BeforeAll
-	static void setupServer() throws ManagedProcessException {
+	static void setupServer() throws ManagedProcessException, IOException {
+		
+		Path tmpBaseDir = Files.createTempDirectory(Paths.get("target"), "MariaDB4Jtemp-");
+		String stringBaseDir = tmpBaseDir.toFile().getAbsolutePath().replaceAll(" ", "\\\\ ");
 		config = DBConfigurationBuilder.newBuilder();
 		config.setPort(0);
 		/*
@@ -44,8 +52,9 @@ class ExamMariaDBRepositoryTest {
 		 * Uncomment following two lines
 		 * Also check AfterAll for cleaning directory
 		*/ 
-		// config.setBaseDir("/MariaDB4Jtemp");
-		// config.setDataDir("/MariaDB4Jtemp/data");
+		System.out.println(stringBaseDir);
+		config.setBaseDir(stringBaseDir);
+		config.setDataDir(stringBaseDir + "/data");
 		
 		db = DB.newEmbeddedDB(config.build());
 		db.start();
@@ -84,7 +93,7 @@ class ExamMariaDBRepositoryTest {
 	static void shutdownServer() throws ManagedProcessException, IOException {
 		db.stop();
 		// Only use on Windows when temp dir contains spaces
-		// FileUtils.deleteDirectory(new File("/MariaDB4Jtemp"));
+		FileUtils.deleteDirectory(new File("target/MariaDB4Jtemp"));
 	}
 	
 	@Test
