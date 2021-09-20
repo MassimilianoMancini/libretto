@@ -2,8 +2,6 @@ name: Build on Mac
 
 on:
     push:
-      tags:
-        - v*
     
 jobs:
     build:
@@ -27,11 +25,5 @@ jobs:
             path: ~/.m2
             key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
             restore-keys: ${{ runner.os }}-m2-
-        - name: Create symbolic links for mariadb4j bug
-          run: >          
-            sudo mkdir -p /usr/local/opt/openssl/lib
-            sudo ln -s /usr/lib/libssl.dylib /usr/local/opt/openssl/lib/libssl.1.0.0.dylib
-            sudo ln -s /usr/lib/libcrypto.dylib opt/openssl/lib/libcrypto.1.0.0.dylib
-
         - name: Build with Maven
           run: mvn verify
