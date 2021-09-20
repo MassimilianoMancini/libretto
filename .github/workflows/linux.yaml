@@ -1,0 +1,41 @@
+name: Build on linux with SonarCloud
+
+on: 
+  push:
+    branches:
+      - main
+    pull_request:
+      types: [opened, synchronize, reopened]
+ 
+jobs: 
+  build:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        java: [ 11, 15 ]
+        
+    name: Build with Java ${{ matrix.java }} on ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up JDK ${{ matrix.java }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.m2
+          ~/.sonar/cache
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
+        restore-keys: ${{ runner.os }}-m2-
+    - name: Build with Maven then push to SonarCloud
+      run: >
+        xvfb-run mvn verify
+        org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        -Dsonar.projectKey=MassimilianoMancini_libretto
+      env: 
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}}
