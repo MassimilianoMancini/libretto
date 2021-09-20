@@ -2,6 +2,8 @@ package com.example.libretto.repository.mariadb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -38,6 +41,8 @@ class ExamMariaDBRepositoryTest {
 	static void setupServer() throws ManagedProcessException {
 		config = DBConfigurationBuilder.newBuilder();
 		config.setPort(0);
+		config.setBaseDir("/MariaDB4Jtemp");
+		config.setDataDir("/MariaDB4Jtemp/data");
 		db = DB.newEmbeddedDB(config.build());
 		db.start();
 	}
@@ -68,11 +73,13 @@ class ExamMariaDBRepositoryTest {
 	void tearDown() throws SQLException {
 		stmt.close();
 		conn.close();
+		
 	}
 
 	@AfterAll
-	static void shutdownServer() throws ManagedProcessException {
-		db.stop();		
+	static void shutdownServer() throws ManagedProcessException, IOException {
+		db.stop();
+		FileUtils.deleteDirectory(new File("/MariaDB4Jtemp"));
 	}
 	
 	@Test
