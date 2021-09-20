@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-2019
     strategy:
       matrix:
-      java: [11, 15]
+        java: [11, 15]
     name: Build with Java ${{ matrix.java }} on windows-latest
     steps:
     - uses: actions/checkout@v2
