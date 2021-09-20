@@ -2,7 +2,6 @@ package com.example.libretto.repository.mariadb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,6 +42,7 @@ class ExamMariaDBRepositoryTest {
 		/*
 		 * Use only on windows when temp directory contains spaces
 		 * Uncomment following two lines
+		 * Also check AfterAll for cleaning directory
 		*/ 
 		// config.setBaseDir("/MariaDB4Jtemp");
 		// config.setDataDir("/MariaDB4Jtemp/data");
@@ -84,7 +83,8 @@ class ExamMariaDBRepositoryTest {
 	@AfterAll
 	static void shutdownServer() throws ManagedProcessException, IOException {
 		db.stop();
-		FileUtils.deleteDirectory(new File("/MariaDB4Jtemp"));
+		// Only use on Windows when temp dir contains spaces
+		// FileUtils.deleteDirectory(new File("/MariaDB4Jtemp"));
 	}
 	
 	@Test
