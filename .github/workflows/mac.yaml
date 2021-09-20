@@ -7,7 +7,7 @@ on:
     
 jobs:
     build:
-        runs-on: macos-latest
+        runs-on: macos-11
         strategy:
           matrix:
             java: [ 11, 15 ]
@@ -27,5 +27,9 @@ jobs:
             path: ~/.m2
             key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
             restore-keys: ${{ runner.os }}-m2-
+        - name: Create symbolic links for mariadb4j bug
+          run: >
+            ln -s /usr/lib/libcrypto.dylib /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib
+            ln -s /usr/lib/libssl.dylib /usr/local/opt/openssl/lib/libssl.1.0.0.dylib 
         - name: Build with Maven
           run: mvn verify
