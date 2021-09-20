@@ -41,8 +41,13 @@ class ExamMariaDBRepositoryTest {
 	static void setupServer() throws ManagedProcessException {
 		config = DBConfigurationBuilder.newBuilder();
 		config.setPort(0);
-		config.setBaseDir("/MariaDB4Jtemp");
-		config.setDataDir("/MariaDB4Jtemp/data");
+		/*
+		 * Use only on windows when temp directory contains spaces
+		 * Uncomment following two lines
+		*/ 
+		// config.setBaseDir("/MariaDB4Jtemp");
+		// config.setDataDir("/MariaDB4Jtemp/data");
+		
 		db = DB.newEmbeddedDB(config.build());
 		db.start();
 	}
