@@ -2,7 +2,6 @@ package com.example.libretto.repository.mariadb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -37,15 +36,9 @@ class ExamMariaDBRepositoryTest {
 	
 	@BeforeAll
 	static void setupServer() throws ManagedProcessException {
+
 		config = DBConfigurationBuilder.newBuilder();
 		config.setPort(0);
-		/*
-		 * Use only on windows when temp directory contains spaces
-		 * Uncomment following two lines
-		 * Also check AfterAll for cleaning directory
-		*/ 
-		// config.setBaseDir("/MariaDB4Jtemp");
-		// config.setDataDir("/MariaDB4Jtemp/data");
 		
 		db = DB.newEmbeddedDB(config.build());
 		db.start();
@@ -81,10 +74,8 @@ class ExamMariaDBRepositoryTest {
 	}
 
 	@AfterAll
-	static void shutdownServer() throws ManagedProcessException, IOException {
+	static void shutdownServer() throws ManagedProcessException {
 		db.stop();
-		// Only use on Windows when temp dir contains spaces
-		// FileUtils.deleteDirectory(new File("/MariaDB4Jtemp"));
 	}
 	
 	@Test
