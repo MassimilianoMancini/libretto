@@ -3,7 +3,6 @@ package com.example.libretto.view.swing;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -123,14 +122,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnDelete = new JButton("Elimina");
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
-		btnDelete.addActionListener(e -> {
-			try {
-				librettoController.deleteExam(lstExam.getSelectedValue());
-			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
+		btnDelete.addActionListener(e -> librettoController.deleteExam(lstExam.getSelectedValue()));
+		
 		GridBagConstraints gbcBtnDelete = new GridBagConstraints();
 		gbcBtnDelete.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnDelete.gridx = 8;
@@ -249,17 +242,9 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnSave = new JButton("Salva");
 		btnSave.setEnabled(false);
 		btnSave.setName("btnSave");
-		btnSave.addActionListener(e -> {
-				try {
-					librettoController.newExam(
-							new Exam(txtId.getText(), txtDescription.getText(), Integer.parseInt(txtWeight.getText()),
-									new Grade((String) cmbGrade.getSelectedItem()), getDateInLocalDate(txtDate.getText())));
-				} catch (IllegalArgumentException | SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		});
-
+		btnSave.addActionListener(e -> librettoController.newExam(
+				new Exam(txtId.getText(), txtDescription.getText(), Integer.parseInt(txtWeight.getText()),
+						new Grade((String) cmbGrade.getSelectedItem()), getDateInLocalDate(txtDate.getText()))));
 		GridBagConstraints gbcBtnSave = new GridBagConstraints();
 		gbcBtnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnSave.anchor = GridBagConstraints.NORTH;
