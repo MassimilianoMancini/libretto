@@ -25,23 +25,31 @@ public class LibrettoController {
 		}
 	}
 
-	public void newExam(Exam exam) throws SQLException {
-		Exam existingExam = examRepository.findById(exam.getId());
-		if (existingExam != null) {
-			librettoView.showError("Already existing exam with id " + exam.getId(), existingExam);
-			return;
+	public void newExam(Exam exam) {
+		try {
+			Exam existingExam = examRepository.findById(exam.getId());
+			if (existingExam != null) {
+				librettoView.showError("Already existing exam with id " + exam.getId(), existingExam);
+				return;
+			}
+			examRepository.save(exam);
+			librettoView.examAdded(exam);
+		} catch (SQLException e) {
+			librettoView.showError("Errore SQL", null);
 		}
-		examRepository.save(exam);
-		librettoView.examAdded(exam);
 		
 	}
 
-	public void deleteExam(Exam exam) throws SQLException {
-		if (examRepository.findById(exam.getId()) == null) {
-			librettoView.showError("No existing exam with id " + exam.getId(), exam);
-			return;
+	public void deleteExam(Exam exam) {
+		try {
+			if (examRepository.findById(exam.getId()) == null) {
+				librettoView.showError("No existing exam with id " + exam.getId(), exam);
+				return;
+			}
+			examRepository.delete(exam.getId());
+			librettoView.examRemoved(exam);
+		} catch (SQLException e) {
+			librettoView.showError("Errore SQL", null);
 		}
-		examRepository.delete(exam.getId());
-		librettoView.examRemoved(exam);
 	}
 }

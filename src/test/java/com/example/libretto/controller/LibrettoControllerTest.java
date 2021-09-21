@@ -1,5 +1,6 @@
 package com.example.libretto.controller;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
@@ -104,5 +105,27 @@ class LibrettoControllerTest {
 		librettoController.allExams();
 		verify(librettoView).showError("Errore SQL", null);
 	}
+	
+	@Test
+	void testNewExamsThrows() throws SQLException {
+		LocalDate examDate = LocalDate.of(2020, 1, 29);
+		Grade grade = new Grade("30");
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
+		doThrow(SQLException.class).when(examRepository).save(exam);
+		librettoController.newExam(exam);
+		verify(librettoView).showError("Errore SQL", null);
+	}
+	
+	@Test
+	void testDeleteExamThrows() throws SQLException {
+		LocalDate examDate = LocalDate.of(2020, 1, 29);
+		Grade grade = new Grade("30");
+		Exam examToDelete = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
+		when(examRepository.findById("B027500")).thenReturn(examToDelete);
+		doThrow(SQLException.class).when(examRepository).delete("B027500");
+		librettoController.deleteExam(examToDelete);
+		verify(librettoView).showError("Errore SQL", null);
+	}
+
 	
 }
