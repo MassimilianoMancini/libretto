@@ -97,4 +97,12 @@ class LibrettoControllerTest {
 		verify(librettoView).showError("No existing exam with id B027500", exam);
 		verifyNoMoreInteractions(ignoreStubs(examRepository));	
 	}
+	
+	@Test
+	void testAllExamsThrows() throws SQLException {
+		when(examRepository.findAll()).thenThrow(SQLException.class);
+		librettoController.allExams();
+		verify(librettoView).showError("Errore SQL", null);
+	}
+	
 }

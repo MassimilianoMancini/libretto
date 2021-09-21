@@ -1,16 +1,23 @@
 package com.example.libretto.view.swing;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
+import com.example.libretto.controller.LibrettoController;
+import com.example.libretto.model.Exam;
+import com.example.libretto.model.Grade;
 import com.example.libretto.repository.mariadb.ExamMariaDBRepository;
 
 import ch.vorburger.exec.ManagedProcessException;
@@ -25,9 +32,12 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	private Connection conn;
 	private Statement stmt;
 	private ExamMariaDBRepository examRepository;
+	private LibrettoSwingView librettoSwingView;
+	private LibrettoController librettoController;
+	private FrameFixture window;
 	
-	@BeforeAll
-	static void setupServer() throws ManagedProcessException {
+	@BeforeClass
+	public static void setupServer() throws ManagedProcessException {
 
 		config = DBConfigurationBuilder.newBuilder();
 		config.setPort(0);
@@ -36,10 +46,11 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		db.start();
 	}
 	
-	@BeforeEach
-	void setup() throws ManagedProcessException, SQLException {
+	@Override
+	protected void onSetUp() throws Exception {
 		db.createDB(LIBRETTO_DB_NAME);
 		conn = DriverManager.getConnection(config.getURL(LIBRETTO_DB_NAME), "root", "");
+		
 		examRepository = new ExamMariaDBRepository(conn);
 		
 		stmt = conn.createStatement();
@@ -55,26 +66,79 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 				+ "date date not null"
 				+ ")");
 		
+		GuiActionRunner.execute(() -> {
+			librettoSwingView = new LibrettoSwingView();
+			librettoController = new LibrettoController(librettoSwingView, examRepository);
+			librettoSwingView.setLibrettoController(librettoController);
+			return librettoSwingView;
+		});
+		window = new FrameFixture(robot(), librettoSwingView);
+		window.show();
 	}
 	
-
-	@AfterEach
-	public void tearDownDB() throws SQLException {
+	@Override
+	protected void onTearDown() throws ManagedProcessException, SQLException {
 		stmt.close();
 		conn.close();
-		
-	}
-
-	@Override
-	protected void onSetUp() throws Exception {
-		// TODO Auto-generated method stub
-		
 	}
 	
-	@Override
-	protected void onTearDown() throws ManagedProcessException {
+	@AfterClass
+	public static void shutdownServer() throws ManagedProcessException {
 		db.stop();
-		
+	}
+	
+	@Test
+	public void testAllExams() throws SQLException {
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
+		examRepository.save(exam1);
+		examRepository.save(exam2);
+		GuiActionRunner.execute(() -> librettoController.allExams());
+		assertThat(window.list().contents()).containsExactly(exam1.toString(), exam2.toString());	
+	}
+	
+	@Test
+	public void testAddButtonSuccess() {
+		window.textBox("txtId").setText("B027507");
+		window.textBox("txtDescription").setText("Parallel Computing");
+		window.textBox("txtWeight").setText("6");
+		window.comboBox("cmbGrade").selectItem(10);
+		window.textBox("txtDate").setText("09-01-2020");
+		window.button("btnSave").click();
+		assertThat(window.list().contents()).containsExactly(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)).toString());
+	}
+	
+	@Test
+	public void testAddButtonError() throws SQLException {
+		Exam exam = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
+		examRepository.save(exam);
+		window.textBox("txtId").setText("B027507");
+		window.textBox("txtDescription").setText("Parallel Computing");
+		window.textBox("txtWeight").setText("6");
+		window.comboBox("cmbGrade").selectItem(10);
+		window.textBox("txtDate").setText("09-01-2020");
+		window.button("btnSave").click();
+		assertThat(window.list().contents()).isEmpty();
+		window.label("lblErrorMessage").requireText("Already existing exam with id B027507: " + exam);
+	}
+	
+	@Test
+	public void testDeleteButtonSuccess() {
+		Exam exam = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
+		GuiActionRunner.execute(() -> librettoController.newExam(exam));
+		window.list().selectItem(0);
+		window.button("btnDelete").click();
+		assertThat(window.list().contents()).isEmpty();
+	}
+	
+	@Test
+	public void testDeleteButtonError() {
+		Exam exam = new Exam("B027000", "Fake Exam", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
+		GuiActionRunner.execute(() -> librettoSwingView.getLstExamModel().addElement(exam));
+		window.list().selectItem(0);
+		window.button("btnDelete").click();
+		assertThat(window.list().contents()).containsExactly(exam.toString());
+		window.label("lblErrorMessage").requireText("No existing exam with id B027000: " + exam);
 	}
 	
 

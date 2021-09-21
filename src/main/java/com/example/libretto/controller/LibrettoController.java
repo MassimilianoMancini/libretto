@@ -11,8 +11,18 @@ public class LibrettoController {
 	private LibrettoView librettoView;
 	private ExamRepository examRepository;
 
-	public void allExams() throws SQLException {
-		librettoView.showAllExams(examRepository.findAll());
+	public LibrettoController(LibrettoView librettoView, ExamRepository examRepository) {
+		this.librettoView = librettoView;
+		this.examRepository = examRepository;
+
+	}
+
+	public void allExams() {
+		try {
+			librettoView.showAllExams(examRepository.findAll());
+		} catch (SQLException e) {
+			librettoView.showError("Errore SQL", null);
+		}
 	}
 
 	public void newExam(Exam exam) throws SQLException {
