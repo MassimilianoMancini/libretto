@@ -34,7 +34,6 @@ jobs:
         -Pcoveralls 
         -DrepoToken=$COVERALLS_REPO_TOKEN
         -Dsonar.projectKey=MassimilianoMancini_libretto
-        -DpullRequest=${{ github.event.pull_request.number }}
       env: 
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}}        
