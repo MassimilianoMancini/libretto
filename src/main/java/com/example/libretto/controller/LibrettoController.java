@@ -30,7 +30,7 @@ public class LibrettoController {
 		try {
 			Exam existingExam = examRepository.findById(exam.getId());
 			if (existingExam != null) {
-				librettoView.showError("Already existing exam with id " + exam.getId(), existingExam);
+				librettoView.showError("Esame già presente con codice " + exam.getId(), existingExam);
 				return;
 			}
 			examRepository.save(exam);
@@ -44,7 +44,7 @@ public class LibrettoController {
 	public void deleteExam(Exam exam) {
 		try {
 			if (examRepository.findById(exam.getId()) == null) {
-				librettoView.showError("No existing exam with id " + exam.getId(), exam);
+				librettoView.showErrorExamNotFound("Esame inesistente con codice " + exam.getId(), exam);
 				return;
 			}
 			examRepository.delete(exam.getId());

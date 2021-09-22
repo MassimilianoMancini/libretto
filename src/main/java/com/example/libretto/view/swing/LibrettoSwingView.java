@@ -55,7 +55,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		
+
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -123,7 +123,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
 		btnDelete.addActionListener(e -> librettoController.deleteExam(lstExam.getSelectedValue()));
-		
+
 		GridBagConstraints gbcBtnDelete = new GridBagConstraints();
 		gbcBtnDelete.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnDelete.gridx = 8;
@@ -210,8 +210,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		cmbGrade = new JComboBox<>();
 		cmbGrade.setName("cmbGrade");
-		cmbGrade.setModel(new DefaultComboBoxModel<>(new String[] { "", "18", "19", "20", "21", "22", "23", "24",
-				"25", "26", "27", "28", "29", "30", "30L" }));
+		cmbGrade.setModel(new DefaultComboBoxModel<>(new String[] { "", "18", "19", "20", "21", "22", "23", "24", "25",
+				"26", "27", "28", "29", "30", "30L" }));
 		GridBagConstraints gbcCmbGrade = new GridBagConstraints();
 		gbcCmbGrade.fill = GridBagConstraints.HORIZONTAL;
 		gbcCmbGrade.anchor = GridBagConstraints.NORTH;
@@ -242,8 +242,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnSave = new JButton("Salva");
 		btnSave.setEnabled(false);
 		btnSave.setName("btnSave");
-		btnSave.addActionListener(e -> librettoController.newExam(
-				new Exam(txtId.getText(), txtDescription.getText(), Integer.parseInt(txtWeight.getText()),
+		btnSave.addActionListener(e -> librettoController
+				.newExam(new Exam(txtId.getText(), txtDescription.getText(), Integer.parseInt(txtWeight.getText()),
 						new Grade((String) cmbGrade.getSelectedItem()), getDateInLocalDate(txtDate.getText()))));
 		GridBagConstraints gbcBtnSave = new GridBagConstraints();
 		gbcBtnSave.fill = GridBagConstraints.HORIZONTAL;
@@ -301,7 +301,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	@Override
 	public void showError(String message, Exam exam) {
 		lblErrorMessage.setText(message + ": " + exam);
-
 	}
 
 	@Override
@@ -346,5 +345,11 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		canEnable = canEnable && cmbGrade.getSelectedIndex() != 0;
 
 		btnSave.setEnabled(canEnable);
+	}
+
+	@Override
+	public void showErrorExamNotFound(String message, Exam exam) {
+		lblErrorMessage.setText(message + ": " + exam);
+		lstExamModel.removeElement(exam);
 	}
 }

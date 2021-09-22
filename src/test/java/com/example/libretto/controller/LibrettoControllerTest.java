@@ -72,7 +72,7 @@ class LibrettoControllerTest {
 		
 		when(examRepository.findById("B027500")).thenReturn(existingExam);
 		librettoController.newExam(examToAdd);
-		verify(librettoView).showError("Already existing exam with id B027500", existingExam);
+		verify(librettoView).showError("Esame già presente con codice B027500", existingExam);
 		verifyNoMoreInteractions(ignoreStubs(examRepository));
 	}
 	
@@ -95,7 +95,7 @@ class LibrettoControllerTest {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
 		when(examRepository.findById("B027500")).thenReturn(null);
 		librettoController.deleteExam(exam);
-		verify(librettoView).showError("No existing exam with id B027500", exam);
+		verify(librettoView).showErrorExamNotFound("Esame inesistente con codice B027500", exam);
 		verifyNoMoreInteractions(ignoreStubs(examRepository));	
 	}
 	
