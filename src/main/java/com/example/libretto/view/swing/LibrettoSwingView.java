@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.example.libretto.Generated;
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.model.Averages;
 import com.example.libretto.model.Exam;
@@ -254,6 +255,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		// Add a document listener
 		DocumentListener listener = new DocumentListener() {
+			
+			@Generated
 			@Override
 			public void removeUpdate(DocumentEvent e) {
 				changedUpdate(e);

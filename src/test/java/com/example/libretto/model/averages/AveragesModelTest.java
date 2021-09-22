@@ -69,4 +69,16 @@ class AveragesModelTest {
 		assertThat(averages.getWeightedAverage()).isZero();
 	}
 	
+	@Test
+	void testAverageOnNullIsZero() {
+		Averages averages = new Averages(null);
+		assertThat(averages.getAverage()).isZero();
+	}
+	
+	@Test
+	void testWeightedAverageOnNullIsZero() {
+		Averages averages = new Averages(null);
+		assertThat(averages.getWeightedAverage()).isZero();
+	}
+	
 }
