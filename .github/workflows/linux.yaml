@@ -3,7 +3,6 @@ name: Build on linux with Coveralls and SonarCloud
 on: 
   push:
     branches:
-      - main
     pull_request:
  
 jobs: 

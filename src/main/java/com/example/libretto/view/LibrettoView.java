@@ -14,4 +14,6 @@ public interface LibrettoView {
 
 	void examRemoved(Exam exam);
 
+	void showErrorExamNotFound(String message, Exam	exam);
+
 }
