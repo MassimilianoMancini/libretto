@@ -16,4 +16,6 @@ public interface LibrettoView {
 
 	void showErrorExamNotFound(String message, Exam	exam);
 
+	void showErrorExamAlreadyExists(String message, Exam exam);
+
 }

@@ -31,7 +31,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	
 	@Mock
 	private LibrettoController librettoController;
-	
+		
 	private AutoCloseable closeable;
 
 	@Override
@@ -244,5 +244,13 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamNotFound("Messaggio di errore", exam1));
 		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam1);
 		assertThat(window.list().contents()).containsExactly(exam2.toString());
+	}
+	
+	@Test
+	public void testShowErrorExamAlreadyExists() {
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamAlreadyExists("Messaggio di errore", exam));
+		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam);
+		assertThat(window.list().contents()).containsExactly(exam.toString());
 	}
 }

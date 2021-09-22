@@ -72,7 +72,7 @@ class LibrettoControllerTest {
 		
 		when(examRepository.findById("B027500")).thenReturn(existingExam);
 		librettoController.newExam(examToAdd);
-		verify(librettoView).showError("Esame già presente con codice B027500", existingExam);
+		verify(librettoView).showErrorExamAlreadyExists("Esame già presente con codice B027500", existingExam);
 		verifyNoMoreInteractions(ignoreStubs(examRepository));
 	}
 	

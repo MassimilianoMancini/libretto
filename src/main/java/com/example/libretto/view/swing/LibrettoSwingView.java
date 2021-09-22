@@ -355,4 +355,10 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		lblErrorMessage.setText(message + ": " + exam);
 		lstExamModel.removeElement(exam);
 	}
+
+	@Override
+	public void showErrorExamAlreadyExists(String message, Exam exam) {
+		lblErrorMessage.setText(message + ": " + exam);
+		lstExamModel.addElement(exam);
+	}
 }
