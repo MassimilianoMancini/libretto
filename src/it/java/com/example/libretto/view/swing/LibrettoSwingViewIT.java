@@ -106,6 +106,11 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
 		assertThat(window.list().contents()).containsExactly(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)).toString());
+		window.textBox("txtId").requireEmpty();
+		window.textBox("txtDescription").requireEmpty();
+		window.textBox("txtWeight").requireEmpty();
+		window.comboBox("cmbGrade").requireNoSelection();
+		window.textBox("txtDate").requireEmpty();
 	}
 	
 	@Test
