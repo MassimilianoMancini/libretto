@@ -137,7 +137,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.getLstExamModel().addElement(exam));
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
-		assertThat(window.list().contents()).containsExactly(exam.toString());
+		assertThat(window.list().contents()).isEmpty();
 		window.label("lblErrorMessage").requireText("Esame inesistente con codice B027000: " + exam);
 	}
 	
