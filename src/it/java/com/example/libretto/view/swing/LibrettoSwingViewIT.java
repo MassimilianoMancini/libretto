@@ -118,7 +118,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
-		assertThat(window.list().contents()).isEmpty();
+		assertThat(window.list().contents()).containsExactly(exam.toString());
 		window.label("lblErrorMessage").requireText("Esame già presente con codice B027507: " + exam);
 	}
 	

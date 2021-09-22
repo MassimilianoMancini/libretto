@@ -30,7 +30,7 @@ public class LibrettoController {
 		try {
 			Exam existingExam = examRepository.findById(exam.getId());
 			if (existingExam != null) {
-				librettoView.showError("Esame già presente con codice " + exam.getId(), existingExam);
+				librettoView.showErrorExamAlreadyExists("Esame già presente con codice " + exam.getId(), existingExam);
 				return;
 			}
 			examRepository.save(exam);
