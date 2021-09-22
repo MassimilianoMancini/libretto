@@ -119,7 +119,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
 		assertThat(window.list().contents()).isEmpty();
-		window.label("lblErrorMessage").requireText("Already existing exam with id B027507: " + exam);
+		window.label("lblErrorMessage").requireText("Esame già presente con codice B027507: " + exam);
 	}
 	
 	@Test
@@ -138,7 +138,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
 		assertThat(window.list().contents()).containsExactly(exam.toString());
-		window.label("lblErrorMessage").requireText("No existing exam with id B027000: " + exam);
+		window.label("lblErrorMessage").requireText("Esame inesistente con codice B027000: " + exam);
 	}
 	
 

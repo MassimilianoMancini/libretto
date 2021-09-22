@@ -230,7 +230,19 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("lstExam").selectItem(1);
 		window.button("btnDelete").click();
 		verify(librettoController).deleteExam(exam2);
-		
-		
+	}
+	
+	@Test
+	public void testShowErrorExamNotFound() {
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
+			lstExamModel.addElement(exam1);
+			lstExamModel.addElement(exam2);
+		});
+		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamNotFound("Messaggio di errore", exam1));
+		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam1);
+		assertThat(window.list().contents()).containsExactly(exam2.toString());
 	}
 }
