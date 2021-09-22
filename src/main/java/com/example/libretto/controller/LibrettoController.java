@@ -8,6 +8,7 @@ import com.example.libretto.view.LibrettoView;
 
 public class LibrettoController {
 	
+	private static final String SQL_ERROR = "Errore SQL";
 	private LibrettoView librettoView;
 	private ExamRepository examRepository;
 
@@ -21,7 +22,7 @@ public class LibrettoController {
 		try {
 			librettoView.showAllExams(examRepository.findAll());
 		} catch (SQLException e) {
-			librettoView.showError("Errore SQL", null);
+			librettoView.showError(SQL_ERROR, null);
 		}
 	}
 
@@ -35,7 +36,7 @@ public class LibrettoController {
 			examRepository.save(exam);
 			librettoView.examAdded(exam);
 		} catch (SQLException e) {
-			librettoView.showError("Errore SQL", null);
+			librettoView.showError(SQL_ERROR, null);
 		}
 		
 	}
@@ -49,7 +50,7 @@ public class LibrettoController {
 			examRepository.delete(exam.getId());
 			librettoView.examRemoved(exam);
 		} catch (SQLException e) {
-			librettoView.showError("Errore SQL", null);
+			librettoView.showError(SQL_ERROR, null);
 		}
 	}
 }

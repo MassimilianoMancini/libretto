@@ -14,6 +14,4 @@ public interface LibrettoView {
 
 	void examRemoved(Exam exam);
 
-	void examUpdated(Exam exam);
-
 }
