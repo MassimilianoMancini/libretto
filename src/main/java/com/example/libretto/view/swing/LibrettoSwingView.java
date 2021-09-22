@@ -50,7 +50,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	private JTextField txtWeightedAverage;
 	private JLabel lblErrorMessage;
 
-	private LibrettoController librettoController;
+	private transient LibrettoController librettoController;
 
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
@@ -210,7 +210,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		cmbGrade = new JComboBox<>();
 		cmbGrade.setName("cmbGrade");
-		cmbGrade.setModel(new DefaultComboBoxModel<String>(new String[] { "", "18", "19", "20", "21", "22", "23", "24",
+		cmbGrade.setModel(new DefaultComboBoxModel<>(new String[] { "", "18", "19", "20", "21", "22", "23", "24",
 				"25", "26", "27", "28", "29", "30", "30L" }));
 		GridBagConstraints gbcCmbGrade = new GridBagConstraints();
 		gbcCmbGrade.fill = GridBagConstraints.HORIZONTAL;
@@ -309,12 +309,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		lstExamModel.removeElement(exam);
 		lblErrorMessage.setText(" ");
 		updateAverages(getListOfExams());
-
-	}
-
-	@Override
-	public void examUpdated(Exam exam) {
-		// TODO Auto-generated method stub
 
 	}
 
