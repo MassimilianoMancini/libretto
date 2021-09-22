@@ -299,6 +299,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		lstExamModel.addElement(exam);
 		lblErrorMessage.setText(" ");
 		updateAverages(getListOfExams());
+		emptyFields();
 	}
 
 	@Override
@@ -348,6 +349,13 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		canEnable = canEnable && cmbGrade.getSelectedIndex() != 0;
 
 		btnSave.setEnabled(canEnable);
+	}
+	
+	private void emptyFields() {
+		for (JTextField tf : fieldList) {
+			tf.setText("");
+		}
+		cmbGrade.setSelectedIndex(-1);
 	}
 
 	@Override
