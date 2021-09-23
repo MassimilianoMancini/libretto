@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.repository.mariadb.ExamMariaDBRepository;
@@ -34,56 +36,71 @@ public class LibrettoSwingApp implements Callable<Void> {
 	@Option(names = { "--db" }, description = "MariaDB database name")
 	private String databaseName = "libretto";
 	
-	private Connection conn = null;
-	
-	
 	public static void main(String[] args) {
 		new CommandLine(new LibrettoSwingApp()).execute(args);
 	}
 
 	@Override
-	public Void call() throws Exception {
-		EventQueue.invokeLater(() -> {
+	public Void call() {
+		Connection conn = null;
+		
+		for (int i = 1; (conn == null) && (i < 60); i++) {
+			
 			try {
-				for (int i = 1; (conn == null) && (i < 60); i++) {
-					try {
-						conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);
-					} catch (SQLException e) {
-						System.out.println("Attempt to connect to DB n. " + i);
-						TimeUnit.SECONDS.sleep(1);
-					}
-					if (conn != null) {
-						System.out.println("Connected!");
-						
-						try {
-							Statement stmt = conn.createStatement();
-							stmt.executeUpdate("drop database if exists " + databaseName);
-							stmt.executeUpdate("create database " + databaseName);
-							stmt.executeUpdate("use " + databaseName);
-							
-							stmt.executeUpdate(
-								"create table libretto " +
-								"(id varchar(7) not null primary key, " + 
-								"description varchar(60) not null, " + 
-								"weight int not null, " + 
-								"grade varchar(3) not null, " + 
-								"date date not null)");
-							
-							
-						} catch (SQLException e) {
-							
-						}
-						ExamMariaDBRepository examRepository = new ExamMariaDBRepository(conn);
-						LibrettoSwingView librettoView = new LibrettoSwingView();
-						LibrettoController librettoController = new LibrettoController(librettoView, examRepository);
-						librettoView.setLibrettoController(librettoController);
-						librettoView.setVisible(true);
-						librettoController.allExams();
-					}
+				conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);
+			} catch (SQLException e) {
+				System.out.println("Attempt to connect to DB n. " + i);
+				Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to connect to DB", e);
+			}
+		
+			if (conn != null) {
+				if (i > 1) {
+					System.out.println("Connected!");
 				}
-			}  catch (Exception e) {}
-		});
+				
+				createLibrettoTable(conn);
+				runSwingView(conn);
+			}
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Interruzione", e);
+				Thread.currentThread().interrupt();
+			}
+		}
 		return null;
+	}
+
+	private void runSwingView(Connection conn) {
+		EventQueue.invokeLater( () -> {
+			ExamMariaDBRepository examRepository = new ExamMariaDBRepository(conn);
+			LibrettoSwingView librettoView = new LibrettoSwingView();
+			LibrettoController librettoController = new LibrettoController(librettoView, examRepository);
+			librettoView.setLibrettoController(librettoController);
+			librettoView.setVisible(true);
+			librettoController.allExams();
+		});
+	}
+
+	private void createLibrettoTable(Connection conn) {
+		try (Statement stmt = conn.createStatement();){
+			stmt.executeUpdate("drop database if exists " + databaseName);
+			stmt.executeUpdate("create database " + databaseName);
+			stmt.executeUpdate("use " + databaseName);
+			
+			stmt.executeUpdate(
+				"create table libretto " +
+				"(id varchar(7) not null primary key, " + 
+				"description varchar(60) not null, " + 
+				"weight int not null, " + 
+				"grade varchar(3) not null, " + 
+				"date date not null)");
+			
+		} catch (SQLException e) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la creazione della tabella libretto", e);
+		}
+		
 	}
 
 }
