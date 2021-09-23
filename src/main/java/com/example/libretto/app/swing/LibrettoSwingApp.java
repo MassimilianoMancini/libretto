@@ -32,8 +32,8 @@ public class LibrettoSwingApp implements Callable<Void> {
 	@Option(names = { "--user" }, description = "user")
 	private String user = "root";
 	
-	@Option(names = { "--password" }, description = "password")
-	private String password = "password";
+	@Option(names = { "--password" }, description = "password", arity = "0..1", required = true, interactive = true)
+	private String password;
 	
 	@Option(names = { "--db" }, description = "MariaDB database name")
 	private String databaseName = "libretto";
