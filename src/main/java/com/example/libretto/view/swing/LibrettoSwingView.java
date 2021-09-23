@@ -3,9 +3,12 @@ package com.example.libretto.view.swing;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -232,6 +235,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		txtDate = new JTextField();
 		txtDate.setName("txtDate");
+		txtDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 		GridBagConstraints gbcTxtDate = new GridBagConstraints();
 		gbcTxtDate.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtDate.insets = new Insets(0, 0, 0, 5);
@@ -243,9 +247,21 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnSave = new JButton("Salva");
 		btnSave.setEnabled(false);
 		btnSave.setName("btnSave");
-		btnSave.addActionListener(e -> librettoController
-				.newExam(new Exam(txtId.getText(), txtDescription.getText(), Integer.parseInt(txtWeight.getText()),
-						new Grade((String) cmbGrade.getSelectedItem()), getDateInLocalDate(txtDate.getText()))));
+		btnSave.addActionListener(e -> {
+			LocalDate ld = getDateInLocalDate(txtDate.getText());
+			if (ld != null) {
+				librettoController.newExam(
+					new Exam(
+						txtId.getText(), 
+						txtDescription.getText(), 
+						Integer.parseInt(txtWeight.getText()),
+						new Grade((String) cmbGrade.getSelectedItem()),
+						ld
+					));
+			} else {
+				txtDate.setText("");
+			}
+		});
 		GridBagConstraints gbcBtnSave = new GridBagConstraints();
 		gbcBtnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnSave.anchor = GridBagConstraints.NORTH;
@@ -329,8 +345,14 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	private LocalDate getDateInLocalDate(String date) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		return LocalDate.parse(date, formatter);
+		LocalDate ld = null;
+		try {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			ld = LocalDate.parse(date, formatter);
+		} catch (DateTimeParseException e) {
+			lblErrorMessage.setText("Il formato data è gg-mm-aaaa");
+		}
+		return ld;
 	}
 
 	public void setLibrettoController(LibrettoController librettoController) {
