@@ -96,11 +96,9 @@ public class LibrettoSwingApp implements Callable<Void> {
 				"weight int not null, " + 
 				"grade varchar(3) not null, " + 
 				"date date not null)");
-			stmt.close();
 			
 		} catch (SQLException e) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la creazione della tabella libretto", e);
-			return;
 		}
 		
 	}
