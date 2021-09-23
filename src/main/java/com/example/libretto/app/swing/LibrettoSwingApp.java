@@ -84,9 +84,7 @@ public class LibrettoSwingApp implements Callable<Void> {
 	}
 
 	private void createLibrettoTable(Connection conn) {
-		Statement stmt;
-		try {
-			stmt = conn.createStatement();
+		try (Statement stmt = conn.createStatement();){
 			stmt.executeUpdate("drop database if exists " + databaseName);
 			stmt.executeUpdate("create database " + databaseName);
 			stmt.executeUpdate("use " + databaseName);
@@ -103,7 +101,7 @@ public class LibrettoSwingApp implements Callable<Void> {
 		} catch (SQLException e) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la creazione della tabella libretto", e);
 			return;
-		} 
+		}
 		
 	}
 
