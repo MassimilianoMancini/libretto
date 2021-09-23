@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.example.libretto.Generated;
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.repository.mariadb.ExamMariaDBRepository;
 import com.example.libretto.view.swing.LibrettoSwingView;
@@ -18,6 +19,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
+@Generated
 @Command(mixinStandardHelpOptions = true)
 public class LibrettoSwingApp implements Callable<Void> {
 	
