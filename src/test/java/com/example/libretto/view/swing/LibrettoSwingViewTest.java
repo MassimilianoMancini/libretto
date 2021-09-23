@@ -137,6 +137,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
+		window.textBox("txtDate").setText("");
 		assertThat(window.button("btnSave").isEnabled()).isFalse();
 	}
 
