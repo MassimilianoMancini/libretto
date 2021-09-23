@@ -44,44 +44,51 @@ public class LibrettoSwingApp implements Callable<Void> {
 	@Override
 	public Void call() throws Exception {
 		EventQueue.invokeLater(() -> {
-			try {
-				for (int i = 1; (conn == null) && (i < 60); i++) {
-					try {
-						conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);
-					} catch (SQLException e) {
-						System.out.println("Attempt to connect to DB n. " + i);
-						TimeUnit.SECONDS.sleep(1);
-					}
-					if (conn != null) {
-						System.out.println("Connected!");
-						
-						try {
-							Statement stmt = conn.createStatement();
-							stmt.executeUpdate("drop database if exists " + databaseName);
-							stmt.executeUpdate("create database " + databaseName);
-							stmt.executeUpdate("use " + databaseName);
-							
-							stmt.executeUpdate(
-								"create table libretto " +
-								"(id varchar(7) not null primary key, " + 
-								"description varchar(60) not null, " + 
-								"weight int not null, " + 
-								"grade varchar(3) not null, " + 
-								"date date not null)");
-							
-							
-						} catch (SQLException e) {
-							
-						}
-						ExamMariaDBRepository examRepository = new ExamMariaDBRepository(conn);
-						LibrettoSwingView librettoView = new LibrettoSwingView();
-						LibrettoController librettoController = new LibrettoController(librettoView, examRepository);
-						librettoView.setLibrettoController(librettoController);
-						librettoView.setVisible(true);
-						librettoController.allExams();
-					}
+			for (int i = 1; (conn == null) && (i < 60); i++) {
+				
+				try {
+					conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);
+				} catch (SQLException e) {
+					System.out.println("Attempt to connect to DB n. " + i);						
 				}
-			}  catch (Exception e) {}
+			
+				if (conn != null) {
+					System.out.println("Connected!");
+					
+					try {
+						Statement stmt = conn.createStatement();
+						stmt.executeUpdate("drop database if exists " + databaseName);
+						stmt.executeUpdate("create database " + databaseName);
+						stmt.executeUpdate("use " + databaseName);
+						
+						stmt.executeUpdate(
+							"create table libretto " +
+							"(id varchar(7) not null primary key, " + 
+							"description varchar(60) not null, " + 
+							"weight int not null, " + 
+							"grade varchar(3) not null, " + 
+							"date date not null)");
+					
+						
+					} catch (SQLException e) {
+						System.err.println("Errore SQL del database: \n" + e.getMessage());
+						return;
+					}
+					ExamMariaDBRepository examRepository = new ExamMariaDBRepository(conn);
+					LibrettoSwingView librettoView = new LibrettoSwingView();
+					LibrettoController librettoController = new LibrettoController(librettoView, examRepository);
+					librettoView.setLibrettoController(librettoController);
+					librettoView.setVisible(true);
+					librettoController.allExams();
+				}
+				
+				try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					System.err.println("Interrotto: \n" + e.getMessage());
+					Thread.currentThread().interrupt();
+				}
+			}
 		});
 		return null;
 	}
