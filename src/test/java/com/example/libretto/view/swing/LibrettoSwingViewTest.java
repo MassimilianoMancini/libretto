@@ -253,4 +253,15 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam);
 		assertThat(window.list().contents()).containsExactly(exam.toString());
 	}
+	
+	@Test
+	public void testDateInIncorrectFormShowErrorMessage() {
+		window.textBox("txtId").setText("B027507");
+		window.textBox("txtDescription").setText("Parallel Computing");
+		window.textBox("txtWeight").enterText("6");
+		window.comboBox("cmbGrade").selectItem(10);
+		window.textBox("txtDate").setText("09/01/2020");
+		window.button("btnSave").click();
+		window.label("lblErrorMessage").requireText("Il formato data è gg-mm-aaaa");
+	}
 }
