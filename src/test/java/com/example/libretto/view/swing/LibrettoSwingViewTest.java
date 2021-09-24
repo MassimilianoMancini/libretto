@@ -164,8 +164,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.showAllExams(asList(exam1, exam2)));
 		String[] listContents = window.list().contents();
 		assertThat(listContents).containsExactly(exam1.toString(), exam2.toString());
-		window.textBox("txtAverage").requireText("28,50");
-		window.textBox("txtWeightedAverage").requireText("29,00");
+		window.textBox("txtAverage").requireText("28.50");
+		window.textBox("txtWeightedAverage").requireText("29.00");
 	}
 	
 	@Test
@@ -183,8 +183,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.examAdded(exam));
 		String[] listContents = window.list().contents();
 		assertThat(listContents).containsExactly(exam.toString());
-		window.textBox("txtAverage").requireText("30,00");
-		window.textBox("txtWeightedAverage").requireText("30,00");
+		window.textBox("txtAverage").requireText("30.00");
+		window.textBox("txtWeightedAverage").requireText("30.00");
 		window.label("lblErrorMessage").requireText(" ");
 	}
 	
@@ -202,8 +202,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.examRemoved(exam1));
 		
 		assertThat(window.list().contents()).containsExactly(exam2.toString());
-		window.textBox("txtAverage").requireText("27,00");
-		window.textBox("txtWeightedAverage").requireText("27,00");
+		window.textBox("txtAverage").requireText("27.00");
+		window.textBox("txtWeightedAverage").requireText("27.00");
 		window.label("lblErrorMessage").requireText(" ");
 	}
 	

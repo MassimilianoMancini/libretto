@@ -10,6 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -339,8 +340,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	private void updateAverages(List<Exam> exams) {
-		txtAverage.setText(String.format("%.02f", new Averages(exams).getAverage()));
-		txtWeightedAverage.setText(String.format("%.02f", new Averages(exams).getWeightedAverage()));
+		txtAverage.setText(String.format(Locale.ROOT, "%.02f", new Averages(exams).getAverage()));
+		txtWeightedAverage.setText(String.format(Locale.ROOT, "%.02f", new Averages(exams).getWeightedAverage()));
 	}
 
 	private LocalDate getDateInLocalDate(String date) {
