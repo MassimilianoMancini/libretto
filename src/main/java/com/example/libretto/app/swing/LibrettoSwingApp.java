@@ -3,8 +3,8 @@ package com.example.libretto.app.swing;
 import java.awt.EventQueue;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -32,8 +32,8 @@ public class LibrettoSwingApp implements Callable<Void> {
 	@Option(names = { "--user" }, description = "user")
 	private String user = "root";
 	
-	@Option(names = { "--password" }, description = "password")
-	private String password = "password";
+	@Option(names = { "--password" }, description = "password", arity = "0..1", required = true, interactive = true)
+	private String password;
 	
 	@Option(names = { "--db" }, description = "MariaDB database name")
 	private String databaseName = "libretto";
@@ -86,23 +86,33 @@ public class LibrettoSwingApp implements Callable<Void> {
 	}
 
 	private void createLibrettoTable(Connection conn) {
-		try (Statement stmt = conn.createStatement();){
-			stmt.executeUpdate("drop database if exists " + databaseName);
-			stmt.executeUpdate("create database " + databaseName);
-			stmt.executeUpdate("use " + databaseName);
+		String query;
 			
-			stmt.executeUpdate(
-				"create table libretto " +
+		query = "create database if not exists " + databaseName;
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.executeQuery();
+		}   catch (SQLException e) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la creazione del database", e);
+		}
+		
+		query = "use " + databaseName;
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.executeQuery();
+		}   catch (SQLException e) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la selezione del database", e);
+		}
+		
+		query = "create table if not exists libretto " +
 				"(id varchar(7) not null primary key, " + 
 				"description varchar(60) not null, " + 
 				"weight int not null, " + 
 				"grade varchar(3) not null, " + 
-				"date date not null)");
-			
-		} catch (SQLException e) {
+				"date date not null)";
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.executeQuery();
+		}   catch (SQLException e) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la creazione della tabella libretto", e);
 		}
-		
 	}
 
 }
