@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -111,7 +112,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDescription").requireEmpty();
 		window.textBox("txtWeight").requireEmpty();
 		window.comboBox("cmbGrade").requireNoSelection();
-		window.textBox("txtDate").requireEmpty();
+		window.textBox("txtDate").requireText(Pattern.compile("^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$"));
 	}
 	
 	@Test
