@@ -248,11 +248,24 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
-	public void testShowErrorExamAlreadyExists() {
+	public void testShowErrorExamAlreadyExistsAndAddExam() {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamAlreadyExists("Messaggio di errore", exam));
 		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam);
 		assertThat(window.list().contents()).containsExactly(exam.toString());
+	}
+	
+	@Test
+	public void testShowErrorExamAlreadyExistsAndAddExamIfNotPresentYet() {
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		GuiActionRunner.execute(() -> {
+			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
+			lstExamModel.addElement(exam);
+		});
+		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamAlreadyExists("Messaggio di errore", exam));
+		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam);
+		assertThat(window.list().contents()).containsOnlyOnce(exam.toString());
+		
 	}
 	
 	@Test
