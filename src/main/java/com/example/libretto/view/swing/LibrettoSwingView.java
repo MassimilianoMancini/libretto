@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -128,7 +129,17 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnDelete = new JButton("Elimina");
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
-		btnDelete.addActionListener(e -> librettoController.deleteExam(lstExam.getSelectedValue()));
+		btnDelete.addActionListener(e -> {
+			int result = JOptionPane.showConfirmDialog(
+				this, 
+				"Confermi la cancellazione", 
+				"Cancellazione", 
+				JOptionPane.YES_NO_OPTION, 
+				JOptionPane.QUESTION_MESSAGE);
+			if (result == JOptionPane.OK_OPTION) {
+				librettoController.deleteExam(lstExam.getSelectedValue());
+			}
+		});
 
 		GridBagConstraints gbcBtnDelete = new GridBagConstraints();
 		gbcBtnDelete.fill = GridBagConstraints.HORIZONTAL;
