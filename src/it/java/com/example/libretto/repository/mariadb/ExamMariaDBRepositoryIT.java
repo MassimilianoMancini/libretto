@@ -22,11 +22,11 @@ import com.example.libretto.model.Exam;
 import com.example.libretto.model.Grade;
 
 // If run in Eclipse, an up and running MariDB server is needed
-// for example via 'docker run -p 3306:3306 -e MARIADB_ROOT_PASSWORD=password mariadb:10.6.4'
+// for example via 'docker run --rm -p 3306:3306 -e MARIADB_ROOT_PASSWORD=password mariadb:10.6.4'
 
 class ExamMariaDBRepositoryIT {
 
-	private static final String LIBRETTO_DB_NAME = "libretto";
+	private static final String LIBRETTO_DB_NAME = "librettotest";
 	private static Connection conn = null;
 	private static int mariadbPort = Integer.parseInt(System.getProperty("mariadb.port", "3306"));
 	private static String mariadbPassword = System.getProperty("MARIADB_ROOT_PASSWORD", "password");
@@ -43,7 +43,7 @@ class ExamMariaDBRepositoryIT {
 				System.out.println("Attempt to connect to DB n. " + i);
 				TimeUnit.SECONDS.sleep(1);
 			}
-			if (conn != null) {
+			if (conn != null && i > 1) {
 				System.out.println("Connected!");
 			}
 		}
