@@ -40,11 +40,11 @@ class ExamMariaDBRepositoryIT {
 			try {
 				conn = DriverManager.getConnection("jdbc:mariadb://localhost:" + mariadbPort, "root", mariadbPassword);
 			} catch (SQLException e) {
-				System.out.println("Attempt to connect to DB n. " + i);
+				System.out.println("[ExamMariaDBRepositoryIT] DB connection attempt # " + i);
 				TimeUnit.SECONDS.sleep(1);
 			}
 			if (conn != null && i > 1) {
-				System.out.println("Connected!");
+				System.out.println("[ExamMariaDBRepositoryIT] Connected to DB!");
 			}
 		}
 	}

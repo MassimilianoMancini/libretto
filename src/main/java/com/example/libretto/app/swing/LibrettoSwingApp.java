@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,32 +44,15 @@ public class LibrettoSwingApp implements Callable<Void> {
 	@Override
 	public Void call() {
 		Connection conn = null;
-		
-		for (int i = 1; (conn == null) && (i < 60); i++) {
+		try {
+			conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);
+			createLibrettoTable(conn);
+			runSwingView(conn);
 			
-			try {
-				conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);
-			} catch (SQLException e) {
-				System.out.println("Attempt to connect to DB n. " + i);
-				Logger.getLogger(getClass().getName()).log(Level.WARNING, "Unable to connect to DB", e);
-			}
-		
-			if (conn != null) {
-				if (i > 1) {
-					System.out.println("Connected!");
-				}
-				
-				createLibrettoTable(conn);
-				runSwingView(conn);
-			}
-			
-			try {
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException e) {
-				Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Interruzione", e);
-				Thread.currentThread().interrupt();
-			}
+		} catch (SQLException e) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unable to connect to DB", e);
 		}
+		
 		return null;
 	}
 
