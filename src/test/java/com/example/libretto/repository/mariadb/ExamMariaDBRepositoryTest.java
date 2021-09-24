@@ -27,7 +27,7 @@ import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 
 class ExamMariaDBRepositoryTest {
 	
-	private static final String LIBRETTO_DB_NAME = "libretto";
+	private static final String LIBRETTO_DB_NAME = "librettotest";
 	private static DB db;
 	private static DBConfigurationBuilder config;
 	private Connection conn;
