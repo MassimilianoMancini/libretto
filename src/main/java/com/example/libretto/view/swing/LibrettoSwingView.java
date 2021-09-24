@@ -390,6 +390,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			tf.setText("");
 		}
 		cmbGrade.setSelectedIndex(-1);
+		txtDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 	}
 
 	@Override
