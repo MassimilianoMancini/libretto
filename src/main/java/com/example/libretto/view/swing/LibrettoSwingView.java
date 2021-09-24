@@ -380,7 +380,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			}
 		}
 
-		canEnable = canEnable && cmbGrade.getSelectedIndex() != 0;
+		canEnable = canEnable && cmbGrade.getSelectedIndex() != -1;
 
 		btnSave.setEnabled(canEnable);
 	}
