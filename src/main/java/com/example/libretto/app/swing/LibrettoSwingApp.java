@@ -88,16 +88,26 @@ public class LibrettoSwingApp implements Callable<Void> {
 	private void createLibrettoTable(Connection conn) {
 		String query;
 			
-		query = "drop database if exists " + databaseName + "; ";
-		query += "create database " + databaseName + "; ";
-		query += "use " + databaseName + "; ";
-		query += "create table libretto " +
+		query = "create database if not exists " + databaseName;
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.executeQuery();
+		}   catch (SQLException e) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la creazione del database", e);
+		}
+		
+		query = "use " + databaseName;
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.executeQuery();
+		}   catch (SQLException e) {
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Errore durante la selezione del database", e);
+		}
+		
+		query = "create table if not exists libretto " +
 				"(id varchar(7) not null primary key, " + 
 				"description varchar(60) not null, " + 
 				"weight int not null, " + 
 				"grade varchar(3) not null, " + 
-				"date date not null);";
-
+				"date date not null)";
 		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.executeQuery();
 		}   catch (SQLException e) {
