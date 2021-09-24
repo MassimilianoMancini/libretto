@@ -60,12 +60,13 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setSize(809,500);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gblContentPane = new GridBagLayout();
-		gblContentPane.columnWidths = new int[] { 20, 70, 10, 50, 10, 70, 50, 90, 70 };
+		gblContentPane.columnWidths = new int[] { 120, 70, 10, 50, 10, 70, 50, 90, 170 };
 		gblContentPane.rowHeights = new int[] { 354, 0, 0, 0, 0, 0 };
 		contentPane.setLayout(gblContentPane);
 
@@ -87,8 +88,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		JLabel lblAverage = new JLabel("Media");
 		lblAverage.setName("lblAverage");
 		GridBagConstraints gbcLblAverage = new GridBagConstraints();
-		gbcLblAverage.fill = GridBagConstraints.HORIZONTAL;
-		gbcLblAverage.insets = new Insets(0, 0, 5, 5);
+		gbcLblAverage.anchor = GridBagConstraints.EAST;
+		gbcLblAverage.insets = new Insets(0, 0, 0, 5);
 		gbcLblAverage.gridx = 0;
 		gbcLblAverage.gridy = 1;
 		getContentPane().add(lblAverage, gbcLblAverage);
@@ -99,7 +100,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		txtAverage.setEditable(false);
 		GridBagConstraints gbcTxtAverage = new GridBagConstraints();
 		gbcTxtAverage.fill = GridBagConstraints.HORIZONTAL;
-		gbcTxtAverage.insets = new Insets(0, 0, 5, 5);
+		gbcTxtAverage.insets = new Insets(0, 0, 0, 5);
 		gbcTxtAverage.gridx = 1;
 		gbcTxtAverage.gridy = 1;
 		getContentPane().add(txtAverage, gbcTxtAverage);
@@ -107,9 +108,9 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		JLabel lblWeightedAverage = new JLabel("Media pesata");
 		lblWeightedAverage.setName("lblWeightedAverage");
 		GridBagConstraints gbcLblWeightedAverage = new GridBagConstraints();
-		gbcLblWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
+		gbcLblWeightedAverage.anchor = GridBagConstraints.EAST;
 		gbcLblWeightedAverage.insets = new Insets(0, 0, 5, 5);
-		gbcLblWeightedAverage.gridx = 2;
+		gbcLblWeightedAverage.gridx = 6;
 		gbcLblWeightedAverage.gridy = 1;
 		getContentPane().add(lblWeightedAverage, gbcLblWeightedAverage);
 
@@ -120,7 +121,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		GridBagConstraints gbcTxtWeightedAverage = new GridBagConstraints();
 		gbcTxtWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtWeightedAverage.insets = new Insets(0, 0, 5, 5);
-		gbcTxtWeightedAverage.gridx = 3;
+		gbcTxtWeightedAverage.gridx = 7;
 		gbcTxtWeightedAverage.gridy = 1;
 		getContentPane().add(txtWeightedAverage, gbcTxtWeightedAverage);
 
@@ -148,7 +149,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		JLabel lblDescription = new JLabel("Descrizione");
 		lblDescription.setName("lblDescription");
 		GridBagConstraints gbcLblDescription = new GridBagConstraints();
-		gbcLblDescription.anchor = GridBagConstraints.WEST;
+		gbcLblDescription.anchor = GridBagConstraints.EAST;
 		gbcLblDescription.insets = new Insets(0, 0, 5, 5);
 		gbcLblDescription.gridx = 0;
 		gbcLblDescription.gridy = 3;
