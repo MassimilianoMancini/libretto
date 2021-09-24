@@ -339,8 +339,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	private void updateAverages(List<Exam> exams) {
-		txtAverage.setText((new Averages(exams).getAverage()).toString());
-		txtWeightedAverage.setText((new Averages(exams).getWeightedAverage()).toString());
+		txtAverage.setText(String.format("%.02f", new Averages(exams).getAverage()));
+		txtWeightedAverage.setText(String.format("%.02f", new Averages(exams).getWeightedAverage()));
 	}
 
 	private LocalDate getDateInLocalDate(String date) {
