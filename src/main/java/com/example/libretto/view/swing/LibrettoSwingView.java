@@ -36,6 +36,7 @@ import com.example.libretto.view.LibrettoView;
 
 public class LibrettoSwingView extends JFrame implements LibrettoView {
 
+	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtId;
@@ -248,7 +249,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		txtDate = new JTextField();
 		txtDate.setName("txtDate");
-		txtDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		txtDate.setText(new SimpleDateFormat(DATE_FORMAT_IT).format(new Date()));
 		GridBagConstraints gbcTxtDate = new GridBagConstraints();
 		gbcTxtDate.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtDate.insets = new Insets(0, 0, 0, 5);
@@ -359,7 +360,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	private LocalDate getDateInLocalDate(String date) {
 		LocalDate ld = null;
 		try {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT_IT);
 			ld = LocalDate.parse(date, formatter);
 		} catch (DateTimeParseException e) {
 			lblErrorMessage.setText("Il formato data è gg-mm-aaaa");
@@ -390,7 +391,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			tf.setText("");
 		}
 		cmbGrade.setSelectedIndex(-1);
-		txtDate.setText(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+		txtDate.setText(new SimpleDateFormat(DATE_FORMAT_IT).format(new Date()));
 	}
 
 	@Override

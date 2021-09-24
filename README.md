@@ -11,10 +11,9 @@ Questo progetto è realizzato nell'ambito del corso di laurea magistrale di Info
 
 ## Tecniche di programmazione utilizzate
 Sono utilizzate le seguenti tecniche:
-- utilizzo di maven per la strutturazione del progetto, compreso l'utilizzo di moduli diversi
+- utilizzo di maven per la strutturazione del progetto
 - utilizzo di maven per la risoluzione delle dipendenze
 - sviluppo tramite metodo Test-Driven Development
-- utilizzo di Google Guice per Dependency Injection
 - utilizzo di mock per mantenere l'isolamento in fase di test
 - utilizzo di docker per la disponibilità di database
 - dockerizzazione dell'applicazione
@@ -56,7 +55,6 @@ MariaDB
 LibrettoController: 
 - addExam(exam)
 - deleteExam(id)
-- updateExam(exam)
 - getMean()
 - getWeightedMean()
 - findById(id)
