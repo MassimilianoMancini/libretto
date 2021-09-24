@@ -2,6 +2,7 @@ package com.example.libretto.view.swing;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.timing.Timeout.timeout;
 import static org.mockito.Mockito.verify;
 
 import java.sql.SQLException;
@@ -230,6 +231,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		});
 		window.list("lstExam").selectItem(1);
 		window.button("btnDelete").click();
+		window.optionPane(timeout(30)).yesButton().click();
 		verify(librettoController).deleteExam(exam2);
 	}
 	
