@@ -307,7 +307,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	public void showAllExams(List<Exam> exams) {
 		exams.stream().forEach(lstExamModel::addElement);
 		updateAverages(exams);
-
 	}
 
 	@Override
@@ -389,6 +388,15 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	@Override
 	public void showErrorExamAlreadyExists(String message, Exam exam) {
 		lblErrorMessage.setText(message + ": " + exam);
-		lstExamModel.addElement(exam);
+		boolean exists = false;
+		for (int i = 0; i < lstExamModel.size(); i++) {
+			if (exam.getId().equals(lstExamModel.get(i).getId())) {
+				exists = true;
+			}		
+		}
+		
+		if (! exists) {
+			lstExamModel.addElement(exam);
+		}
 	}
 }
