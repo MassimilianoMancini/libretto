@@ -94,7 +94,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		txtAverage = new JTextField();
 		txtAverage.setName("txtAverage");
-		txtAverage.setText("0.0");
+		txtAverage.setText(" ");
 		txtAverage.setEditable(false);
 		GridBagConstraints gbcTxtAverage = new GridBagConstraints();
 		gbcTxtAverage.fill = GridBagConstraints.HORIZONTAL;
@@ -114,7 +114,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		txtWeightedAverage = new JTextField();
 		txtWeightedAverage.setName("txtWeightedAverage");
-		txtWeightedAverage.setText("0.0");
+		txtWeightedAverage.setText(" ");
 		txtWeightedAverage.setEditable(false);
 		GridBagConstraints gbcTxtWeightedAverage = new GridBagConstraints();
 		gbcTxtWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
