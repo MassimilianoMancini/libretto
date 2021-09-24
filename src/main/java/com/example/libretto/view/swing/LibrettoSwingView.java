@@ -10,6 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -94,7 +95,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		txtAverage = new JTextField();
 		txtAverage.setName("txtAverage");
-		txtAverage.setText("0.0");
+		txtAverage.setText(" ");
 		txtAverage.setEditable(false);
 		GridBagConstraints gbcTxtAverage = new GridBagConstraints();
 		gbcTxtAverage.fill = GridBagConstraints.HORIZONTAL;
@@ -114,7 +115,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		txtWeightedAverage = new JTextField();
 		txtWeightedAverage.setName("txtWeightedAverage");
-		txtWeightedAverage.setText("0.0");
+		txtWeightedAverage.setText(" ");
 		txtWeightedAverage.setEditable(false);
 		GridBagConstraints gbcTxtWeightedAverage = new GridBagConstraints();
 		gbcTxtWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
@@ -339,8 +340,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	private void updateAverages(List<Exam> exams) {
-		txtAverage.setText((new Averages(exams).getAverage()).toString());
-		txtWeightedAverage.setText((new Averages(exams).getWeightedAverage()).toString());
+		txtAverage.setText(String.format(Locale.ROOT, "%.02f", new Averages(exams).getAverage()));
+		txtWeightedAverage.setText(String.format(Locale.ROOT, "%.02f", new Averages(exams).getWeightedAverage()));
 	}
 
 	private LocalDate getDateInLocalDate(String date) {
