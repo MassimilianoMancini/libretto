@@ -210,7 +210,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
-	public void testAddButtonShouldDelegateToLibrettoControllerNewExam() throws IllegalArgumentException, SQLException {
+	public void testSaveButtonShouldDelegateToLibrettoControllerNewExam() throws IllegalArgumentException, SQLException {
 		window.textBox("txtId").setText("B027507");
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.textBox("txtWeight").enterText("6");
@@ -232,7 +232,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		});
 		window.list("lstExam").selectItem(1);
 		window.button("btnDelete").click();
-		window.optionPane(timeout(30)).yesButton().click();
+		window.optionPane(timeout(10000)).yesButton().click();
 		verify(librettoController).deleteExam(exam2);
 	}
 	

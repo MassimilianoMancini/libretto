@@ -49,7 +49,8 @@ public class LibrettoSwingApp implements Callable<Void> {
 			createLibrettoTable(conn);
 			runSwingView(conn);
 			
-		} catch (SQLException e) {
+		} 
+		catch (SQLException e) {
 			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unable to connect to DB", e);
 		}
 		
