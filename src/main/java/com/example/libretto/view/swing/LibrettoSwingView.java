@@ -137,7 +137,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 				"Cancellazione", 
 				JOptionPane.YES_NO_OPTION, 
 				JOptionPane.QUESTION_MESSAGE);
-			if (result == JOptionPane.OK_OPTION) {
+			if (result == JOptionPane.YES_OPTION) {
 				librettoController.deleteExam(lstExam.getSelectedValue());
 			}
 		});

@@ -135,7 +135,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 	public void testDeleteButtonSuccess() {
 		window.list().selectItem(Pattern.compile(".*B027500.*"));
 		window.button("btnDelete").click();
-		window.optionPane(timeout(1000)).yesButton().click();
+		window.optionPane(timeout(5000)).yesButton().click();
 		assertThat(window.list().contents()).noneMatch(e -> e.contains("B027500"));
 	}
 	
@@ -144,7 +144,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.list().selectItem(Pattern.compile(".*B027500.*"));
 		deleteExamFromDB("B027500");
 		window.button("btnDelete").click();
-		window.optionPane(timeout(1000)).yesButton().click();
+		window.optionPane(timeout(5000)).yesButton().click();
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
 	}
 	
