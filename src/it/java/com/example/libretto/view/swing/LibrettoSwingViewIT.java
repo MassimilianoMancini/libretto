@@ -15,7 +15,6 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.assertj.swing.timing.Timeout.timeout;
 
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.model.Exam;
@@ -135,7 +134,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoController.newExam(exam));
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
-		window.optionPane(timeout(10000)).yesButton().click();
+		window.optionPane().yesButton().click();
 		assertThat(window.list().contents()).isEmpty();
 	}
 	
@@ -145,7 +144,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.getLstExamModel().addElement(exam));
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
-		window.optionPane(timeout(10000)).yesButton().click();
+		window.optionPane().yesButton().click();
 		assertThat(window.list().contents()).isEmpty();
 		window.label("lblErrorMessage").requireText("Esame inesistente con codice B027000: " + exam);
 	}
@@ -156,7 +155,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.getLstExamModel().addElement(exam));
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
-		window.optionPane(timeout(10000)).noButton().click();
+		window.optionPane().noButton().click();
 		assertThat(window.list().contents()).containsExactly(exam.toString());
 	}
 	
