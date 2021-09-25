@@ -232,7 +232,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		});
 		window.list("lstExam").selectItem(1);
 		window.button("btnDelete").click();
-		window.optionPane(timeout(5000)).yesButton().click();
+		window.optionPane(timeout(10000)).yesButton().click();
 		verify(librettoController).deleteExam(exam2);
 	}
 	
