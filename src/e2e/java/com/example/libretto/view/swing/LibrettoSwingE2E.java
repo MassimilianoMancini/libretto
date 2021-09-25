@@ -1,7 +1,9 @@
 package com.example.libretto.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.driver.WaitForComponentToShowCondition.untilIsShowing;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
+import static org.assertj.swing.timing.Pause.pause;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -134,6 +136,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 	public void testDeleteButtonSuccess() {
 		window.list().selectItem(Pattern.compile(".*B027500.*"));
 		window.button("btnDelete").click();
+		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
 		assertThat(window.list().contents()).noneMatch(e -> e.contains("B027500"));
 	}
@@ -143,6 +146,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.list().selectItem(Pattern.compile(".*B027500.*"));
 		deleteExamFromDB("B027500");
 		window.button("btnDelete").click();
+		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
 	}

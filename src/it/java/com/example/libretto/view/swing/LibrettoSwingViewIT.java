@@ -1,6 +1,8 @@
 package com.example.libretto.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.timing.Pause.pause;
+import static org.assertj.swing.driver.WaitForComponentToShowCondition.untilIsShowing;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -134,6 +136,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoController.newExam(exam));
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
+		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
 		assertThat(window.list().contents()).isEmpty();
 	}
@@ -144,6 +147,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.getLstExamModel().addElement(exam));
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
+		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
 		assertThat(window.list().contents()).isEmpty();
 		window.label("lblErrorMessage").requireText("Esame inesistente con codice B027000: " + exam);
