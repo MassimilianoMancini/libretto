@@ -2,12 +2,15 @@ package com.example.libretto.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.swing.launcher.ApplicationLauncher.application;
+import static org.assertj.swing.timing.Timeout.timeout;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 
@@ -20,6 +23,10 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+//If run in Eclipse, an up and running MariDB server is needed
+//for example via 'docker run --rm -p 3306:3306 -e MARIADB_ROOT_PASSWORD=password mariadb:10.6.4'
+
 
 @RunWith(GUITestRunner.class)
 public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
@@ -122,5 +129,31 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDate").setText("15-06-2020");
 		window.button("btnSave").click();
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
+	}
+	
+	@Test
+	public void testDeleteButtonSuccess() {
+		window.list().selectItem(Pattern.compile(".*B027500.*"));
+		window.button("btnDelete").click();
+		window.optionPane(timeout(1000)).yesButton().click();
+		assertThat(window.list().contents()).noneMatch(e -> e.contains("B027500"));
+	}
+	
+	@Test
+	public void testDeleteButtonError() throws SQLException {
+		window.list().selectItem(Pattern.compile(".*B027500.*"));
+		deleteExamFromDB("B027500");
+		window.button("btnDelete").click();
+		window.optionPane(timeout(1000)).yesButton().click();
+		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
+	}
+	
+	private void deleteExamFromDB(String id) throws SQLException {
+		String query = "delete from libretto where id = ?";
+		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			pstmt.setString(1, id);
+			pstmt.executeQuery();
+		}
+		
 	}
 }
