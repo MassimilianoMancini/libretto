@@ -1,5 +1,9 @@
 [![Build on linux with Coveralls and SonarCloud](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux.yaml)
 
+[![Build on Win](https://github.com/MassimilianoMancini/libretto/actions/workflows/windows.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/windows.yaml)
+
+[![Build on Mac](https://github.com/MassimilianoMancini/libretto/actions/workflows/mac.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/mac.yaml)
+
 [![Coverage Status](https://coveralls.io/repos/github/MassimilianoMancini/libretto/badge.svg?branch=main)](https://coveralls.io/github/MassimilianoMancini/libretto?branch=main)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=MassimilianoMancini_libretto&metric=alert_status)](https://sonarcloud.io/dashboard?id=MassimilianoMancini_libretto)
