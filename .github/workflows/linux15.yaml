@@ -1,0 +1,31 @@
+name: Build on linux with Java 15, Coveralls and SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+ 
+jobs: 
+  build:
+    runs-on: ubuntu-20.04
+        
+    name: Build with Java 15 on ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up JDK 15
+      uses: actions/setup-java@v1
+      with:
+        java-version: 15
+    - name: Cache Maven packages
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.m2
+          ~/.sonar/cache
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
+        restore-keys: ${{ runner.os }}-m2-
+    - name: Build with Maven then push to Coveralls and SonarCloud
+      run: xvfb-run mvn verify
+   
