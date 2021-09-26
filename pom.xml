@@ -28,7 +28,7 @@
 
     <!-- Sonar exclusions -->
     <sonar.issue.ignore.multicriteria>e11, e12</sonar.issue.ignore.multicriteria>
-    
+
     <sonar.issue.ignore.multicriteria.e11.ruleKey>java:S2699</sonar.issue.ignore.multicriteria.e11.ruleKey>
     <sonar.issue.ignore.multicriteria.e11.resourceKey>**/LibrettoSwingViewTest.java</sonar.issue.ignore.multicriteria.e11.resourceKey>
 
@@ -153,6 +153,11 @@
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.7</version>
+          <configuration>
+            <excludes>
+              <exclude>**/LibrettoSwingApp.*</exclude>
+            </excludes>
+          </configuration>
           <executions>
             <execution>
               <goals>
