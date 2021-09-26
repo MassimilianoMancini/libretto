@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.DefaultListModel;
 
@@ -28,10 +29,11 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private LibrettoSwingView librettoSwingView;
 	private FrameFixture window;
-	
+	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
+
 	@Mock
 	private LibrettoController librettoController;
-		
+
 	private AutoCloseable closeable;
 
 	@Override
@@ -46,7 +48,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window = new FrameFixture(robot(), librettoSwingView);
 		window.show();
 	}
-	
+
 	@Override
 	protected void onTearDown() throws Exception {
 		closeable.close();
@@ -54,6 +56,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testControlsInitialStates() {
+		window.label("lblListHeader").requireVisible();
 		assertThat(window.label("lblId")).isNotNull();
 		window.textBox("txtId").requireEnabled();
 		assertThat(window.label("lblDescription")).isNotNull();
@@ -164,31 +167,32 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> librettoSwingView.showAllExams(asList(exam1, exam2)));
 		String[] listContents = window.list().contents();
-		assertThat(listContents).containsExactly(exam1.toString(), exam2.toString());
+		assertThat(listContents).containsExactly(getDisplayListString(exam1), getDisplayListString(exam2));
 		window.textBox("txtAverage").requireText("28.50");
 		window.textBox("txtWeightedAverage").requireText("29.00");
 	}
-	
+
 	@Test
 	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
 				LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> librettoSwingView.showError("Errore", exam));
-		window.label("lblErrorMessage").requireText("Errore: " + exam);
+		window.label("lblErrorMessage").requireText("Errore: " + getDisplayErrorString(exam));
 	}
-	
+
 	@Test
 	public void testAddAnExamUpdateTheListTheAveragesAndResetErrorMessage() {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
 				LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> librettoSwingView.examAdded(exam));
 		String[] listContents = window.list().contents();
-		assertThat(listContents).containsExactly(exam.toString());
+		assertThat(listContents).containsExactly(getDisplayListString(exam));
+
 		window.textBox("txtAverage").requireText("30.00");
 		window.textBox("txtWeightedAverage").requireText("30.00");
 		window.label("lblErrorMessage").requireText(" ");
 	}
-	
+
 	@Test
 	public void testRemoveAnExamUpdateTheListTheAveragesAndResetErrorMessage() {
 		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
@@ -199,26 +203,29 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 			lstExamModel.addElement(exam1);
 			lstExamModel.addElement(exam2);
 		});
-		
+
 		GuiActionRunner.execute(() -> librettoSwingView.examRemoved(exam1));
-		
-		assertThat(window.list().contents()).containsExactly(exam2.toString());
+
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(exam2));
+
 		window.textBox("txtAverage").requireText("27.00");
 		window.textBox("txtWeightedAverage").requireText("27.00");
 		window.label("lblErrorMessage").requireText(" ");
 	}
-	
+
 	@Test
-	public void testSaveButtonShouldDelegateToLibrettoControllerNewExam() throws IllegalArgumentException, SQLException {
+	public void testSaveButtonShouldDelegateToLibrettoControllerNewExam()
+			throws IllegalArgumentException, SQLException {
 		window.textBox("txtId").setText("B027507");
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.textBox("txtWeight").enterText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
-		verify(librettoController).newExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+		verify(librettoController)
+				.newExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 	}
-	
+
 	@Test
 	public void testDeleteButtonShouldDelegateToLibrettoControllerDeleteExam() throws SQLException {
 		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
@@ -234,10 +241,11 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.optionPane().yesButton().click();
 		verify(librettoController).deleteExam(exam2);
 	}
-	
+
 	@Test
 	public void testShowErrorExamNotFound() {
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
+				LocalDate.of(2020, 1, 29));
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
@@ -245,31 +253,35 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 			lstExamModel.addElement(exam2);
 		});
 		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamNotFound("Messaggio di errore", exam1));
-		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam1);
-		assertThat(window.list().contents()).containsExactly(exam2.toString());
+		window.label("lblErrorMessage").requireText("Messaggio di errore: " + getDisplayErrorString(exam1));
+
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(exam2));
 	}
-	
+
 	@Test
 	public void testShowErrorExamAlreadyExistsAndAddExam() {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
+				LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamAlreadyExists("Messaggio di errore", exam));
-		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam);
-		assertThat(window.list().contents()).containsExactly(exam.toString());
+		window.label("lblErrorMessage").requireText("Messaggio di errore: " + getDisplayErrorString(exam));
+
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(exam));
 	}
-	
+
 	@Test
 	public void testShowErrorExamAlreadyExistsAndAddExamIfNotPresentYet() {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
+				LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
 			lstExamModel.addElement(exam);
 		});
 		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamAlreadyExists("Messaggio di errore", exam));
-		window.label("lblErrorMessage").requireText("Messaggio di errore: " + exam);
-		assertThat(window.list().contents()).containsOnlyOnce(exam.toString());
-		
+		window.label("lblErrorMessage").requireText("Messaggio di errore: " + getDisplayErrorString(exam));
+
+		assertThat(window.list().contents()).containsOnlyOnce(getDisplayListString(exam));
 	}
-	
+
 	@Test
 	public void testDateInIncorrectFormShowErrorMessage() {
 		window.textBox("txtId").setText("B027507");
@@ -280,4 +292,15 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button("btnSave").click();
 		window.label("lblErrorMessage").requireText("Il formato data è gg-mm-aaaa");
 	}
+
+	private String getDisplayListString(Exam exam) {
+		return String.format("%-7s|%-60s|%4d|%4s|%10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+	}
+
+	private String getDisplayErrorString(Exam exam) {
+		return String.format("%-7s - %-40s (%2d) %3s %10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+	}
+
 }

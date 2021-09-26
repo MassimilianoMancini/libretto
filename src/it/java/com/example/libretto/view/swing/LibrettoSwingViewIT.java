@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import org.assertj.swing.edt.GuiActionRunner;
@@ -29,6 +30,7 @@ import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 
 public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	
+	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
 	private static final String LIBRETTO_DB_NAME = "libretto";
 	private static DB db;
 	private static DBConfigurationBuilder config;
@@ -91,13 +93,13 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
-	public void testAllExams() throws SQLException {
+	public void testAllExamsAndOrder() throws SQLException {
 		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		examRepository.save(exam1);
 		examRepository.save(exam2);
 		GuiActionRunner.execute(() -> librettoController.allExams());
-		assertThat(window.list().contents()).containsExactly(exam1.toString(), exam2.toString());	
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(exam2), getDisplayListString(exam1));	
 	}
 	
 	@Test
@@ -108,7 +110,9 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
-		assertThat(window.list().contents()).containsExactly(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)).toString());
+		assertThat(window.list().contents())
+			.containsExactly(
+				getDisplayListString(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9))));
 		window.textBox("txtId").requireEmpty();
 		window.textBox("txtDescription").requireEmpty();
 		window.textBox("txtWeight").requireEmpty();
@@ -126,8 +130,8 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
-		assertThat(window.list().contents()).containsExactly(exam.toString());
-		window.label("lblErrorMessage").requireText("Esame già presente con codice B027507: " + exam);
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(exam));
+		window.label("lblErrorMessage").requireText("Esame già presente con codice B027507: " + getDisplayErrorString(exam));
 	}
 	
 	@Test
@@ -150,7 +154,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
 		assertThat(window.list().contents()).isEmpty();
-		window.label("lblErrorMessage").requireText("Esame inesistente con codice B027000: " + exam);
+		window.label("lblErrorMessage").requireText("Esame inesistente con codice B027000: " + getDisplayErrorString(exam));
 	}
 	
 	@Test
@@ -160,7 +164,17 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.list().selectItem(0);
 		window.button("btnDelete").click();
 		window.optionPane().noButton().click();
-		assertThat(window.list().contents()).containsExactly(exam.toString());
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(exam));
+	}
+	
+	private String getDisplayListString(Exam exam) {
+		return String.format("%-7s|%-60s|%4d|%4s|%10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+	}
+
+	private String getDisplayErrorString(Exam exam) {
+		return String.format("%-7s - %-40s (%2d) %3s %10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
 	
 

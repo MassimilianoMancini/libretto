@@ -26,7 +26,7 @@ public class ExamMariaDBRepository implements ExamRepository {
 	public List<Exam> findAll() throws SQLException {
 		List<Exam> examList = new ArrayList<>();
 		try (Statement stmt = conn.createStatement()) {
-			stmt.executeUpdate("select * from libretto");
+			stmt.executeUpdate("select * from libretto order by date");
 			ResultSet rs = stmt.getResultSet();
 			while (rs.next()) {
 				examList.add(newExamFromResultset(rs));
