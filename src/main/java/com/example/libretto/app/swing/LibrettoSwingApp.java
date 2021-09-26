@@ -18,10 +18,11 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Generated
-@Command(mixinStandardHelpOptions = true)
+@Generated @Command(mixinStandardHelpOptions = true)
 public class LibrettoSwingApp implements Callable<Void> {
 	
+	private static final String SQL_ERROR_MESSAGE = "SQL Problems";
+
 	private Connection conn;
 	
 	@Option(names = { "--host" }, description = "MariaDB host address")
@@ -60,7 +61,7 @@ public class LibrettoSwingApp implements Callable<Void> {
 			initDB(conn);		
 			runSwingView(conn);
 		} catch (SQLException e) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "SQL Problems", e);
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, SQL_ERROR_MESSAGE, e);
 		}
 		return null;
 	}
@@ -97,13 +98,13 @@ public class LibrettoSwingApp implements Callable<Void> {
 			stmt.executeUpdate(query);
 			stmt.close();
 		} catch (SQLException e) {
-			Logger.getLogger(getClass().getName()).log(Level.SEVERE, "SQL Problems", e);
+			Logger.getLogger(getClass().getName()).log(Level.SEVERE, SQL_ERROR_MESSAGE, e);
 		} finally {
 			if (stmt != null) {
 				try {
 					stmt.close();
 				} catch (SQLException e) {
-					Logger.getLogger(getClass().getName()).log(Level.SEVERE, "SQL Problems", e);
+					Logger.getLogger(getClass().getName()).log(Level.SEVERE, SQL_ERROR_MESSAGE, e);
 				}
 			}
 		}
