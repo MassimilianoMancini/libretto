@@ -1,4 +1,4 @@
-name: Build on linux with Java 11, Coveralls and SonarCloud
+name: PR build on linux with Java 11, Coveralls and SonarCloud
 
 on:
   pull_request:
