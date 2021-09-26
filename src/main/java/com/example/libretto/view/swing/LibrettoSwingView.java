@@ -66,7 +66,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		setSize(800, 520);
 
 		contentPane = new JPanel();

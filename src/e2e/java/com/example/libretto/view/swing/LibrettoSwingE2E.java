@@ -97,7 +97,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(9);
 		window.textBox("txtDate").setText("15-06-2020");
 		window.button("btnSave").click();
-		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).containsSubsequence("B027536",
+		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).contains("B027536",
 				"Numerical Methods for Graphics", "6", "26", "15-06-2020"));
 	}
 
@@ -130,7 +130,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.optionPane().yesButton().click();
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
 	}
-
+	
 	private void deleteExamFromDB(String id) throws SQLException {
 		String query = "delete from libretto where id = ?";
 		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
