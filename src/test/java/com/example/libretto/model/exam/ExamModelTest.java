@@ -12,6 +12,8 @@ import com.example.libretto.model.Grade;
 
 class ExamModelTest {
 	
+	private static final String FUTURE_DATE_ERROR_MESSAGE = "Non sono ammesse date future";
+	
 	@Test
 	void testCreateNewExamWithAllPropertiesIsOk() {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
@@ -26,7 +28,7 @@ class ExamModelTest {
 		Grade grade = new Grade("30");
 		assertThatThrownBy(() -> new Exam("B027500", "Data Mining and Organization", 12, grade, examDate))
 			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("Only past dates are allowed");
+			.hasMessage(FUTURE_DATE_ERROR_MESSAGE);
 	}
 	
 	@Test
@@ -38,7 +40,7 @@ class ExamModelTest {
 		
 		assertThatThrownBy(() -> exam.setDate(newDate))
 			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("Only past dates are allowed");
+			.hasMessage(FUTURE_DATE_ERROR_MESSAGE);
 	}
 	
 	@Test

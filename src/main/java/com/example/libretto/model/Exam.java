@@ -7,6 +7,7 @@ import com.example.libretto.Generated;
 
 public class Exam {
 	
+	private static final String FUTURE_DATE_ERROR_MESSAGE = "Non sono ammesse date future";
 	private String id;
 	private String description;
 	private int weight;
@@ -19,7 +20,7 @@ public class Exam {
 		this.weight = weight;
 		this.grade = grade;
 		if (date.isAfter(LocalDate.now())) {
-			throw new IllegalArgumentException("Only past dates are allowed");
+			throw new IllegalArgumentException(FUTURE_DATE_ERROR_MESSAGE);
 		}
 		this.date = date;
 	}
@@ -71,7 +72,7 @@ public class Exam {
 
 	public void setDate(LocalDate date) throws IllegalArgumentException {
 		if (date.isAfter(LocalDate.now())) {
-			throw new IllegalArgumentException("Only past dates are allowed"); 
+			throw new IllegalArgumentException(FUTURE_DATE_ERROR_MESSAGE); 
 		}
 		this.date = date;
 	}
