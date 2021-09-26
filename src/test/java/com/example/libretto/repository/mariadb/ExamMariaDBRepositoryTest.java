@@ -99,7 +99,7 @@ class ExamMariaDBRepositoryTest {
 	}
 	
 	@Test
-	void testFindAllWhenDatabaseIsNotEmpty() throws SQLException {
+	void testFindAllAndOrderWhenDatabaseIsNotEmpty() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ("
 				+ "'B027500', "
 				+ "'Data Mining and Organization', "
@@ -114,8 +114,8 @@ class ExamMariaDBRepositoryTest {
 				+ "'27', "
 				+ "'2020-01-09')");
 		assertThat(examRepository.findAll()).containsExactly(
-			new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)),
-			new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+			new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)),
+			new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
 	}
 	
 	@Test

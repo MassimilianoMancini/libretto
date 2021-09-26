@@ -1,5 +1,8 @@
 package com.example.libretto.view.swing;
 
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -13,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -23,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -62,29 +67,60 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setSize(809,500);
+		setSize(800,520);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		GridBagLayout gblContentPane = new GridBagLayout();
 		gblContentPane.columnWidths = new int[] { 120, 70, 10, 50, 10, 70, 50, 90, 170 };
-		gblContentPane.rowHeights = new int[] { 354, 0, 0, 0, 0, 0 };
+		gblContentPane.rowHeights = new int[] { 0, 354, 0, 0, 0, 0, 0 };
 		contentPane.setLayout(gblContentPane);
 
+		String lblListHeaderFormat = String.format(
+				"%7s %-60s %4s %4s %-10s",		
+				"Codice",
+				"Descrizione", 
+				"Peso",
+				"Voto",
+				"Data");
+		
+		JLabel lblListHeader = new JLabel(lblListHeaderFormat);
+		lblListHeader.setFont(new Font("monospaced", Font.BOLD, 12));
+		lblListHeader.setName("lblListHeader");
+		GridBagConstraints gbcLblListHeader = new GridBagConstraints();
+		gbcLblListHeader.gridwidth=9;
+		gbcLblListHeader.fill = GridBagConstraints.HORIZONTAL;
+		gbcLblListHeader.insets = new Insets(0, 0, 0, 5);
+		gbcLblListHeader.gridx = 0;
+		gbcLblListHeader.gridy = 0;
+		getContentPane().add(lblListHeader, gbcLblListHeader);
+				
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbcScrollPane = new GridBagConstraints();
 		gbcScrollPane.gridwidth = 9;
 		gbcScrollPane.fill = GridBagConstraints.BOTH;
 		gbcScrollPane.insets = new Insets(0, 0, 5, 0);
 		gbcScrollPane.gridx = 0;
-		gbcScrollPane.gridy = 0;
+		gbcScrollPane.gridy = 1;
 		contentPane.add(scrollPane, gbcScrollPane);
 
 		lstExamModel = new DefaultListModel<>();
 		lstExam = new JList<>(lstExamModel);
 		lstExam.setName("lstExam");
 		lstExam.addListSelectionListener(e -> btnDelete.setEnabled(lstExam.getSelectedIndex() != -1));
+		lstExam.setCellRenderer(new DefaultListCellRenderer() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			 public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+				 Exam exam = (Exam) value;
+				 return super.getListCellRendererComponent(list, getDisplayListString(exam), index, isSelected, cellHasFocus);
+			 }
+		});
+		lstExam.setFont(new Font("monospaced", Font.PLAIN, 12));
+		lstExam.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
 		scrollPane.setViewportView(lstExam);
 
 		JLabel lblAverage = new JLabel("Media");
@@ -93,7 +129,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblAverage.anchor = GridBagConstraints.EAST;
 		gbcLblAverage.insets = new Insets(0, 0, 0, 5);
 		gbcLblAverage.gridx = 0;
-		gbcLblAverage.gridy = 1;
+		gbcLblAverage.gridy = 2;
 		getContentPane().add(lblAverage, gbcLblAverage);
 
 		txtAverage = new JTextField();
@@ -104,7 +140,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtAverage.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtAverage.insets = new Insets(0, 0, 0, 5);
 		gbcTxtAverage.gridx = 1;
-		gbcTxtAverage.gridy = 1;
+		gbcTxtAverage.gridy = 2;
 		getContentPane().add(txtAverage, gbcTxtAverage);
 
 		JLabel lblWeightedAverage = new JLabel("Media pesata");
@@ -113,7 +149,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblWeightedAverage.anchor = GridBagConstraints.EAST;
 		gbcLblWeightedAverage.insets = new Insets(0, 0, 5, 5);
 		gbcLblWeightedAverage.gridx = 6;
-		gbcLblWeightedAverage.gridy = 1;
+		gbcLblWeightedAverage.gridy = 2;
 		getContentPane().add(lblWeightedAverage, gbcLblWeightedAverage);
 
 		txtWeightedAverage = new JTextField();
@@ -124,7 +160,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtWeightedAverage.insets = new Insets(0, 0, 5, 5);
 		gbcTxtWeightedAverage.gridx = 7;
-		gbcTxtWeightedAverage.gridy = 1;
+		gbcTxtWeightedAverage.gridy = 2;
 		getContentPane().add(txtWeightedAverage, gbcTxtWeightedAverage);
 
 		btnDelete = new JButton("Elimina");
@@ -145,17 +181,18 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		GridBagConstraints gbcBtnDelete = new GridBagConstraints();
 		gbcBtnDelete.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnDelete.gridx = 8;
-		gbcBtnDelete.gridy = 1;
+		gbcBtnDelete.gridy = 2;
 		getContentPane().add(btnDelete, gbcBtnDelete);
 
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName("lblErrorMessage");
+		lblErrorMessage.setForeground(Color.RED);
 		GridBagConstraints gbcLblErrorMessage = new GridBagConstraints();
 		gbcLblErrorMessage.fill = GridBagConstraints.HORIZONTAL;
-		gbcLblErrorMessage.gridwidth = 9;
+		gbcLblErrorMessage.gridwidth = 8;
 		gbcLblErrorMessage.insets = new Insets(0, 0, 5, 5);
-		gbcLblErrorMessage.gridx = 0;
-		gbcLblErrorMessage.gridy = 2;
+		gbcLblErrorMessage.gridx = 1;
+		gbcLblErrorMessage.gridy = 3;
 		getContentPane().add(lblErrorMessage, gbcLblErrorMessage);
 
 		JLabel lblDescription = new JLabel("Descrizione");
@@ -164,7 +201,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblDescription.anchor = GridBagConstraints.EAST;
 		gbcLblDescription.insets = new Insets(0, 0, 5, 5);
 		gbcLblDescription.gridx = 0;
-		gbcLblDescription.gridy = 3;
+		gbcLblDescription.gridy = 4;
 		getContentPane().add(lblDescription, gbcLblDescription);
 
 		txtDescription = new JTextField();
@@ -174,7 +211,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtDescription.gridwidth = 8;
 		gbcTxtDescription.insets = new Insets(0, 0, 5, 0);
 		gbcTxtDescription.gridx = 1;
-		gbcTxtDescription.gridy = 3;
+		gbcTxtDescription.gridy = 4;
 		getContentPane().add(txtDescription, gbcTxtDescription);
 		txtDescription.setColumns(10);
 		fieldList.add(txtDescription);
@@ -185,7 +222,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblId.anchor = GridBagConstraints.EAST;
 		gbcLblId.insets = new Insets(0, 0, 0, 5);
 		gbcLblId.gridx = 0;
-		gbcLblId.gridy = 4;
+		gbcLblId.gridy = 5;
 		getContentPane().add(lblId, gbcLblId);
 
 		txtId = new JTextField();
@@ -194,7 +231,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtId.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtId.insets = new Insets(0, 0, 0, 5);
 		gbcTxtId.gridx = 1;
-		gbcTxtId.gridy = 4;
+		gbcTxtId.gridy = 5;
 		getContentPane().add(txtId, gbcTxtId);
 		fieldList.add(txtId);
 
@@ -204,7 +241,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblWeight.anchor = GridBagConstraints.EAST;
 		gbcLblWeight.insets = new Insets(0, 0, 0, 5);
 		gbcLblWeight.gridx = 2;
-		gbcLblWeight.gridy = 4;
+		gbcLblWeight.gridy = 5;
 		getContentPane().add(lblWeight, gbcLblWeight);
 
 		txtWeight = new JTextField();
@@ -213,7 +250,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtWeight.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtWeight.insets = new Insets(0, 0, 0, 5);
 		gbcTxtWeight.gridx = 3;
-		gbcTxtWeight.gridy = 4;
+		gbcTxtWeight.gridy = 5;
 		getContentPane().add(txtWeight, gbcTxtWeight);
 		fieldList.add(txtWeight);
 
@@ -223,7 +260,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblGrade.anchor = GridBagConstraints.EAST;
 		gbcLblGrade.insets = new Insets(0, 0, 0, 5);
 		gbcLblGrade.gridx = 4;
-		gbcLblGrade.gridy = 4;
+		gbcLblGrade.gridy = 5;
 		getContentPane().add(lblGrade, gbcLblGrade);
 
 		cmbGrade = new JComboBox<>();
@@ -235,7 +272,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcCmbGrade.anchor = GridBagConstraints.NORTH;
 		gbcCmbGrade.insets = new Insets(0, 0, 0, 5);
 		gbcCmbGrade.gridx = 5;
-		gbcCmbGrade.gridy = 4;
+		gbcCmbGrade.gridy = 5;
 		getContentPane().add(cmbGrade, gbcCmbGrade);
 
 		JLabel lblDate = new JLabel("Data");
@@ -244,7 +281,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblDate.anchor = GridBagConstraints.EAST;
 		gbcLblDate.insets = new Insets(0, 0, 0, 5);
 		gbcLblDate.gridx = 6;
-		gbcLblDate.gridy = 4;
+		gbcLblDate.gridy = 5;
 		getContentPane().add(lblDate, gbcLblDate);
 
 		txtDate = new JTextField();
@@ -254,7 +291,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtDate.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtDate.insets = new Insets(0, 0, 0, 5);
 		gbcTxtDate.gridx = 7;
-		gbcTxtDate.gridy = 4;
+		gbcTxtDate.gridy = 5;
 		getContentPane().add(txtDate, gbcTxtDate);
 		fieldList.add(txtDate);
 
@@ -280,7 +317,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcBtnSave.fill = GridBagConstraints.HORIZONTAL;
 		gbcBtnSave.anchor = GridBagConstraints.NORTH;
 		gbcBtnSave.gridx = 8;
-		gbcBtnSave.gridy = 4;
+		gbcBtnSave.gridy = 5;
 		getContentPane().add(btnSave, gbcBtnSave);
 
 		// Add a document listener
@@ -333,7 +370,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	@Override
 	public void showError(String message, Exam exam) {
-		lblErrorMessage.setText(message + ": " + exam);
+		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
 	}
 
 	@Override
@@ -393,16 +430,36 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		cmbGrade.setSelectedIndex(-1);
 		txtDate.setText(new SimpleDateFormat(DATE_FORMAT_IT).format(new Date()));
 	}
-
+	
+	private String getDisplayListString(Exam exam) {
+		return String.format(
+			"%-7s|%-60s|%4d|%4s|%10s",		
+			exam.getId(),
+			exam.getDescription(), 
+			exam.getWeight(),
+			exam.getGrade().getValue(),
+			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+	}
+	
+	private String getDisplayErrorString(Exam exam) {
+		return String.format(
+			"%-7s - %-40s (%2d) %3s %10s",
+			exam.getId(),
+			exam.getDescription(), 
+			exam.getWeight(),
+			exam.getGrade().getValue(),
+			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+	}
+	
 	@Override
 	public void showErrorExamNotFound(String message, Exam exam) {
-		lblErrorMessage.setText(message + ": " + exam);
+		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
 		lstExamModel.removeElement(exam);
 	}
 
 	@Override
 	public void showErrorExamAlreadyExists(String message, Exam exam) {
-		lblErrorMessage.setText(message + ": " + exam);
+		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
 		boolean exists = false;
 		for (int i = 0; i < lstExamModel.size(); i++) {
 			if (exam.getId().equals(lstExamModel.get(i).getId())) {
