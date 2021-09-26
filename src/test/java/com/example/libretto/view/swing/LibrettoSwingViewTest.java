@@ -174,10 +174,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
-		GuiActionRunner.execute(() -> librettoSwingView.showError("Errore", exam));
-		window.label("lblErrorMessage").requireText("Errore: " + getDisplayErrorString(exam));
+		GuiActionRunner.execute(() -> librettoSwingView.showError("Errore"));
+		window.label("lblErrorMessage").requireText("Errore");
 	}
 
 	@Test
@@ -291,6 +289,17 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDate").setText("09/01/2020");
 		window.button("btnSave").click();
 		window.label("lblErrorMessage").requireText("Il formato data è gg-mm-aaaa");
+	}
+	
+	@Test
+	public void testFutureDateShowErrorMessage() {
+		window.textBox("txtId").setText("B027507");
+		window.textBox("txtDescription").setText("Parallel Computing");
+		window.textBox("txtWeight").enterText("6");
+		window.comboBox("cmbGrade").selectItem(10);
+		window.textBox("txtDate").setText("09-01-2030");
+		window.button("btnSave").click();
+		window.label("lblErrorMessage").requireText("Non sono ammesse date future");
 	}
 
 	private String getDisplayListString(Exam exam) {

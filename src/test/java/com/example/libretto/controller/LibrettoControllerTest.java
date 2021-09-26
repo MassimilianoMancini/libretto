@@ -103,7 +103,7 @@ class LibrettoControllerTest {
 	void testAllExamsThrows() throws SQLException {
 		when(examRepository.findAll()).thenThrow(SQLException.class);
 		librettoController.allExams();
-		verify(librettoView).showError("Errore SQL", null);
+		verify(librettoView).showError("Errore SQL");
 	}
 	
 	@Test
@@ -113,7 +113,7 @@ class LibrettoControllerTest {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
 		doThrow(SQLException.class).when(examRepository).save(exam);
 		librettoController.newExam(exam);
-		verify(librettoView).showError("Errore SQL", null);
+		verify(librettoView).showError("Errore SQL");
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ class LibrettoControllerTest {
 		when(examRepository.findById("B027500")).thenReturn(examToDelete);
 		doThrow(SQLException.class).when(examRepository).delete("B027500");
 		librettoController.deleteExam(examToDelete);
-		verify(librettoView).showError("Errore SQL", null);
+		verify(librettoView).showError("Errore SQL");
 	}
 
 	

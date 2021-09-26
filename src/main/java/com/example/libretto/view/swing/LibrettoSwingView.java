@@ -67,7 +67,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	public LibrettoSwingView() {
 		setTitle("Libretto universitario");
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-		setSize(800,520);
+		setSize(800, 520);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -77,25 +77,20 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gblContentPane.rowHeights = new int[] { 0, 354, 0, 0, 0, 0, 0 };
 		contentPane.setLayout(gblContentPane);
 
-		String lblListHeaderFormat = String.format(
-				"%7s %-60s %4s %4s %-10s",		
-				"Codice",
-				"Descrizione", 
-				"Peso",
-				"Voto",
+		String lblListHeaderFormat = String.format("%7s %-60s %4s %4s %-10s", "Codice", "Descrizione", "Peso", "Voto",
 				"Data");
-		
+
 		JLabel lblListHeader = new JLabel(lblListHeaderFormat);
 		lblListHeader.setFont(new Font("monospaced", Font.BOLD, 12));
 		lblListHeader.setName("lblListHeader");
 		GridBagConstraints gbcLblListHeader = new GridBagConstraints();
-		gbcLblListHeader.gridwidth=9;
+		gbcLblListHeader.gridwidth = 9;
 		gbcLblListHeader.fill = GridBagConstraints.HORIZONTAL;
 		gbcLblListHeader.insets = new Insets(0, 0, 0, 5);
 		gbcLblListHeader.gridx = 0;
 		gbcLblListHeader.gridy = 0;
 		getContentPane().add(lblListHeader, gbcLblListHeader);
-				
+
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbcScrollPane = new GridBagConstraints();
 		gbcScrollPane.gridwidth = 9;
@@ -113,14 +108,16 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			 public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				 Exam exam = (Exam) value;
-				 return super.getListCellRendererComponent(list, getDisplayListString(exam), index, isSelected, cellHasFocus);
-			 }
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Exam exam = (Exam) value;
+				return super.getListCellRendererComponent(list, getDisplayListString(exam), index, isSelected,
+						cellHasFocus);
+			}
 		});
 		lstExam.setFont(new Font("monospaced", Font.PLAIN, 12));
 		lstExam.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		scrollPane.setViewportView(lstExam);
 
 		JLabel lblAverage = new JLabel("Media");
@@ -167,12 +164,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
 		btnDelete.addActionListener(e -> {
-			int result = JOptionPane.showConfirmDialog(
-				this, 
-				"Confermi la cancellazione", 
-				"Cancellazione", 
-				JOptionPane.YES_NO_OPTION, 
-				JOptionPane.QUESTION_MESSAGE);
+			int result = JOptionPane.showConfirmDialog(this, "Confermi la cancellazione", "Cancellazione",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (result == JOptionPane.YES_OPTION) {
 				librettoController.deleteExam(lstExam.getSelectedValue());
 			}
@@ -299,16 +292,20 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnSave.setEnabled(false);
 		btnSave.setName("btnSave");
 		btnSave.addActionListener(e -> {
+			Exam exam = null;
 			LocalDate ld = getDateInLocalDate(txtDate.getText());
 			if (ld != null) {
-				librettoController.newExam(
-					new Exam(
-						txtId.getText(), 
-						txtDescription.getText(), 
-						Integer.parseInt(txtWeight.getText()),
-						new Grade((String) cmbGrade.getSelectedItem()),
-						ld
-					));
+				try {
+				exam = new Exam(
+					txtId.getText(), 
+					txtDescription.getText(),
+					Integer.parseInt(txtWeight.getText()), 
+					new Grade((String) cmbGrade.getSelectedItem()), 
+					ld);
+				librettoController.newExam(exam);
+				} catch (IllegalArgumentException e1) {
+					showError(e1.getMessage());
+				}			
 			} else {
 				txtDate.setText("");
 			}
@@ -322,7 +319,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		// Add a document listener
 		DocumentListener listener = new DocumentListener() {
-			
+
 			@Generated
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -369,8 +366,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	@Override
-	public void showError(String message, Exam exam) {
-		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
+	public void showError(String message) {
+		lblErrorMessage.setText(message);
 	}
 
 	@Override
@@ -422,7 +419,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		btnSave.setEnabled(canEnable);
 	}
-	
+
 	private void emptyFields() {
 		for (JTextField tf : fieldList) {
 			tf.setText("");
@@ -430,27 +427,17 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		cmbGrade.setSelectedIndex(-1);
 		txtDate.setText(new SimpleDateFormat(DATE_FORMAT_IT).format(new Date()));
 	}
-	
+
 	private String getDisplayListString(Exam exam) {
-		return String.format(
-			"%-7s|%-60s|%4d|%4s|%10s",		
-			exam.getId(),
-			exam.getDescription(), 
-			exam.getWeight(),
-			exam.getGrade().getValue(),
-			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+		return String.format("%-7s|%-60s|%4d|%4s|%10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
-	
+
 	private String getDisplayErrorString(Exam exam) {
-		return String.format(
-			"%-7s - %-40s (%2d) %3s %10s",
-			exam.getId(),
-			exam.getDescription(), 
-			exam.getWeight(),
-			exam.getGrade().getValue(),
-			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+		return String.format("%-7s - %-40s (%2d) %3s %10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
-	
+
 	@Override
 	public void showErrorExamNotFound(String message, Exam exam) {
 		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
@@ -464,10 +451,10 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		for (int i = 0; i < lstExamModel.size(); i++) {
 			if (exam.getId().equals(lstExamModel.get(i).getId())) {
 				exists = true;
-			}		
+			}
 		}
-		
-		if (! exists) {
+
+		if (!exists) {
 			lstExamModel.addElement(exam);
 		}
 	}
