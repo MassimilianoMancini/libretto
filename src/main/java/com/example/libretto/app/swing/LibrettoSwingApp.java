@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.example.libretto.Generated;
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.repository.mariadb.ExamMariaDBRepository;
 import com.example.libretto.view.swing.LibrettoSwingView;
@@ -43,10 +44,12 @@ public class LibrettoSwingApp implements Callable<Void> {
 		new CommandLine(new LibrettoSwingApp()).execute(args);
 	}
 
+	
 	@Override
 	public Void call() {
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-	        public void run() {
+			@Generated
+			public void run() {
 	        	try {
 					conn.close();
 				} catch (SQLException e) {
