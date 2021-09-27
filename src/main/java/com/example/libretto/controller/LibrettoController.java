@@ -40,6 +40,21 @@ public class LibrettoController {
 		}
 		
 	}
+	
+	public void updateExam(Exam exam) {
+		try {
+			Exam oldExam = examRepository.findById(exam.getId());
+			if (oldExam == null) {
+				librettoView.showErrorExamNotFound("Esame inesistente con codice " + exam.getId(), exam);
+			} else {
+				librettoView.examRemoved(oldExam);
+				examRepository.update(exam);
+				librettoView.examAdded(exam);
+			}
+		} catch (SQLException e) {
+			librettoView.showError(SQL_ERROR);
+		}
+	}
 
 	public void deleteExam(Exam exam) {
 		try {
