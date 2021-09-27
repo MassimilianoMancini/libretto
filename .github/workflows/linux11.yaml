@@ -1,4 +1,4 @@
-name: Build on linux with Java 11, Coveralls and SonarCloud
+name: Linux / Java 11
 
 on:
   push:

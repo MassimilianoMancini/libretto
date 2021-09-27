@@ -1,4 +1,4 @@
-name: Build on Win
+name: Windows / Java 11, 15
 
 on:
   push:

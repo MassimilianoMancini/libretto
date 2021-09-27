@@ -1,4 +1,4 @@
-name: Build on linux with Java 15
+name: Llinux / Java 15
 
 on:
   push:

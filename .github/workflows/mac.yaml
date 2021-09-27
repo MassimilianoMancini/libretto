@@ -1,4 +1,4 @@
-name: Build on Mac
+name: Mac / Java 11, 15
 
 on:
   push:
