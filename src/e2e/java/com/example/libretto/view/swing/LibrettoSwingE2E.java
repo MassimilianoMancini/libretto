@@ -56,17 +56,27 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		stmt.executeUpdate("drop database if exists " + LIBRETTO_DB_NAME);
 		stmt.executeUpdate("create database " + LIBRETTO_DB_NAME);
 		stmt.executeUpdate("use " + LIBRETTO_DB_NAME);
-		stmt.executeUpdate(
-				"create table libretto (" + "id varchar(7) not null primary key, " + "description varchar(60) not null,"
-						+ "weight int not null," + "grade varchar(3) not null," + "date date not null" + ")");
-		stmt.executeUpdate("insert into libretto values (" + "'B027500', " + "'Data Mining and Organization', " + "12, "
-				+ "'30L', " + "'2020-01-29')");
-
-		stmt.executeUpdate("insert into libretto values (" + "'B027507', " + "'Parallel Computing', " + "6, " + "'27', "
-				+ "'2020-01-09')");
-		application("com.example.libretto.app.swing.LibrettoSwingApp").withArgs("--host=localhost",
-				"--port=" + mariadbPort, "--user=root", "--password=" + mariadbPassword, "--db=" + LIBRETTO_DB_NAME)
-				.start();
+		
+		stmt.executeUpdate("create table libretto (" + 
+			"id varchar(7) not null primary key, " + 
+			"description varchar(60) not null,"	+ 
+			"weight int not null," + 
+			"grade varchar(3) not null," + 
+			"date date not null" + ")");
+		stmt.executeUpdate("insert into libretto values (" + 
+			"'B027500', " + 
+			"'Data Mining and Organization', " + 
+			"12, " + "'30L', " + "'2020-01-29')");
+		stmt.executeUpdate("insert into libretto values (" + 
+			"'B027507', " + 
+			"'Parallel Computing', " + 
+			"6, " + "'27', " + "'2020-01-09')");
+		
+		application("com.example.libretto.app.swing.LibrettoSwingApp").withArgs("--host=localhost", "--port=" + mariadbPort, "--user=root", "--password=" + mariadbPassword, "--db=" + LIBRETTO_DB_NAME).start();
+		
+		robot().settings().delayBetweenEvents(200);
+		robot().settings().eventPostingDelay(200);
+		
 		window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
 			@Override
 			protected boolean isMatching(JFrame frame) {
@@ -83,10 +93,8 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testOnStartAllDatabaseElementsAreShown() {
 		assertThat(window.list().contents())
-				.anySatisfy(e -> assertThat(e).containsSubsequence("B027500", "Data Mining and Organization", "12",
-						"30L", "29-01-2020"))
-				.anySatisfy(e -> assertThat(e).containsSubsequence("B027507", "Parallel Computing", "6", "27",
-						"09-01-2020"));
+				.anySatisfy(e -> assertThat(e).containsSubsequence("B027500", "Data Mining and Organization", "12", "30L", "29-01-2020"))
+				.anySatisfy(e -> assertThat(e).containsSubsequence("B027507", "Parallel Computing", "6", "27", "09-01-2020"));
 	}
 
 	@Test

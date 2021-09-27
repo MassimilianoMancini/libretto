@@ -13,13 +13,13 @@ public class Grade {
 			try {
 				int n = Integer.parseInt(grade);
 				if (n < 18) {
-					throw new IllegalArgumentException("Insufficient grade");
+					throw new IllegalArgumentException("Voto troppo basso");
 				}
 				if (n > 30) {
-					throw new IllegalArgumentException("Too high grade");
+					throw new IllegalArgumentException("Voto troppo alto");
 				}
 			} catch (NumberFormatException nfe) {
-				throw new IllegalArgumentException("Syntax error");
+				throw new IllegalArgumentException("Errore di sintassi");
 			}
 		}
 		this.value = grade;

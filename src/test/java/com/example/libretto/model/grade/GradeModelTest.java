@@ -23,7 +23,7 @@ class GradeModelTest {
 	void testCreateNewGradeWithNotNumericParameterThrows() {
 		assertThatThrownBy(()->{new Grade("test");})
 			.isInstanceOf(IllegalArgumentException.class)
-			.hasMessage("Syntax error");
+			.hasMessage("Errore di sintassi");
 	}
 	
 	@Test 
@@ -36,14 +36,14 @@ class GradeModelTest {
 	void testCreateNewGradeWithInsufficientValueThrows() {
 		assertThatThrownBy(()->{new Grade("16");})
 		.isInstanceOf(IllegalArgumentException.class)
-		.hasMessage("Insufficient grade");
+		.hasMessage("Voto troppo basso");
 	}
 	
 	@Test
 	void testCreateNewGradeWithTooHighValueThrows() {
 		assertThatThrownBy(()->{new Grade("31");})
 		.isInstanceOf(IllegalArgumentException.class)
-		.hasMessage("Too high grade");
+		.hasMessage("Voto troppo alto");
 	}
 	
 	@Test

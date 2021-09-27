@@ -31,6 +31,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	private FrameFixture window;
 	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
 
+
 	@Mock
 	private LibrettoController librettoController;
 
@@ -44,6 +45,10 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 			librettoSwingView.setLibrettoController(librettoController);
 			return librettoSwingView;
 		});
+		
+		robot().settings().delayBetweenEvents(200);
+		robot().settings().eventPostingDelay(200);
+		
 
 		window = new FrameFixture(robot(), librettoSwingView);
 		window.show();
