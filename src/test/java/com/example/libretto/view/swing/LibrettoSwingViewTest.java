@@ -10,6 +10,8 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.DefaultListModel;
 
+import org.assertj.swing.core.BasicRobot;
+import org.assertj.swing.core.Robot;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;
@@ -31,6 +33,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	private FrameFixture window;
 	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
 
+
 	@Mock
 	private LibrettoController librettoController;
 
@@ -44,6 +47,10 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 			librettoSwingView.setLibrettoController(librettoController);
 			return librettoSwingView;
 		});
+		
+		robot().settings().delayBetweenEvents(200);
+		robot().settings().eventPostingDelay(200);
+		
 
 		window = new FrameFixture(robot(), librettoSwingView);
 		window.show();

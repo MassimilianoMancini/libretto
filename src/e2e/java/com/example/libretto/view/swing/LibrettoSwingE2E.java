@@ -67,6 +67,11 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		application("com.example.libretto.app.swing.LibrettoSwingApp").withArgs("--host=localhost",
 				"--port=" + mariadbPort, "--user=root", "--password=" + mariadbPassword, "--db=" + LIBRETTO_DB_NAME)
 				.start();
+		
+		robot().settings().delayBetweenEvents(200);
+		robot().settings().eventPostingDelay(200);
+		
+		
 		window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
 			@Override
 			protected boolean isMatching(JFrame frame) {
