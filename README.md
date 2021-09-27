@@ -1,10 +1,10 @@
-[![Build on linux with Java 11, Coveralls and SonarCloud](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux11.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux11.yaml)
+[![Linux / Java 11](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux11.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux11.yaml)
 
-[![Build on linux with Java 15](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux15.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux15.yaml)
+[![Llinux / Java 15](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux15.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/linux15.yaml)
 
-[![Build on Win, java 11 and 15](https://github.com/MassimilianoMancini/libretto/actions/workflows/windows.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/windows.yaml)
+[![Windows / Java 11, 15](https://github.com/MassimilianoMancini/libretto/actions/workflows/windows.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/windows.yaml)
 
-[![Build on Mac, java 11 and 15](https://github.com/MassimilianoMancini/libretto/actions/workflows/mac.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/mac.yaml)
+[![Mac / Java 11, 15](https://github.com/MassimilianoMancini/libretto/actions/workflows/mac.yaml/badge.svg)](https://github.com/MassimilianoMancini/libretto/actions/workflows/mac.yaml)
 
 [![Coverage Status](https://coveralls.io/repos/github/MassimilianoMancini/libretto/badge.svg?branch=main)](https://coveralls.io/github/MassimilianoMancini/libretto?branch=main)
 
