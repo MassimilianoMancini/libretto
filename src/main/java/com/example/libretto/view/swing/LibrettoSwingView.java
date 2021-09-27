@@ -54,6 +54,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	private DefaultListModel<Exam> lstExamModel;
 	private JButton btnSave;
 	private JButton btnDelete;
+	private JButton btnEdit;
 	private List<JTextField> fieldList = new ArrayList<>();
 	private JScrollPane scrollPane;
 	private JTextField txtAverage;
@@ -102,7 +103,12 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		lstExamModel = new DefaultListModel<>();
 		lstExam = new JList<>(lstExamModel);
 		lstExam.setName("lstExam");
-		lstExam.addListSelectionListener(e -> btnDelete.setEnabled(lstExam.getSelectedIndex() != -1));
+		
+		lstExam.addListSelectionListener(e -> {
+			btnDelete.setEnabled(lstExam.getSelectedIndex() != -1);
+			btnEdit.setEnabled(lstExam.getSelectedIndex() != -1);
+		});
+		
 		lstExam.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
@@ -146,7 +152,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		GridBagConstraints gbcLblWeightedAverage = new GridBagConstraints();
 		gbcLblWeightedAverage.anchor = GridBagConstraints.EAST;
 		gbcLblWeightedAverage.insets = new Insets(0, 0, 5, 5);
-		gbcLblWeightedAverage.gridx = 6;
+		gbcLblWeightedAverage.gridx = 5;
 		gbcLblWeightedAverage.gridy = 2;
 		getContentPane().add(lblWeightedAverage, gbcLblWeightedAverage);
 
@@ -157,9 +163,24 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		GridBagConstraints gbcTxtWeightedAverage = new GridBagConstraints();
 		gbcTxtWeightedAverage.fill = GridBagConstraints.HORIZONTAL;
 		gbcTxtWeightedAverage.insets = new Insets(0, 0, 5, 5);
-		gbcTxtWeightedAverage.gridx = 7;
+		gbcTxtWeightedAverage.gridx = 6;
 		gbcTxtWeightedAverage.gridy = 2;
 		getContentPane().add(txtWeightedAverage, gbcTxtWeightedAverage);
+		
+		// Edit button
+		btnEdit = new JButton("Modifica");
+		btnEdit.setEnabled(false);
+		btnEdit.setName("btnEdit");
+		btnEdit.addActionListener(e -> {
+			loadFieldsValue(lstExam.getSelectedValue());
+			txtId.setEditable(false);
+		});
+
+		GridBagConstraints gbcBtnEdit = new GridBagConstraints();
+		gbcBtnEdit.fill = GridBagConstraints.HORIZONTAL;
+		gbcBtnEdit.gridx = 7;
+		gbcBtnEdit.gridy = 2;
+		getContentPane().add(btnEdit, gbcBtnEdit);
 
 		// Delete button
 		btnDelete = new JButton("Elimina");
@@ -309,9 +330,14 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 					txtId.getText(), 
 					txtDescription.getText(),
 					Integer.parseInt(txtWeight.getText()), 
-					new Grade((String) cmbGrade.getSelectedItem()), 
+					new Grade((String) cmbGrade.getSelectedItem()),
 					ld);
-				librettoController.newExam(exam);
+				if (txtId.isEditable()) {
+					librettoController.newExam(exam);
+				} else {
+					librettoController.updateExam(exam);
+				}
+				
 				} catch (IllegalArgumentException e1) {
 					showError(e1.getMessage());
 				}			
@@ -369,7 +395,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		updateAverages(getListOfExams());
 		resetFields();
 	}
-
+	
 	@Override
 	public void showError(String message) {
 		lblErrorMessage.setText(message);
@@ -409,6 +435,10 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	
 	DefaultListModel<Exam> getLstExamModel() {
 		return lstExamModel;
+	}
+	
+	JTextField getTxtID() {
+		return txtId;
 	}
 	
 	private List<Exam> getListOfExams() {
@@ -454,6 +484,15 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		}
 		cmbGrade.setSelectedIndex(-1);
 		txtDate.setText(new SimpleDateFormat(DATE_FORMAT_IT).format(new Date()));
+		txtId.setEditable(true);
+	}
+	
+	private void loadFieldsValue(Exam exam) {
+		txtId.setText(exam.getId());
+		txtDescription.setText(exam.getDescription());
+		txtWeight.setText(Integer.toString(exam.getWeight()));
+		cmbGrade.setSelectedItem(exam.getGrade().getValue());
+		txtDate.setText(exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
 
 	private String getDisplayListString(Exam exam) {

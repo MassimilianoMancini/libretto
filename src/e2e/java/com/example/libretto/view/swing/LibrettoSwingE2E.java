@@ -105,8 +105,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(9);
 		window.textBox("txtDate").setText("15-06-2020");
 		window.button("btnSave").click();
-		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).contains("B027536",
-				"Numerical Methods for Graphics", "6", "26", "15-06-2020"));
+		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).contains("B027536", "Numerical Methods for Graphics", "6", "26", "15-06-2020"));
 	}
 
 	@Test
@@ -118,6 +117,16 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDate").setText("15-06-2020");
 		window.button("btnSave").click();
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
+	}
+	
+	@Test
+	public void testEditButtonSuccess() {
+		window.list().selectItem(Pattern.compile(".*B027500.*"));
+		window.button("btnEdit").click();
+		window.textBox("txtDescription").setText("Numerical Methods for Graphics");
+		window.button("btnSave").click();
+		assertThat(window.list().contents()).noneMatch(e -> e.contains("Data Mining and Organization"));
+		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).contains("B027500", "Numerical Methods for Graphics"));
 	}
 
 	@Test

@@ -81,6 +81,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeightedAverage").requireText(" ");
 		window.textBox("txtAverage").requireNotEditable();
 		window.textBox("txtWeightedAverage").requireNotEditable();
+		window.button("btnEdit").requireDisabled();
 		window.button("btnDelete").requireDisabled();
 		GuiActionRunner.execute(() -> {
 			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
@@ -164,7 +165,46 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("lstExam").clearSelection();
 		assertThat(btnDelete.isEnabled()).isFalse();
 	}
-
+	
+	@Test
+	public void testEditButtonShouldBeEnabledOnlyWhenAnExamIsSelected() {
+		GuiActionRunner.execute(() -> {
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
+					new Grade("30L"), LocalDate.of(2020, 1, 29)));
+			librettoSwingView.getLstExamModel().addElement(
+					new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+		});
+		window.list("lstExam").selectItem(1);
+		JButtonFixture btnEdit = window.button("btnEdit");
+		assertThat(btnEdit.isEnabled()).isTrue();
+		window.list("lstExam").clearSelection();
+		assertThat(btnEdit.isEnabled()).isFalse();
+	}
+	
+	@Test
+	public void testClickOnEditButtonLoadsFieldsValue() {
+		GuiActionRunner.execute(() -> {
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
+					new Grade("30L"), LocalDate.of(2020, 1, 29)));
+			librettoSwingView.getLstExamModel().addElement(
+					new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+		});
+		
+		window.list("lstExam").selectItem(1);
+		window.button("btnEdit").click();
+		window.textBox("txtId").requireText("B027507");
+		window.textBox("txtDescription").requireText("Parallel Computing");
+		window.textBox("txtWeight").requireText("6");
+		window.comboBox("cmbGrade").requireSelection("27");
+		window.textBox("txtDate").requireText("09-01-2020");
+		
+		// and txtId is not editable
+		window.textBox("txtId").requireNotEditable();
+		
+		// and save button is enabled
+		window.button("btnSave").requireEnabled();
+	}
+	
 	@Test
 	public void testShowAllExamsShouldAddExamDescriptionToTheList() {
 		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
@@ -217,18 +257,30 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testSaveButtonShouldDelegateToLibrettoControllerNewExam()
-			throws IllegalArgumentException, SQLException {
+	public void testSaveButtonShouldDelegateToLibrettoControllerNewExam() throws IllegalArgumentException, SQLException {
 		window.textBox("txtId").setText("B027507");
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.textBox("txtWeight").enterText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
-		verify(librettoController)
-				.newExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+		verify(librettoController).newExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 	}
-
+	
+	@Test
+	public void testSaveButtonShouldDelegateToLibrettoControllerUpdateExam() throws IllegalArgumentException, SQLException {
+		window.textBox("txtId").setText("B027507");
+		window.textBox("txtDescription").setText("Parallel Computing");
+		window.textBox("txtWeight").enterText("6");
+		window.comboBox("cmbGrade").selectItem(10);
+		window.textBox("txtDate").setText("09-01-2020");
+		
+		GuiActionRunner.execute(() -> librettoSwingView.getTxtID().setEditable(false));
+		
+		window.button("btnSave").click();
+		verify(librettoController).updateExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+	}
+	
 	@Test
 	public void testDeleteButtonShouldDelegateToLibrettoControllerDeleteExam() throws SQLException {
 		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),

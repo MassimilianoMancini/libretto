@@ -137,6 +137,28 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	}
 	
 	@Test
+	public void testEditButtonSuccess() {
+		Exam exam = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
+		GuiActionRunner.execute(() -> librettoController.newExam(exam));
+		window.list().selectItem(0);
+		window.button("btnEdit").click();
+		
+		window.textBox("txtDescription").setText("Parallel Computing2");
+		window.textBox("txtWeight").setText("6");
+		window.comboBox("cmbGrade").selectItem(11);
+		window.textBox("txtDate").setText("19-01-2020");
+		window.button("btnSave").click();
+		
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(new Exam("B027507", "Parallel Computing2", 6, new Grade("28"), LocalDate.of(2020, 1, 19))));
+		
+		window.textBox("txtId").requireEmpty();
+		window.textBox("txtDescription").requireEmpty();
+		window.textBox("txtWeight").requireEmpty();
+		window.comboBox("cmbGrade").requireNoSelection();
+		window.textBox("txtDate").requireText(Pattern.compile("^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$"));
+	}
+	
+	@Test
 	public void testDeleteButtonSuccess() {
 		Exam exam = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> librettoController.newExam(exam));

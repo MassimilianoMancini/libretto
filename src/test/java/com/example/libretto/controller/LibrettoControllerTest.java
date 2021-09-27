@@ -77,6 +77,31 @@ class LibrettoControllerTest {
 	}
 	
 	@Test
+	void testUpdateExamWhenExists() throws SQLException {
+		LocalDate examDate = LocalDate.of(2020, 1, 29);
+		Grade grade = new Grade("30");
+		Exam examToUpdate = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
+		Exam examUpdated = new Exam("B027500", "Data Science", 6, grade, examDate);
+		when(examRepository.findById("B027500")).thenReturn(examToUpdate);
+		librettoController.updateExam(examUpdated);
+		InOrder inOrder = inOrder(examRepository, librettoView);
+		inOrder.verify(librettoView).examRemoved(examToUpdate);
+		inOrder.verify(examRepository).update(examUpdated);
+		inOrder.verify(librettoView).examAdded(examUpdated);
+	}
+	
+	@Test
+	void testUpdateExamWhenDoesNotExists() throws SQLException {
+		LocalDate examDate = LocalDate.of(2020, 1, 29);
+		Grade grade = new Grade("30");
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
+		when(examRepository.findById("B027500")).thenReturn(null);
+		librettoController.updateExam(exam);
+		verify(librettoView).showErrorExamNotFound("Esame inesistente con codice B027500", exam);
+		verifyNoMoreInteractions(ignoreStubs(examRepository));	
+	}
+	
+	@Test
 	void testDeleteExamWhenExamExists() throws SQLException {
 		LocalDate examDate = LocalDate.of(2020, 1, 29);
 		Grade grade = new Grade("30");
@@ -99,6 +124,8 @@ class LibrettoControllerTest {
 		verifyNoMoreInteractions(ignoreStubs(examRepository));	
 	}
 	
+	
+	
 	@Test
 	void testAllExamsThrows() throws SQLException {
 		when(examRepository.findAll()).thenThrow(SQLException.class);
@@ -113,6 +140,17 @@ class LibrettoControllerTest {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
 		doThrow(SQLException.class).when(examRepository).save(exam);
 		librettoController.newExam(exam);
+		verify(librettoView).showError("Errore SQL");
+	}
+	
+	@Test
+	void testUpdateExamsThrows() throws SQLException {
+		LocalDate examDate = LocalDate.of(2020, 1, 29);
+		Grade grade = new Grade("30");
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, grade, examDate);
+		when(examRepository.findById("B027500")).thenReturn(exam);
+		doThrow(SQLException.class).when(examRepository).update(exam);
+		librettoController.updateExam(exam);
 		verify(librettoView).showError("Errore SQL");
 	}
 	
