@@ -43,21 +43,19 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
 	private static final long serialVersionUID = 1L;
+	
 	private JPanel contentPane;
 	private JTextField txtId;
 	private JTextField txtDescription;
 	private JTextField txtWeight;
 	private JComboBox<String> cmbGrade;
 	private JTextField txtDate;
-
 	private JList<Exam> lstExam;
 	private DefaultListModel<Exam> lstExamModel;
-
 	private JButton btnSave;
 	private JButton btnDelete;
 	private List<JTextField> fieldList = new ArrayList<>();
 	private JScrollPane scrollPane;
-
 	private JTextField txtAverage;
 	private JTextField txtWeightedAverage;
 	private JLabel lblErrorMessage;
@@ -77,9 +75,9 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gblContentPane.rowHeights = new int[] { 0, 354, 0, 0, 0, 0, 0 };
 		contentPane.setLayout(gblContentPane);
 
-		String lblListHeaderFormat = String.format("%7s %-60s %4s %4s %-10s", "Codice", "Descrizione", "Peso", "Voto",
-				"Data");
+		String lblListHeaderFormat = String.format("%7s %-60s %4s %4s %-10s", "Codice", "Descrizione", "Peso", "Voto", "Data");
 
+		// Header
 		JLabel lblListHeader = new JLabel(lblListHeaderFormat);
 		lblListHeader.setFont(new Font("monospaced", Font.BOLD, 12));
 		lblListHeader.setName("lblListHeader");
@@ -91,6 +89,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblListHeader.gridy = 0;
 		getContentPane().add(lblListHeader, gbcLblListHeader);
 
+		// Main pane
 		scrollPane = new JScrollPane();
 		GridBagConstraints gbcScrollPane = new GridBagConstraints();
 		gbcScrollPane.gridwidth = 9;
@@ -120,6 +119,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		scrollPane.setViewportView(lstExam);
 
+		// Average
 		JLabel lblAverage = new JLabel("Media");
 		lblAverage.setName("lblAverage");
 		GridBagConstraints gbcLblAverage = new GridBagConstraints();
@@ -140,6 +140,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtAverage.gridy = 2;
 		getContentPane().add(txtAverage, gbcTxtAverage);
 
+		// Weighted average
 		JLabel lblWeightedAverage = new JLabel("Media pesata");
 		lblWeightedAverage.setName("lblWeightedAverage");
 		GridBagConstraints gbcLblWeightedAverage = new GridBagConstraints();
@@ -160,6 +161,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcTxtWeightedAverage.gridy = 2;
 		getContentPane().add(txtWeightedAverage, gbcTxtWeightedAverage);
 
+		// Delete button
 		btnDelete = new JButton("Elimina");
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
@@ -177,6 +179,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcBtnDelete.gridy = 2;
 		getContentPane().add(btnDelete, gbcBtnDelete);
 
+		// Error messages
 		lblErrorMessage = new JLabel(" ");
 		lblErrorMessage.setName("lblErrorMessage");
 		lblErrorMessage.setForeground(Color.RED);
@@ -188,6 +191,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcLblErrorMessage.gridy = 3;
 		getContentPane().add(lblErrorMessage, gbcLblErrorMessage);
 
+		// Exam description
 		JLabel lblDescription = new JLabel("Descrizione");
 		lblDescription.setName("lblDescription");
 		GridBagConstraints gbcLblDescription = new GridBagConstraints();
@@ -209,6 +213,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		txtDescription.setColumns(10);
 		fieldList.add(txtDescription);
 
+		// Exam ID
 		JLabel lblId = new JLabel("Codice");
 		lblId.setName("lblId");
 		GridBagConstraints gbcLblId = new GridBagConstraints();
@@ -228,6 +233,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		getContentPane().add(txtId, gbcTxtId);
 		fieldList.add(txtId);
 
+		// Exam weight
 		JLabel lblWeight = new JLabel("Peso");
 		lblWeight.setName("lblWeight");
 		GridBagConstraints gbcLblWeight = new GridBagConstraints();
@@ -247,6 +253,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		getContentPane().add(txtWeight, gbcTxtWeight);
 		fieldList.add(txtWeight);
 
+		// Exam combo grade
 		JLabel lblGrade = new JLabel("Voto");
 		lblGrade.setName("lblGrade");
 		GridBagConstraints gbcLblGrade = new GridBagConstraints();
@@ -268,6 +275,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		gbcCmbGrade.gridy = 5;
 		getContentPane().add(cmbGrade, gbcCmbGrade);
 
+		// Exam date
 		JLabel lblDate = new JLabel("Data");
 		lblDate.setName("lblDate");
 		GridBagConstraints gbcLblDate = new GridBagConstraints();
@@ -288,6 +296,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		getContentPane().add(txtDate, gbcTxtDate);
 		fieldList.add(txtDate);
 
+		// Save button
 		btnSave = new JButton("Salva");
 		btnSave.setEnabled(false);
 		btnSave.setName("btnSave");
@@ -325,7 +334,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			public void removeUpdate(DocumentEvent e) {
 				changedUpdate(e);
 			}
-
+			
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				changedUpdate(e);
@@ -347,10 +356,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	}
 
-	DefaultListModel<Exam> getLstExamModel() {
-		return lstExamModel;
-	}
-
 	@Override
 	public void showAllExams(List<Exam> exams) {
 		exams.stream().forEach(lstExamModel::addElement);
@@ -362,7 +367,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		lstExamModel.addElement(exam);
 		lblErrorMessage.setText(" ");
 		updateAverages(getListOfExams());
-		emptyFields();
+		resetFields();
 	}
 
 	@Override
@@ -378,6 +383,34 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	}
 
+	@Override
+	public void showErrorExamNotFound(String message, Exam exam) {
+		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
+		lstExamModel.removeElement(exam);
+	}
+	
+	@Override
+	public void showErrorExamAlreadyExists(String message, Exam exam) {
+		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
+		boolean exists = false;
+		for (int i = 0; i < lstExamModel.size(); i++) {
+			if (exam.getId().equals(lstExamModel.get(i).getId())) {
+				exists = true;
+			}
+		}	
+		if (!exists) {
+			lstExamModel.addElement(exam);
+		}
+	}
+	
+	public void setLibrettoController(LibrettoController librettoController) {
+		this.librettoController = librettoController;
+	}
+	
+	DefaultListModel<Exam> getLstExamModel() {
+		return lstExamModel;
+	}
+	
 	private List<Exam> getListOfExams() {
 		ArrayList<Exam> concreteList = new ArrayList<>();
 		for (int i = 0; i < lstExamModel.getSize(); i++) {
@@ -402,10 +435,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		return ld;
 	}
 
-	public void setLibrettoController(LibrettoController librettoController) {
-		this.librettoController = librettoController;
-	}
-
 	private void checkFieldsNotEmpty() {
 		boolean canEnable = true;
 		for (JTextField tf : fieldList) {
@@ -416,11 +445,10 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		}
 
 		canEnable = canEnable && cmbGrade.getSelectedIndex() != -1;
-
 		btnSave.setEnabled(canEnable);
 	}
 
-	private void emptyFields() {
+	private void resetFields() {
 		for (JTextField tf : fieldList) {
 			tf.setText("");
 		}
@@ -438,24 +466,4 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
 
-	@Override
-	public void showErrorExamNotFound(String message, Exam exam) {
-		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
-		lstExamModel.removeElement(exam);
-	}
-
-	@Override
-	public void showErrorExamAlreadyExists(String message, Exam exam) {
-		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
-		boolean exists = false;
-		for (int i = 0; i < lstExamModel.size(); i++) {
-			if (exam.getId().equals(lstExamModel.get(i).getId())) {
-				exists = true;
-			}
-		}
-
-		if (!exists) {
-			lstExamModel.addElement(exam);
-		}
-	}
 }

@@ -43,10 +43,9 @@ public class ExamMariaDBRepository implements ExamRepository {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				return newExamFromResultset(rs);
-			} else {
-				return null;
 			}
 		}
+		return null;
 	}
 
 

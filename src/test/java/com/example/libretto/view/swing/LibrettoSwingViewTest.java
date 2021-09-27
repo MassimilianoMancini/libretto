@@ -10,8 +10,6 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.DefaultListModel;
 
-import org.assertj.swing.core.BasicRobot;
-import org.assertj.swing.core.Robot;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;

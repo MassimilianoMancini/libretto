@@ -114,9 +114,7 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
-		assertThat(window.list().contents())
-			.containsExactly(
-				getDisplayListString(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9))));
+		assertThat(window.list().contents()).containsExactly(getDisplayListString(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9))));
 		window.textBox("txtId").requireEmpty();
 		window.textBox("txtDescription").requireEmpty();
 		window.textBox("txtWeight").requireEmpty();
@@ -172,14 +170,20 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	}
 	
 	private String getDisplayListString(Exam exam) {
-		return String.format("%-7s|%-60s|%4d|%4s|%10s", exam.getId(), exam.getDescription(), exam.getWeight(),
-				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+		return String.format("%-7s|%-60s|%4d|%4s|%10s", 
+			exam.getId(), 
+			exam.getDescription(), 
+			exam.getWeight(),
+			exam.getGrade().getValue(), 
+			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
 
 	private String getDisplayErrorString(Exam exam) {
-		return String.format("%-7s - %-40s (%2d) %3s %10s", exam.getId(), exam.getDescription(), exam.getWeight(),
-				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
+		return String.format("%-7s - %-40s (%2d) %3s %10s", 
+			exam.getId(), 
+			exam.getDescription(), 
+			exam.getWeight(),
+			exam.getGrade().getValue(), 
+			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
-	
-
 }

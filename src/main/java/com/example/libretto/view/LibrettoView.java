@@ -10,9 +10,9 @@ public interface LibrettoView {
 
 	void examAdded(Exam exam);
 
-	void showError(String message);
-
 	void examRemoved(Exam exam);
+	
+	void showError(String message);
 
 	void showErrorExamNotFound(String message, Exam	exam);
 
