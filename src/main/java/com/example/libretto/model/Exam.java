@@ -99,8 +99,7 @@ public class Exam {
 
 	@Override
 	public String toString() {
-		return "Exam [id=" + id + ", description=" + description + ", weight=" + weight + ", grade=" + grade.getValue() + ", date="
-				+ date + "]";
+		return "Exam [id=" + id + ", description=" + description + ", weight=" + weight + ", grade=" + grade.getValue() + ", date=" + date + "]";
 	}
 	
 	

@@ -56,8 +56,13 @@ class ExamMariaDBRepositoryIT {
 		stmt.executeUpdate("create database " + LIBRETTO_DB_NAME);
 		stmt.executeUpdate("use " + LIBRETTO_DB_NAME);
 		stmt.executeUpdate(
-				"create table libretto (" + "id varchar(7) not null primary key, " + "description varchar(60) not null,"
-						+ "weight int not null," + "grade varchar(3) not null," + "date date not null" + ")");
+			"create table libretto (" + 
+			"id varchar(7) not null primary key, " + 
+			"description varchar(60) not null,"	+ 
+			"weight int not null," + 
+			"grade varchar(3) not null," + 
+			"date date not null" + ")"
+		);
 		
 		examRepository = new ExamMariaDBRepository(conn);
 	}
@@ -75,8 +80,7 @@ class ExamMariaDBRepositoryIT {
 
 	@Test
 	void testMariaDBConnection() throws SQLException {
-		stmt.executeUpdate("insert into libretto values (" + "'B027500', " + "'Data Mining and Organization', " + "12, "
-				+ "'30L', " + "'2020-01-29')");
+		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
 
 		stmt.executeUpdate("select description from libretto");
 		ResultSet rs = stmt.getResultSet();
@@ -86,11 +90,8 @@ class ExamMariaDBRepositoryIT {
 
 	@Test
 	void testFindAllAndOrder() throws SQLException {
-		stmt.executeUpdate("insert into libretto values (" + "'B027500', " + "'Data Mining and Organization', " + "12, "
-				+ "'30L', " + "'2020-01-29')");
-
-		stmt.executeUpdate("insert into libretto values (" + "'B027507', " + "'Parallel Computing', " + "6, " + "'27', "
-				+ "'2020-01-09')");
+		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
+		stmt.executeUpdate("insert into libretto values ('B027507', 'Parallel Computing', 6, '27', '2020-01-09')");
 		assertThat(examRepository.findAll()).containsExactly(	
 				new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)),
 				new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
@@ -98,11 +99,9 @@ class ExamMariaDBRepositoryIT {
 
 	@Test
 	void testFindById() throws SQLException {
-		stmt.executeUpdate("insert into libretto values (" + "'B027500', " + "'Data Mining and Organization', " + "12, "
-				+ "'30L', " + "'2020-01-29')");
+		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
 
-		stmt.executeUpdate("insert into libretto values (" + "'B027507', " + "'Parallel Computing', " + "6, " + "'27', "
-				+ "'2020-01-09')");
+		stmt.executeUpdate("insert into libretto values ('B027507', 'Parallel Computing', 6, '27', '2020-01-09')");
 
 		assertThat(examRepository.findById("B027507"))
 				.isEqualTo(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
@@ -111,8 +110,7 @@ class ExamMariaDBRepositoryIT {
 
 	@Test
 	void testSave() throws IllegalArgumentException, SQLException {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 
 		examRepository.save(exam);
 		assertThat(readAllExamsFromDatabase()).containsExactly(exam);
@@ -121,8 +119,7 @@ class ExamMariaDBRepositoryIT {
 
 	@Test
 	void testDelete() throws SQLException {
-		stmt.executeUpdate("insert into libretto values (" + "'B027500', " + "'Data Mining and Organization', " + "12, "
-				+ "'30L', " + "'2020-01-29')");
+		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
 		examRepository.delete("B027500");
 		assertThat(readAllExamsFromDatabase()).isEmpty();
 		;
@@ -131,11 +128,9 @@ class ExamMariaDBRepositoryIT {
 
 	@Test
 	void testUpdate() throws SQLException {
-		stmt.executeUpdate("insert into libretto values (" + "'B027500', " + "'Data Mining and Organization', " + "12, "
-				+ "'28', " + "'2020-01-29')");
+		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '28', '2020-01-29')");
 
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		examRepository.update(exam);
 		assertThat(readAllExamsFromDatabase()).containsExactly(exam);
 	}
@@ -156,5 +151,4 @@ class ExamMariaDBRepositoryIT {
 		return new Exam(rs.getString("id"), rs.getString("description"), rs.getInt("weight"),
 				new Grade(rs.getString("grade")), LocalDate.parse(rs.getString("date")));
 	}
-
 }

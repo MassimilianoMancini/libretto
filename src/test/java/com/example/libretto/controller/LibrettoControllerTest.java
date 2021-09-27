@@ -124,8 +124,6 @@ class LibrettoControllerTest {
 		verifyNoMoreInteractions(ignoreStubs(examRepository));	
 	}
 	
-	
-	
 	@Test
 	void testAllExamsThrows() throws SQLException {
 		when(examRepository.findAll()).thenThrow(SQLException.class);
