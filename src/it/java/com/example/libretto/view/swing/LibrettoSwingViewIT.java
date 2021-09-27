@@ -201,9 +201,9 @@ public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	}
 
 	private String getDisplayErrorString(Exam exam) {
-		return String.format("%-7s - %-40s (%2d) %3s %10s", 
+		return String.format("%-7s - %20s (%2d) %3s %10s", 
 			exam.getId(), 
-			exam.getDescription(), 
+			exam.getDescription().trim(), 
 			exam.getWeight(),
 			exam.getGrade().getValue(), 
 			exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));

@@ -501,7 +501,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	private String getDisplayErrorString(Exam exam) {
-		return String.format("%-7s - %-40s (%2d) %3s %10s", exam.getId(), exam.getDescription(), exam.getWeight(),
+		return String.format("%-7s - %20s (%2d) %3s %10s", exam.getId(), exam.getDescription().trim(), exam.getWeight(),
 				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
 
