@@ -27,11 +27,10 @@ jobs:
     - name: Install TightVNC
       run: |
         sudo apt-get install tightvncserver
-        curl https://github.com/croesch/beefiles/raw/master/src/execute-on-vnc.sh --output execute-on-vnc.sh
-        chmod +x execute-on-vnc.sh
+        chmod +x src/test/resources/execute-on-vnc.sh
     - name: Build with Maven then push to Coveralls and SonarCloud
       run: >
-        ./execute-on-vnc.sh mvn verify
+        src/test/resources/execute-on-vnc.sh mvn verify
         org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         -Pcoveralls 
         -DrepoToken=$COVERALLS_REPO_TOKEN
