@@ -16,6 +16,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.example.libretto.model.Exam;
@@ -24,6 +25,7 @@ import com.example.libretto.model.Grade;
 // If run in Eclipse, an up and running MariDB server is needed
 // for example via 'docker run --rm -p 3306:3306 -e MARIADB_ROOT_PASSWORD=password mariadb:10.6.4'
 
+@DisplayName("Integration Tests for MariaDB Repository")
 class ExamMariaDBRepositoryIT {
 
 	private static final String LIBRETTO_DB_NAME = "librettotest";
@@ -32,7 +34,6 @@ class ExamMariaDBRepositoryIT {
 	private static String mariadbPassword = System.getProperty("MARIADB_ROOT_PASSWORD", "password");
 	private Statement stmt;
 	private ExamMariaDBRepository examRepository;
-
 
 	@BeforeAll
 	static void connectToDB() throws InterruptedException {
@@ -78,7 +79,7 @@ class ExamMariaDBRepositoryIT {
 		conn.close();
 	}
 
-	@Test
+	@Test @DisplayName("Check connection")
 	void testMariaDBConnection() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
 
@@ -88,7 +89,7 @@ class ExamMariaDBRepositoryIT {
 		assertThat(rs.getString("description")).isEqualTo("Data Mining and Organization");
 	}
 
-	@Test
+	@Test @DisplayName("Find all Exams")
 	void testFindAllAndOrder() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
 		stmt.executeUpdate("insert into libretto values ('B027507', 'Parallel Computing', 6, '27', '2020-01-09')");
@@ -97,39 +98,33 @@ class ExamMariaDBRepositoryIT {
 				new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
 	}
 
-	@Test
+	@Test @DisplayName("Find Exam by ID")
 	void testFindById() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
-
 		stmt.executeUpdate("insert into libretto values ('B027507', 'Parallel Computing', 6, '27', '2020-01-09')");
-
 		assertThat(examRepository.findById("B027507"))
 				.isEqualTo(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 
 	}
 
-	@Test
+	@Test @DisplayName("Save Exam")
 	void testSave() throws IllegalArgumentException, SQLException {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
-
 		examRepository.save(exam);
 		assertThat(readAllExamsFromDatabase()).containsExactly(exam);
-
 	}
 
-	@Test
+	@Test @DisplayName("Delete Exam")
 	void testDelete() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '30L', '2020-01-29')");
 		examRepository.delete("B027500");
 		assertThat(readAllExamsFromDatabase()).isEmpty();
 		;
-
 	}
 
-	@Test
+	@Test @DisplayName("Update Exam")
 	void testUpdate() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ('B027500', 'Data Mining and Organization', 12, '28', '2020-01-29')");
-
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		examRepository.update(exam);
 		assertThat(readAllExamsFromDatabase()).containsExactly(exam);

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import com.example.libretto.model.Exam;
@@ -24,7 +26,7 @@ import ch.vorburger.exec.ManagedProcessException;
 import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 
-
+@DisplayName("Tests for MariaDB Repository")
 class ExamMariaDBRepositoryTest {
 	
 	private static final String LIBRETTO_DB_NAME = "libretto";
@@ -39,11 +41,10 @@ class ExamMariaDBRepositoryTest {
 
 		config = DBConfigurationBuilder.newBuilder();
 		config.setPort(0);
-		
 		db = DB.newEmbeddedDB(config.build());
 		db.start();
 	}
-	
+
 	@BeforeEach
 	void setup() throws ManagedProcessException, SQLException {
 		db.createDB(LIBRETTO_DB_NAME);
@@ -64,13 +65,11 @@ class ExamMariaDBRepositoryTest {
 				+ ")");
 		
 	}
-	
 
 	@AfterEach
 	void tearDown() throws SQLException {
 		stmt.close();
 		conn.close();
-		
 	}
 
 	@AfterAll
@@ -78,7 +77,7 @@ class ExamMariaDBRepositoryTest {
 		db.stop();
 	}
 	
-	@Test
+	@Test @DisplayName("Check in memory DB")
 	void testEmbeddedMariaDB4j() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ("
 				+ "'B027500', "
@@ -92,59 +91,63 @@ class ExamMariaDBRepositoryTest {
 		rs.next();
 		assertThat(rs.getString("description")).isEqualTo("Data Mining and Organization");
 	}
-	
-	@Test
-	void testFindAllWhenDatabaseIsEmpty() throws SQLException {
-		assertThat(examRepository.findAll()).isEmpty();
+
+	@Nested
+	@DisplayName("Find Exam")
+	class Find {	
+		@Test @DisplayName("When DB is empty")
+		void testFindAllWhenDatabaseIsEmpty() throws SQLException {
+			assertThat(examRepository.findAll()).isEmpty();
+		}
+
+		@Test @DisplayName("When DB is not empty")
+		void testFindAllAndOrderWhenDatabaseIsNotEmpty() throws SQLException {
+			stmt.executeUpdate("insert into libretto values ("
+					+ "'B027500', "
+					+ "'Data Mining and Organization', "
+					+ "12, "
+					+ "'30L', "
+					+ "'2020-01-29')");
+			
+			stmt.executeUpdate("insert into libretto values ("
+					+ "'B027507', "
+					+ "'Parallel Computing', "
+					+ "6, "
+					+ "'27', "
+					+ "'2020-01-09')");
+			assertThat(examRepository.findAll()).containsExactly(
+				new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)),
+				new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
+		}
+
+		@Test @DisplayName("By ID not found")
+		void testFindByIdNotFound() throws SQLException {
+			assertThat(examRepository.findById("B027500")).isNull();
+		}
+
+		@Test @DisplayName("By ID found")
+		void testFindByIdFound() throws SQLException {
+			stmt.executeUpdate("insert into libretto values ("
+					+ "'B027500', "
+					+ "'Data Mining and Organization', "
+					+ "12, "
+					+ "'30L', "
+					+ "'2020-01-29')");
+			
+			stmt.executeUpdate("insert into libretto values ("
+					+ "'B027507', "
+					+ "'Parallel Computing', "
+					+ "6, "
+					+ "'27', "
+					+ "'2020-01-09')");
+			
+			assertThat(examRepository.findById("B027507")).isEqualTo(
+				new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+			
+		}
 	}
-	
-	@Test
-	void testFindAllAndOrderWhenDatabaseIsNotEmpty() throws SQLException {
-		stmt.executeUpdate("insert into libretto values ("
-				+ "'B027500', "
-				+ "'Data Mining and Organization', "
-				+ "12, "
-				+ "'30L', "
-				+ "'2020-01-29')");
-		
-		stmt.executeUpdate("insert into libretto values ("
-				+ "'B027507', "
-				+ "'Parallel Computing', "
-				+ "6, "
-				+ "'27', "
-				+ "'2020-01-09')");
-		assertThat(examRepository.findAll()).containsExactly(
-			new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)),
-			new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
-	}
-	
-	@Test
-	void testFindByIdNotFound() throws SQLException {
-		assertThat(examRepository.findById("B027500")).isNull();
-	}
-	
-	@Test
-	void testFindByIdFound() throws SQLException {
-		stmt.executeUpdate("insert into libretto values ("
-				+ "'B027500', "
-				+ "'Data Mining and Organization', "
-				+ "12, "
-				+ "'30L', "
-				+ "'2020-01-29')");
-		
-		stmt.executeUpdate("insert into libretto values ("
-				+ "'B027507', "
-				+ "'Parallel Computing', "
-				+ "6, "
-				+ "'27', "
-				+ "'2020-01-09')");
-		
-		assertThat(examRepository.findById("B027507")).isEqualTo(
-			new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
-		
-	}
-	
-	@Test
+
+	@Test @DisplayName("Save Exam")
 	void testSave() throws IllegalArgumentException, SQLException {
 		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)); 
 		
@@ -153,7 +156,7 @@ class ExamMariaDBRepositoryTest {
 		
 	}
 	
-	@Test
+	@Test @DisplayName("Delete Exam")
 	void testDelete() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ("
 				+ "'B027500', "
@@ -165,8 +168,8 @@ class ExamMariaDBRepositoryTest {
 		assertThat(readAllExamsFromDatabase()).isEmpty();;
 		
 	}
-	
-	@Test
+
+	@Test @DisplayName("Update Exam")
 	void testUpdate() throws SQLException {
 		stmt.executeUpdate("insert into libretto values ("
 				+ "'B027500', "
@@ -200,5 +203,5 @@ class ExamMariaDBRepositoryTest {
 				new Grade(rs.getString("grade")),
 				LocalDate.parse(rs.getString("date")));
 	}
-          
+
 }

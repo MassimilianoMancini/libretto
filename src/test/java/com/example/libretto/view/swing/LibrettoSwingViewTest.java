@@ -84,10 +84,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button("btnEdit").requireDisabled();
 		window.button("btnDelete").requireDisabled();
 		GuiActionRunner.execute(() -> {
-			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
-					new Grade("30L"), LocalDate.of(2020, 1, 29)));
-			librettoSwingView.getLstExamModel().addElement(
-					new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 		});
 
 		window.list("lstExam").selectItem(0);
@@ -154,10 +152,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testDeleteButtonShouldBeEnabledOnlyWhenAnExamIsSelected() {
 		GuiActionRunner.execute(() -> {
-			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
-					new Grade("30L"), LocalDate.of(2020, 1, 29)));
-			librettoSwingView.getLstExamModel().addElement(
-					new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 		});
 		window.list("lstExam").selectItem(1);
 		JButtonFixture btnDelete = window.button("btnDelete");
@@ -165,14 +161,12 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("lstExam").clearSelection();
 		assertThat(btnDelete.isEnabled()).isFalse();
 	}
-	
+
 	@Test
 	public void testEditButtonShouldBeEnabledOnlyWhenAnExamIsSelected() {
 		GuiActionRunner.execute(() -> {
-			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
-					new Grade("30L"), LocalDate.of(2020, 1, 29)));
-			librettoSwingView.getLstExamModel().addElement(
-					new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 		});
 		window.list("lstExam").selectItem(1);
 		JButtonFixture btnEdit = window.button("btnEdit");
@@ -180,16 +174,14 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("lstExam").clearSelection();
 		assertThat(btnEdit.isEnabled()).isFalse();
 	}
-	
+
 	@Test
 	public void testClickOnEditButtonLoadsFieldsValue() {
 		GuiActionRunner.execute(() -> {
-			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12,
-					new Grade("30L"), LocalDate.of(2020, 1, 29)));
-			librettoSwingView.getLstExamModel().addElement(
-					new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
+			librettoSwingView.getLstExamModel().addElement(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 		});
-		
+
 		window.list("lstExam").selectItem(1);
 		window.button("btnEdit").click();
 		window.textBox("txtId").requireText("B027507");
@@ -197,18 +189,17 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").requireText("6");
 		window.comboBox("cmbGrade").requireSelection("27");
 		window.textBox("txtDate").requireText("09-01-2020");
-		
+
 		// and txtId is not editable
 		window.textBox("txtId").requireNotEditable();
-		
+
 		// and save button is enabled
 		window.button("btnSave").requireEnabled();
 	}
-	
+
 	@Test
 	public void testShowAllExamsShouldAddExamDescriptionToTheList() {
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> librettoSwingView.showAllExams(asList(exam1, exam2)));
 		String[] listContents = window.list().contents();
@@ -225,8 +216,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testAddAnExamUpdateTheListTheAveragesAndResetErrorMessage() {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> librettoSwingView.examAdded(exam));
 		String[] listContents = window.list().contents();
 		assertThat(listContents).containsExactly(getDisplayListString(exam));
@@ -238,8 +228,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testRemoveAnExamUpdateTheListTheAveragesAndResetErrorMessage() {
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
@@ -266,7 +255,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button("btnSave").click();
 		verify(librettoController).newExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 	}
-	
+
 	@Test
 	public void testSaveButtonShouldDelegateToLibrettoControllerUpdateExam() throws IllegalArgumentException, SQLException {
 		window.textBox("txtId").setText("B027507");
@@ -274,17 +263,16 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").enterText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		
+
 		GuiActionRunner.execute(() -> librettoSwingView.getTxtID().setEditable(false));
-		
+
 		window.button("btnSave").click();
 		verify(librettoController).updateExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 	}
-	
+
 	@Test
 	public void testDeleteButtonShouldDelegateToLibrettoControllerDeleteExam() throws SQLException {
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
@@ -299,8 +287,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testShowErrorExamNotFound() {
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9));
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
@@ -315,8 +302,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testShowErrorExamAlreadyExistsAndAddExam() {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> librettoSwingView.showErrorExamAlreadyExists("Messaggio di errore", exam));
 		window.label("lblErrorMessage").requireText("Messaggio di errore: " + getDisplayErrorString(exam));
 
@@ -325,8 +311,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testShowErrorExamAlreadyExistsAndAddExamIfNotPresentYet() {
-		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"),
-				LocalDate.of(2020, 1, 29));
+		Exam exam = new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29));
 		GuiActionRunner.execute(() -> {
 			DefaultListModel<Exam> lstExamModel = librettoSwingView.getLstExamModel();
 			lstExamModel.addElement(exam);
@@ -347,7 +332,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.button("btnSave").click();
 		window.label("lblErrorMessage").requireText("Il formato data è gg-mm-aaaa");
 	}
-	
+
 	@Test
 	public void testFutureDateShowErrorMessage() {
 		window.textBox("txtId").setText("B027507");
@@ -368,5 +353,4 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		return String.format("%-7s - %20s (%2d) %3s %10s", exam.getId(), exam.getDescription().trim(), exam.getWeight(),
 				exam.getGrade().getValue(), exam.getDate().format(DateTimeFormatter.ofPattern(DATE_FORMAT_IT)));
 	}
-
 }

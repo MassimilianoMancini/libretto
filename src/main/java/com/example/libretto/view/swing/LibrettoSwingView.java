@@ -43,7 +43,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";
 	private static final long serialVersionUID = 1L;
-	
+
 	private JPanel contentPane;
 	private JTextField txtId;
 	private JTextField txtDescription;
@@ -108,16 +108,14 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			btnDelete.setEnabled(lstExam.getSelectedIndex() != -1);
 			btnEdit.setEnabled(lstExam.getSelectedIndex() != -1);
 		});
-		
+
 		lstExam.setCellRenderer(new DefaultListCellRenderer() {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 				Exam exam = (Exam) value;
-				return super.getListCellRendererComponent(list, getDisplayListString(exam), index, isSelected,
-						cellHasFocus);
+				return super.getListCellRendererComponent(list, getDisplayListString(exam), index, isSelected, cellHasFocus);
 			}
 		});
 		lstExam.setFont(new Font("monospaced", Font.PLAIN, 12));
@@ -187,8 +185,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		btnDelete.setEnabled(false);
 		btnDelete.setName("btnDelete");
 		btnDelete.addActionListener(e -> {
-			int result = JOptionPane.showConfirmDialog(this, "Confermi la cancellazione", "Cancellazione",
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			int result = JOptionPane.showConfirmDialog(this, "Confermi la cancellazione", "Cancellazione", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (result == JOptionPane.YES_OPTION) {
 				librettoController.deleteExam(lstExam.getSelectedValue());
 			}
@@ -286,8 +283,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		cmbGrade = new JComboBox<>();
 		cmbGrade.setName("cmbGrade");
-		cmbGrade.setModel(new DefaultComboBoxModel<>(new String[] { "", "18", "19", "20", "21", "22", "23", "24", "25",
-				"26", "27", "28", "29", "30", "30L" }));
+		cmbGrade.setModel(new DefaultComboBoxModel<>(new String[] { "", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "30L" }));
 		GridBagConstraints gbcCmbGrade = new GridBagConstraints();
 		gbcCmbGrade.fill = GridBagConstraints.HORIZONTAL;
 		gbcCmbGrade.anchor = GridBagConstraints.NORTH;
@@ -354,7 +350,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 
 		// Add a document listener
 		DocumentListener listener = new DocumentListener() {
-
 			@Generated
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -370,7 +365,6 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 			public void changedUpdate(DocumentEvent e) {
 				checkFieldsNotEmpty();
 			}
-
 		};
 
 		// Attach documentListener to all text fields and to combo

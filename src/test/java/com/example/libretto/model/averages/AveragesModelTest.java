@@ -7,78 +7,88 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import com.example.libretto.model.Averages;
 import com.example.libretto.model.Exam;
 import com.example.libretto.model.Grade;
 
+@DisplayName("Tests for Averages")
 class AveragesModelTest {
-	
-	@Test
-	void testGetAverage() {
-		LocalDate examDate1 = LocalDate.of(2020, 1, 29);
-		Grade grade1 = new Grade("30");
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
+
+	@Nested
+	@DisplayName("Average")
+	class Average {
+		@Test @DisplayName("Calc")
+		void testGetAverage() {
+			LocalDate examDate1 = LocalDate.of(2020, 1, 29);
+			Grade grade1 = new Grade("30");
+			Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
+			
+			LocalDate examDate2 = LocalDate.of(2020, 1, 9);
+			Grade grade2 = new Grade("27");
+			Exam exam2 = new Exam("B027507", "Parallel Computing", 6, grade2, examDate2);
+			
+			LocalDate examDate3 = LocalDate.of(2020, 6, 15);
+			Grade grade3 = new Grade("26");
+			Exam exam3 = new Exam("B027500", "Numerical Methods for Graphics", 6, grade3, examDate3);
+			
+			List<Exam> exams = asList(exam1, exam2, exam3);
+			Averages averages = new Averages(exams);
+			
+			assertThat(averages.getAverage()).isEqualTo((30+27+26)/3.0);		
+		}
 		
-		LocalDate examDate2 = LocalDate.of(2020, 1, 9);
-		Grade grade2 = new Grade("27");
-		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, grade2, examDate2);
+		@Test @DisplayName("On empty exam list")
+		void testAverageOnEmptyListIsZero() {
+			List<Exam> exams = Lists.emptyList();
+			Averages averages = new Averages(exams);
+			assertThat(averages.getAverage()).isZero();
+		}
 		
-		LocalDate examDate3 = LocalDate.of(2020, 6, 15);
-		Grade grade3 = new Grade("26");
-		Exam exam3 = new Exam("B027500", "Numerical Methods for Graphics", 6, grade3, examDate3);
-		
-		List<Exam> exams = asList(exam1, exam2, exam3);
-		Averages averages = new Averages(exams);
-		
-		assertThat(averages.getAverage()).isEqualTo((30+27+26)/3.0);		
+		@Test @DisplayName("On null")
+		void testAverageOnNullIsZero() {
+			Averages averages = new Averages(null);
+			assertThat(averages.getAverage()).isZero();
+		}
 	}
-	
-	@Test
-	void testGetWeighedAverage() {
-		LocalDate examDate1 = LocalDate.of(2020, 1, 29);
-		Grade grade1 = new Grade("30");
-		Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
-		
-		LocalDate examDate2 = LocalDate.of(2020, 1, 9);
-		Grade grade2 = new Grade("27");
-		Exam exam2 = new Exam("B027507", "Parallel Computing", 6, grade2, examDate2);
-		
-		LocalDate examDate3 = LocalDate.of(2020, 6, 15);
-		Grade grade3 = new Grade("26");
-		Exam exam3 = new Exam("B027500", "Numerical Methods for Graphics", 6, grade3, examDate3);
-		
-		List<Exam> exams = asList(exam1, exam2, exam3);
-		Averages averages = new Averages(exams);
-		
-		assertThat(averages.getWeightedAverage()).isEqualTo((30*12+27*6+26*6)/(12.0+6.0+6.0));		
+
+	@Nested
+	@DisplayName("Weighted Average")
+	class WeightedAverage {
+		@Test @DisplayName("Calc")
+		void testGetWeighedAverage() {
+			LocalDate examDate1 = LocalDate.of(2020, 1, 29);
+			Grade grade1 = new Grade("30");
+			Exam exam1 = new Exam("B027500", "Data Mining and Organization", 12, grade1, examDate1);
+			
+			LocalDate examDate2 = LocalDate.of(2020, 1, 9);
+			Grade grade2 = new Grade("27");
+			Exam exam2 = new Exam("B027507", "Parallel Computing", 6, grade2, examDate2);
+			
+			LocalDate examDate3 = LocalDate.of(2020, 6, 15);
+			Grade grade3 = new Grade("26");
+			Exam exam3 = new Exam("B027500", "Numerical Methods for Graphics", 6, grade3, examDate3);
+			
+			List<Exam> exams = asList(exam1, exam2, exam3);
+			Averages averages = new Averages(exams);
+			
+			assertThat(averages.getWeightedAverage()).isEqualTo((30*12+27*6+26*6)/(12.0+6.0+6.0));		
+		}
+
+		@Test @DisplayName("On empty exam list")
+		void testWeightedAverageOnEmptyListIsZero() {
+			List<Exam> exams = Lists.emptyList();
+			Averages averages = new Averages(exams);
+			assertThat(averages.getWeightedAverage()).isZero();
+		}
+
+		@Test @DisplayName("On null")
+		void testWeightedAverageOnNullIsZero() {
+			Averages averages = new Averages(null);
+			assertThat(averages.getWeightedAverage()).isZero();
+		}
 	}
-	
-	@Test
-	void testAverageOnEmptyListIsZero() {
-		List<Exam> exams = Lists.emptyList();
-		Averages averages = new Averages(exams);
-		assertThat(averages.getAverage()).isZero();
-	}
-	
-	@Test
-	void testWeightedAverageOnEmptyListIsZero() {
-		List<Exam> exams = Lists.emptyList();
-		Averages averages = new Averages(exams);
-		assertThat(averages.getWeightedAverage()).isZero();
-	}
-	
-	@Test
-	void testAverageOnNullIsZero() {
-		Averages averages = new Averages(null);
-		assertThat(averages.getAverage()).isZero();
-	}
-	
-	@Test
-	void testWeightedAverageOnNullIsZero() {
-		Averages averages = new Averages(null);
-		assertThat(averages.getWeightedAverage()).isZero();
-	}
-	
 }
