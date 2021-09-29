@@ -44,7 +44,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 			try {
 				conn = DriverManager.getConnection("jdbc:mariadb://localhost:" + mariadbPort, "root", mariadbPassword);
 			} catch (SQLException e) {
-				System.out.println("[ExamMariaDBRepositoryIT] DB connection attempt # " + i);
+				System.out.println("[LibrettoSwingE2E] DB connection attempt # " + i);
 				TimeUnit.SECONDS.sleep(1);
 			}
 		}
@@ -93,8 +93,8 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 	@Test
 	public void testOnStartAllDatabaseElementsAreShown() {
 		assertThat(window.list().contents())
-				.anySatisfy(e -> assertThat(e).containsSubsequence("B027500", "Data Mining and Organization", "12", "30L", "29-01-2020"))
-				.anySatisfy(e -> assertThat(e).containsSubsequence("B027507", "Parallel Computing", "6", "27", "09-01-2020"));
+			.anySatisfy(e -> assertThat(e).containsSubsequence("B027500", "Data Mining and Organization", "12", "30L", "29-01-2020"))
+			.anySatisfy(e -> assertThat(e).containsSubsequence("B027507", "Parallel Computing", "6", "27", "09-01-2020"));
 	}
 
 	@Test
@@ -147,13 +147,12 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.optionPane().yesButton().click();
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
 	}
-	
+
 	private void deleteExamFromDB(String id) throws SQLException {
 		String query = "delete from libretto where id = ?";
 		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			pstmt.executeQuery();
 		}
-
 	}
 }

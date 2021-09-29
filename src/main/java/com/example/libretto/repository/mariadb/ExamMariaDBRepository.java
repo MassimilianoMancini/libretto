@@ -15,7 +15,7 @@ import com.example.libretto.model.Grade;
 import com.example.libretto.repository.ExamRepository;
 
 public class ExamMariaDBRepository implements ExamRepository {
-	
+
 	private Connection conn;
 
 	public ExamMariaDBRepository(Connection conn) {

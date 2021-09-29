@@ -25,5 +25,4 @@ public class Averages {
 		return (w != 0 ? t/w : 0);
 		
 	}
-
 }

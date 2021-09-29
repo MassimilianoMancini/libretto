@@ -50,13 +50,13 @@ public class LibrettoSwingApp implements Callable<Void> {
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			@Generated
 			public void run() {
-	        	try {
+				try {
 					conn.close();
 				} catch (SQLException e) {
 					Logger.getLogger(getClass().getName()).log(Level.SEVERE, "SQL Problems during DB shutdown", e);
-				}        	
-	        }
-	    }));
+				}
+			}
+		}));
 		
 		try {
 			conn = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port, user, password);

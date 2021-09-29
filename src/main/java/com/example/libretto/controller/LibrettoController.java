@@ -15,7 +15,6 @@ public class LibrettoController {
 	public LibrettoController(LibrettoView librettoView, ExamRepository examRepository) {
 		this.librettoView = librettoView;
 		this.examRepository = examRepository;
-
 	}
 
 	public void allExams() {
@@ -37,10 +36,9 @@ public class LibrettoController {
 			librettoView.examAdded(exam);
 		} catch (SQLException e) {
 			librettoView.showError(SQL_ERROR);
-		}
-		
+		}		
 	}
-	
+
 	public void updateExam(Exam exam) {
 		try {
 			Exam oldExam = examRepository.findById(exam.getId());

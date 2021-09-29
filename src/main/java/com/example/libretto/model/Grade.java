@@ -56,6 +56,4 @@ public class Grade {
 		Grade other = (Grade) obj;
 		return Objects.equals(value, other.value);
 	}
-	
-	
 }
