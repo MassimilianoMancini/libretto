@@ -33,3 +33,4 @@ jobs:
         ln -s /usr/lib/libssl.dylib /usr/local/opt/openssl/lib/libssl.1.0.0.dylib 
     - name: Build with Maven
       run: mvn verify
+      working-directory: libretto

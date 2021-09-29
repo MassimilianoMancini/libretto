@@ -28,3 +28,4 @@ jobs:
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven then push to Coveralls and SonarCloud
       run: xvfb-run -a mvn verify
+      working-directory: libretto
