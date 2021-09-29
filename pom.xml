@@ -199,10 +199,16 @@
           <artifactId>pitest-maven</artifactId>
           <version>1.7.0</version>
           <configuration>
-            <excludedTestClasses>
-              <param>com.example.libretto.repository.mariadb.ExamMariaDBRepository.*</param>
-              <param>com.example.libretto.view.swing.LibrettoSwingE2E.*</param>
-            </excludedTestClasses>
+            <targetClasses>
+              <param>**/LibrettoController.*</param>
+              <param>com.example.libretto.model.*</param>
+              <param>**/ExamMariaDBRepository.*</param>
+            </targetClasses>
+            <targetTests>
+              <param>**/LibrettoControllerTest.*</param>
+              <param>com.example.libretto.model.*</param>
+              <param>**/ExamMariaDBRepositoryTest.*</param>
+            </targetTests>
           </configuration>
           <executions>
             <execution>
