@@ -28,14 +28,15 @@ jobs:
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven then push to Coveralls and SonarCloud
       uses: GabrielBB/xvfb-action@v1
-      run: >
-        mvn verify
-        org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-        -Pcoveralls 
-        -DrepoToken=$COVERALLS_REPO_TOKEN
-        -Dsonar.projectKey=MassimilianoMancini_libretto
-      working-directory: libretto
-      env: 
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}}        
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
+      with:
+        run: >
+          mvn verify
+          org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          -Pcoveralls 
+          -DrepoToken=$COVERALLS_REPO_TOKEN
+          -Dsonar.projectKey=MassimilianoMancini_libretto
+        working-directory: libretto
+        env: 
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}}        
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
