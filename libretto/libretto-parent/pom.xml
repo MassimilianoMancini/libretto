@@ -32,8 +32,6 @@
     <picocli.version>4.6.1</picocli.version>
     <pitest.version>1.7.0</pitest.version>
 
-
-
   </properties>
 
   <dependencies>
