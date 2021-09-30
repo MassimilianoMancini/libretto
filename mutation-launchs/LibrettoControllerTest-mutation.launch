@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.pitest.pitclipse.launch.mutationTest">
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-        <listEntry value="/libretto/src/test/java/com/example/libretto/controller/LibrettoControllerTest.java"/>
+        <listEntry value="/libretto-classes/src/test/java/com/example/libretto/controller/LibrettoControllerTest.java"/>
     </listAttribute>
     <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
         <listEntry value="1"/>
@@ -9,7 +9,7 @@
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_USE_CLASSPATH_ONLY_JAR" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.example.libretto.controller.LibrettoControllerTest"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="libretto"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="libretto-classes"/>
     <stringAttribute key="org.pitest.pitclipse.core.test.avoidCallsTo" value="java.util.logging, org.apache.log4j, org.slf4j, org.apache.commons.logging, org.apache.logging.log4j"/>
     <stringAttribute key="org.pitest.pitclipse.core.test.container" value=""/>
     <stringAttribute key="org.pitest.pitclipse.core.test.excludeClasses" value="*Test, *model*, *repository*, *view*, *app*"/>

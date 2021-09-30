@@ -47,6 +47,9 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 				System.out.println("[LibrettoSwingE2E] DB connection attempt # " + i);
 				TimeUnit.SECONDS.sleep(1);
 			}
+			if (conn != null && i > 1) {
+				System.out.println("[LibrettoSwingE2E] Connected to DB!");
+			}
 		}
 	}
 
