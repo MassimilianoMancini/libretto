@@ -28,7 +28,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven then push to Coveralls and SonarCloud
       run: >
-        xvfb-run --server-args "-screen 0 2048x1152x128" 
+        xvfb-run --server-args="-screen 0 2048x1152x128" 
         mvn verify
         org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         -Pcoveralls 
