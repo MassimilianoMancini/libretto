@@ -31,7 +31,6 @@ jobs:
         -Pcoveralls 
         -DrepoToken=$COVERALLS_REPO_TOKEN
         -Dsonar.projectKey=MassimilianoMancini_libretto
-        -Dsonar.host.url=https://sonarcloud.io
         -DpullRequest=${{ github.event.pull_request.number }}
       working-directory: libretto
       env: 
