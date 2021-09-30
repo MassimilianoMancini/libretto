@@ -24,6 +24,10 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
         restore-keys: ${{ runner.os }}-m2-
+    - name: Docker config and restart
+        run:|
+          sc config docker binpath="dockerd.exe --run-service -H tcp://localhost:2375"
+          restart-service *docker*
     - name: Build with Maven
       run: mvn verify -P windows-container
       working-directory: libretto
