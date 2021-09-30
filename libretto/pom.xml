@@ -24,6 +24,8 @@
 
     <sonar.issue.ignore.multicriteria.e12.ruleKey>java:S3577</sonar.issue.ignore.multicriteria.e12.ruleKey>
     <sonar.issue.ignore.multicriteria.e12.resourceKey>**/LibrettoSwingE2E.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
+    
+    <sonar.coverage.exclusions>**/LibrettoSwingApp.*</sonar.coverage.exclusions>
   </properties>
 
   <modules>
