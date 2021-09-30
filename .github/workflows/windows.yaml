@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         java: [11, 15]
-    name: Build with Java ${{ matrix.java }} on windows-latest
+    name: Build with Java ${{ matrix.java }} on windows-2019
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 11
