@@ -11,10 +11,13 @@
       <!-- SonarCloud integration -->
     <sonar.organization>massimilianomancini</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.coverage.jacoco.xmlReportPaths>../libretto-classes/target/site/jacoco/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    
+    
     <sonar.junit.reportPaths>
-      libretto-parent/libretto-classes/target/surefire-reports,
-      libretto-parent/libretto-classes/failsafe-reports,
-      libretto-parent/libretto-app/failsafe-reports
+      ../libretto-classes/target/surefire-reports,
+      ../libretto-classes/target/failsafe-reports,
+      target/failsafe-reports
     </sonar.junit.reportPaths>
 
     <!-- Sonar exclusions -->
