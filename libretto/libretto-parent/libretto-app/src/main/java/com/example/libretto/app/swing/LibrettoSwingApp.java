@@ -18,7 +18,7 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(mixinStandardHelpOptions = true, version = "1.0.2")
+@Command(mixinStandardHelpOptions = true, version = "1.0.3")
 public class LibrettoSwingApp implements Callable<Void> {
 	
 	private static final String SQL_ERROR_MESSAGE = "SQL Problems";
