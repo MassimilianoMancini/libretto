@@ -41,11 +41,13 @@ public class ExamMariaDBRepository implements ExamRepository {
 		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
 			ResultSet rs = pstmt.executeQuery();
+			
 			if (rs.next()) {
 				return newExamFromResultset(rs);
+			} else {
+				return null;
 			}
 		}
-		return null;
 	}
 
 
