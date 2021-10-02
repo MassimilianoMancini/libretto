@@ -8,11 +8,11 @@
     <version>1.0.2</version>
   </parent>
   <artifactId>libretto-app</artifactId>
+  
   <properties>
-    <sonar.junit.reportPaths>
-      target/failsafe-reports
-    </sonar.junit.reportPaths>
+    <sonar.junit.reportPaths>target/failsafe-reports</sonar.junit.reportPaths>
   </properties>
+  
   <dependencies>
     <dependency>
       <groupId>com.example.libretto</groupId>

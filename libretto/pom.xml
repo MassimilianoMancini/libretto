@@ -11,16 +11,20 @@
     <!-- SonarCloud integration -->
     <sonar.organization>massimilianomancini</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-
+    <sonar.projectKey>MassimilianoMancini_libretto</sonar.projectKey>
+    
     <!-- Sonar exclusions -->
     <sonar.issue.ignore.multicriteria>e11, e12</sonar.issue.ignore.multicriteria>
 
+    <!-- Missing assertion due to assertjswing syntax -->
     <sonar.issue.ignore.multicriteria.e11.ruleKey>java:S2699</sonar.issue.ignore.multicriteria.e11.ruleKey>
     <sonar.issue.ignore.multicriteria.e11.resourceKey>**/LibrettoSwingViewTest.java</sonar.issue.ignore.multicriteria.e11.resourceKey>
-
+    
+    <!-- class name E2E -->
     <sonar.issue.ignore.multicriteria.e12.ruleKey>java:S3577</sonar.issue.ignore.multicriteria.e12.ruleKey>
     <sonar.issue.ignore.multicriteria.e12.resourceKey>**/LibrettoSwingE2E.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
-
+    
+    <!-- exclude main app from sonar code coverage -->
     <sonar.coverage.exclusions>**/LibrettoSwingApp.*</sonar.coverage.exclusions>
   </properties>
 
