@@ -8,16 +8,49 @@
     <version>1.0.2</version>
   </parent>
   <artifactId>libretto-classes</artifactId>
-  
+  <properties>
+    <sonar.junit.reportPaths>
+      target/failsafe-reports,
+      target/surefire-reports
+    </sonar.junit.reportPaths>
+  </properties>
   <build>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/it/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <mariadb.port>${mariadb.mapped.port}</mariadb.port>
+          </systemPropertyVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-it</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>io.fabric8</groupId>

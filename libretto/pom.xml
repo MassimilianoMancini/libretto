@@ -6,15 +6,11 @@
   <artifactId>libretto</artifactId>
   <version>1.0.2</version>
   <packaging>pom</packaging>
-  
-    <properties>
-      <!-- SonarCloud integration -->
+
+  <properties>
+    <!-- SonarCloud integration -->
     <sonar.organization>massimilianomancini</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-    
-    <sonar.junit.reportPaths>
-      target/failsafe-reports, target/surefire-reports
-    </sonar.junit.reportPaths>
 
     <!-- Sonar exclusions -->
     <sonar.issue.ignore.multicriteria>e11, e12</sonar.issue.ignore.multicriteria>
@@ -24,7 +20,7 @@
 
     <sonar.issue.ignore.multicriteria.e12.ruleKey>java:S3577</sonar.issue.ignore.multicriteria.e12.ruleKey>
     <sonar.issue.ignore.multicriteria.e12.resourceKey>**/LibrettoSwingE2E.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
-    
+
     <sonar.coverage.exclusions>**/LibrettoSwingApp.*</sonar.coverage.exclusions>
   </properties>
 
