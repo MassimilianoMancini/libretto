@@ -8,19 +8,11 @@
     <version>1.0.2</version>
   </parent>
   <artifactId>libretto-classes</artifactId>
+  
   <properties>
-    <sonar.junit.reportPaths>
-      target/failsafe-reports,
-      target/surefire-reports
-    </sonar.junit.reportPaths>
-    
-    <!-- Sonar exclusions -->
-    <sonar.issue.ignore.multicriteria>e11</sonar.issue.ignore.multicriteria>
-    <!-- Missing assertion due to assertjswing -->
-    <sonar.issue.ignore.multicriteria.e11.ruleKey>java:S2699</sonar.issue.ignore.multicriteria.e11.ruleKey>
-    <sonar.issue.ignore.multicriteria.e11.resourceKey>**/LibrettoSwingViewTest.java</sonar.issue.ignore.multicriteria.e11.resourceKey>
-
+    <sonar.junit.reportPaths>target/failsafe-reports, target/surefire-reports</sonar.junit.reportPaths>
   </properties>
+  
   <build>
     <plugins>
       <plugin>

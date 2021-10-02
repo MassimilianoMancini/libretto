@@ -8,18 +8,11 @@
     <version>1.0.2</version>
   </parent>
   <artifactId>libretto-app</artifactId>
+  
   <properties>
-
     <sonar.junit.reportPaths>target/failsafe-reports</sonar.junit.reportPaths>
-    <!-- Sonar exclusions -->
-    <sonar.issue.ignore.multicriteria>e12</sonar.issue.ignore.multicriteria>
-
-    <!-- class name E2E -->
-    <sonar.issue.ignore.multicriteria.e12.ruleKey>java:S3577</sonar.issue.ignore.multicriteria.e12.ruleKey>
-    <sonar.issue.ignore.multicriteria.e12.resourceKey>**/LibrettoSwingE2E.java</sonar.issue.ignore.multicriteria.e12.resourceKey>
-
-    <sonar.coverage.exclusions>**/LibrettoSwingApp.*</sonar.coverage.exclusions>
   </properties>
+  
   <dependencies>
     <dependency>
       <groupId>com.example.libretto</groupId>
