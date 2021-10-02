@@ -30,7 +30,6 @@ jobs:
         org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         -Pcoveralls 
         -DrepoToken=$COVERALLS_REPO_TOKEN
-        -Dsonar.projectKey=MassimilianoMancini_libretto
       working-directory: libretto
       env: 
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

@@ -99,7 +99,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		assertThat(window.button("btnSave").isEnabled()).isTrue();
+		
+		window.button("btnSave").requireEnabled();
 	}
 
 	@Test
@@ -108,7 +109,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		assertThat(window.button("btnSave").isEnabled()).isFalse();
+		
+		window.button("btnSave").requireDisabled();
 	}
 
 	@Test
@@ -117,7 +119,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		assertThat(window.button("btnSave").isEnabled()).isFalse();
+		
+		window.button("btnSave").requireDisabled();
 	}
 
 	@Test
@@ -126,7 +129,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtDescription").setText("Parallel Computing");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
-		assertThat(window.button("btnSave").isEnabled()).isFalse();
+		
+		window.button("btnSave").requireDisabled();
 	}
 
 	@Test
@@ -136,7 +140,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.textBox("txtDate").setText("09-01-2020");
 		window.comboBox("cmbGrade").clearSelection();
-		assertThat(window.button("btnSave").isEnabled()).isFalse();
+		
+		window.button("btnSave").requireDisabled();
 	}
 
 	@Test
@@ -146,11 +151,12 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.textBox("txtWeight").setText("6");
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("");
-		assertThat(window.button("btnSave").isEnabled()).isFalse();
+		
+		window.button("btnSave").requireDisabled();
 	}
 
 	@Test
-	public void testDeleteButtonShouldBeEnabledOnlyWhenAnExamIsSelected() {
+	public void testWhenNoExamIsSelectedDeleteButtonShouldBeDisabled() {
 		GuiActionRunner.execute(() -> {
 			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
 			librettoSwingView.getLstExamModel().addElement(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
@@ -159,11 +165,12 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		JButtonFixture btnDelete = window.button("btnDelete");
 		assertThat(btnDelete.isEnabled()).isTrue();
 		window.list("lstExam").clearSelection();
-		assertThat(btnDelete.isEnabled()).isFalse();
+		
+		btnDelete.requireDisabled();
 	}
 
 	@Test
-	public void testEditButtonShouldBeEnabledOnlyWhenAnExamIsSelected() {
+	public void testWhenNoExamIsSelectedEditButtonShouldBeDisabled() {
 		GuiActionRunner.execute(() -> {
 			librettoSwingView.getLstExamModel().addElement(new Exam("B027500", "Data Mining and Organization", 12, new Grade("30L"), LocalDate.of(2020, 1, 29)));
 			librettoSwingView.getLstExamModel().addElement(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
@@ -172,7 +179,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		JButtonFixture btnEdit = window.button("btnEdit");
 		assertThat(btnEdit.isEnabled()).isTrue();
 		window.list("lstExam").clearSelection();
-		assertThat(btnEdit.isEnabled()).isFalse();
+		
+		btnEdit.requireDisabled();
 	}
 
 	@Test
@@ -330,6 +338,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09/01/2020");
 		window.button("btnSave").click();
+		
 		window.label("lblErrorMessage").requireText("Il formato data è gg-mm-aaaa");
 	}
 
@@ -341,6 +350,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2030");
 		window.button("btnSave").click();
+		
 		window.label("lblErrorMessage").requireText("Non sono ammesse date future");
 	}
 
