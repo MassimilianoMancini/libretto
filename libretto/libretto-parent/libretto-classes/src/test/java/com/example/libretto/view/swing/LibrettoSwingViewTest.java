@@ -3,6 +3,7 @@ package com.example.libretto.view.swing;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
+import static org.assertj.swing.timing.Pause.pause;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -45,10 +46,6 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 			librettoSwingView.setLibrettoController(librettoController);
 			return librettoSwingView;
 		});
-		
-		robot().settings().delayBetweenEvents(200);
-		robot().settings().eventPostingDelay(200);
-		
 
 		window = new FrameFixture(robot(), librettoSwingView);
 		window.show();
@@ -261,6 +258,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2020");
 		window.button("btnSave").click();
+		pause(1000);
+		
 		verify(librettoController).newExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 	}
 
@@ -275,6 +274,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> librettoSwingView.getTxtID().setEditable(false));
 
 		window.button("btnSave").click();
+		pause(1000);
+		
 		verify(librettoController).updateExam(new Exam("B027507", "Parallel Computing", 6, new Grade("27"), LocalDate.of(2020, 1, 9)));
 	}
 
@@ -290,6 +291,8 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.list("lstExam").selectItem(1);
 		window.button("btnDelete").click();
 		window.optionPane().yesButton().click();
+		pause(1000);
+		
 		verify(librettoController).deleteExam(exam2);
 	}
 
@@ -338,6 +341,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09/01/2020");
 		window.button("btnSave").click();
+		pause(1000);
 		
 		window.label("lblErrorMessage").requireText("Il formato data è gg-mm-aaaa");
 	}
@@ -350,6 +354,7 @@ public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(10);
 		window.textBox("txtDate").setText("09-01-2030");
 		window.button("btnSave").click();
+		pause(1000);
 		
 		window.label("lblErrorMessage").requireText("Non sono ammesse date future");
 	}

@@ -77,9 +77,6 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		
 		application("com.example.libretto.app.swing.LibrettoSwingApp").withArgs("--host=localhost", "--port=" + mariadbPort, "--user=root", "--password=" + mariadbPassword, "--db=" + LIBRETTO_DB_NAME).start();
 		
-		robot().settings().delayBetweenEvents(200);
-		robot().settings().eventPostingDelay(200);
-		
 		window = WindowFinder.findFrame(new GenericTypeMatcher<JFrame>(JFrame.class) {
 			@Override
 			protected boolean isMatching(JFrame frame) {
@@ -108,6 +105,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(9);
 		window.textBox("txtDate").setText("15-06-2020");
 		window.button("btnSave").click();
+		pause(1000);
 		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).contains("B027536", "Numerical Methods for Graphics", "6", "26", "15-06-2020"));
 	}
 
@@ -119,6 +117,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.comboBox("cmbGrade").selectItem(9);
 		window.textBox("txtDate").setText("15-06-2020");
 		window.button("btnSave").click();
+		pause(1000);
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
 	}
 	
@@ -128,6 +127,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.button("btnEdit").click();
 		window.textBox("txtDescription").setText("Numerical Methods for Graphics");
 		window.button("btnSave").click();
+		pause(1000);
 		assertThat(window.list().contents()).noneMatch(e -> e.contains("Data Mining and Organization"));
 		assertThat(window.list().contents()).anySatisfy(e -> assertThat(e).contains("B027500", "Numerical Methods for Graphics"));
 	}
@@ -138,6 +138,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.button("btnDelete").click();
 		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
+		pause(1000);
 		assertThat(window.list().contents()).noneMatch(e -> e.contains("B027500"));
 	}
 
@@ -148,6 +149,7 @@ public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 		window.button("btnDelete").click();
 		pause(untilIsShowing(window.optionPane().target()));
 		window.optionPane().yesButton().click();
+		pause(1000);
 		assertThat(window.label("lblErrorMessage").text()).contains("B027500", "Data Mining and Organization");
 	}
 
