@@ -13,7 +13,7 @@
 
 
 # Libretto
-Questo progetto √® realizzato nell'ambito del corso di laurea magistrale di Informatica dell'Universit√† di Firenze, Advanced Programming Techniques. Scopo principale del progetto √® mostrare l'utilizzo corretto delle tecniche avanzate di programmazione studiate durante le lezioni. Il progetto realizza la semplice gestione di un libretto universitario con operazioni CRUD sugli esami sostenuti con successo nonch√© il calcolo della media aritmetica e la media ponderata.
+Questo progetto Ë realizzato nell'ambito del corso di laurea magistrale di Informatica dell'Universit‡† di Firenze, Advanced Programming Techniques. Scopo principale del progetto Ë mostrare l'utilizzo corretto delle tecniche avanzate di programmazione studiate durante le lezioni. Il progetto realizza la semplice gestione di un libretto universitario con operazioni CRUD sugli esami sostenuti con successo nonch√© il calcolo della media aritmetica e la media ponderata.
 
 ## Tecniche di programmazione utilizzate
 Sono utilizzate le seguenti tecniche:
@@ -21,8 +21,7 @@ Sono utilizzate le seguenti tecniche:
 - utilizzo di maven per la risoluzione delle dipendenze
 - sviluppo tramite metodo Test-Driven Development
 - utilizzo di mock per mantenere l'isolamento in fase di test
-- utilizzo di docker per la disponibilit√† di database
-- dockerizzazione dell'applicazione
+- utilizzo di docker per la disponibilit‡† di database
 - utilizzo di git come strumento di controllo della versione
 - utilizzo di github come strumento di condivisione e centralizzazione dei codici sorgenti
 - ciclo di sviluppo guidato da issue e pull request con conseguente utilizzo di differenti branch, in particolare main e develop
@@ -36,36 +35,3 @@ Il progetto viene realizzatato tramite architettura MVC
 
 ## Database
 MariaDB
-
-## Traccia per lo sviluppo
-### Model
-**Exam**
-- ID
-- description
-- weight
-- grade
-- date
-- getNumericalGrade()
-
-**Libretto**
-- List \<Exam\>
-- mean()
-- weightedMean()
-
-**Repository**
-- Interface Respository
-- class MariaDBRepository
-
-
-### Controller
-LibrettoController: 
-- addExam(exam)
-- deleteExam(id)
-- getMean()
-- getWeightedMean()
-- findById(id)
-- findAll()
-
-### View
-- interface View
-- class SwingView
