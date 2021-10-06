@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -412,7 +413,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	@Override
 	public void showErrorExamAlreadyExists(String message, Exam exam) {
 		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
-		if (examIdIsNotPresent(exam.getId())) {
+		if (!examIdIsPresent(exam.getId())) {
 			lstExamModel.addElement(exam);
 		}
 	}
@@ -429,13 +430,8 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		return txtId;
 	}
 	
-	private boolean examIdIsNotPresent(String examId) {
-		boolean exists = false;
-		int i = 0;
-		while (i < lstExamModel.size() && !exists) {
-			exists = examId.equals(lstExamModel.get(i++).getId());
-		}
-		return !exists;
+	private boolean examIdIsPresent(String examId) {
+		return Arrays.stream(lstExamModel.toArray()).map(Exam.class::cast).anyMatch(e -> e.getId().equals(examId));
 	}
 
 	private List<Exam> getListOfExams() {
