@@ -435,7 +435,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 		while (i < lstExamModel.size() && !exists) {
 			exists = examId.equals(lstExamModel.get(i++).getId());
 		}
-		return exists;
+		return !exists;
 	}
 
 	private List<Exam> getListOfExams() {
