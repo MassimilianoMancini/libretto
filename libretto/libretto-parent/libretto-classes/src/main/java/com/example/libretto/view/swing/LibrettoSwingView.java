@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -435,11 +436,7 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	}
 
 	private List<Exam> getListOfExams() {
-		ArrayList<Exam> concreteList = new ArrayList<>();
-		for (int i = 0; i < lstExamModel.getSize(); i++) {
-			concreteList.add(lstExamModel.get(i));
-		}
-		return concreteList;
+		return Arrays.stream(lstExamModel.toArray()).map(Exam.class::cast).collect(Collectors.toList());
 	}
 
 	private void updateAverages(List<Exam> exams) {
