@@ -413,11 +413,9 @@ public class LibrettoSwingView extends JFrame implements LibrettoView {
 	public void showErrorExamAlreadyExists(String message, Exam exam) {
 		lblErrorMessage.setText(message + ": " + getDisplayErrorString(exam));
 		boolean exists = false;
-		for (int i = 0; i < lstExamModel.size(); i++) {
-			if (exam.getId().equals(lstExamModel.get(i).getId())) {
-				exists = true;
-				break;
-			}
+		int i = 0;
+		while (i < lstExamModel.size() && !exists) {
+			exists = exam.getId().equals(lstExamModel.get(i++).getId());
 		}	
 		if (!exists) {
 			lstExamModel.addElement(exam);
