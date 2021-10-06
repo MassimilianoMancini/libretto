@@ -37,19 +37,17 @@ public class ExamMariaDBRepository implements ExamRepository {
 
 	@Override
 	public Exam findById(String id) throws SQLException {
+		Exam exam = null;
 		String query = "select * from libretto where id = ?";
 		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
 			pstmt.setString(1, id);
-			ResultSet rs = pstmt.executeQuery();
-			
+			ResultSet rs = pstmt.executeQuery();		
 			if (rs.next()) {
-				return newExamFromResultset(rs);
-			} else {
-				return null;
+				exam = newExamFromResultset(rs);
 			}
-		}
+		}	
+		return exam;
 	}
-
 
 	@Override
 	public void save(Exam exam) throws SQLException {
