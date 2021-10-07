@@ -13,7 +13,7 @@
 
 
 # Libretto
-Questo progetto è realizzato nell'ambito del corso di laurea magistrale di Informatica dell'Università  di Firenze, Advanced Programming Techniques. Scopo principale del progetto è mostrare l'utilizzo corretto delle tecniche avanzate di programmazione studiate durante le lezioni. Il progetto realizza la semplice gestione di un libretto universitario con operazioni CRUD sugli esami sostenuti con successo nonchÃ© il calcolo della media aritmetica e la media ponderata.
+Questo progetto è realizzato nell'ambito del corso di laurea magistrale di Informatica dell'Università  di Firenze, Advanced Programming Techniques. Scopo principale del progetto è mostrare l'utilizzo corretto delle tecniche avanzate di programmazione studiate durante le lezioni. Il progetto realizza la semplice gestione di un libretto universitario con operazioni CRUD sugli esami sostenuti con successo nonché il calcolo della media aritmetica e la media ponderata.
 
 ## Tecniche di programmazione utilizzate
 Sono utilizzate le seguenti tecniche:

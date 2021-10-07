@@ -18,17 +18,17 @@
 		<link>
 			<name>.github</name>
 			<type>2</type>
-			<location>C:/Users/Massimiliano Mancini/Documents/unifi/apt/projects/libretto/.github</location>
+			<location>PARENT-1-PROJECT_LOC/.github</location>
 		</link>
 		<link>
 			<name>README.md</name>
 			<type>1</type>
-			<location>C:/Users/massi/Documents/unifi/apt/projects/libretto/README.md</location>
+			<locationURI>PARENT-1-PROJECT_LOC/README.md</locationURI>
 		</link>
 		<link>
 			<name>mutation-launches</name>
 			<type>2</type>
-			<location>C:/Users/Massimiliano Mancini/Documents/unifi/apt/projects/libretto/mutation-launches</location>
+			<location>PARENT-1-PROJECT_LOC/mutation-launches</location>
 		</link>
 	</linkedResources>
 </projectDescription>
