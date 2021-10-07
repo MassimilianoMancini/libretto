@@ -27,5 +27,5 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml, **/*.yaml') }}
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven then push to Coveralls and SonarCloud
-      run: mvn verify
+      run: xvfb-run mvn verify
       working-directory: libretto
