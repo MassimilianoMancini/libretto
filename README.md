@@ -34,4 +34,4 @@ Sono utilizzate le seguenti tecniche:
 Il progetto viene realizzatato tramite architettura MVC
 
 ## Database
-MariaDB
+MariaDB versione 10.6.4
