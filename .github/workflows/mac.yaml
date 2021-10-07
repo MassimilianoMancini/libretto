@@ -3,7 +3,7 @@ name: Mac / Java 11, 15
 on:
   push:
     branches:
-      - main
+      - caciocavallo
 
 jobs:
   build:

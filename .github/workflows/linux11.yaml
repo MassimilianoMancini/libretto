@@ -3,7 +3,7 @@ name: Linux / Java 11
 on:
   push:
     branches:
-      - main
+      - caciocavallo
  
 jobs: 
   build:
