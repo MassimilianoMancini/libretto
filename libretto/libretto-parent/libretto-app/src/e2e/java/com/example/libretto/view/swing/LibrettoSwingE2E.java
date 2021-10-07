@@ -18,17 +18,18 @@ import javax.swing.JFrame;
 import org.assertj.swing.core.GenericTypeMatcher;
 import org.assertj.swing.finder.WindowFinder;
 import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.github.caciocavallosilano.cacio.ctc.junit.CacioAssertJRunner;
+
 //If run in Eclipse, an up and running MariDB server is needed
 //for example via 'docker run --rm -p 3306:3306 -e MARIADB_ROOT_PASSWORD=password mariadb:10.6.4'
 
-@RunWith(GUITestRunner.class)
+@RunWith(CacioAssertJRunner.class)
 public class LibrettoSwingE2E extends AssertJSwingJUnitTestCase {
 
 	private static final String LIBRETTO_DB_NAME = "librettotest";

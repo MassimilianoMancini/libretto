@@ -28,7 +28,7 @@ jobs:
         restore-keys: ${{ runner.os }}-m2-
     - name: Build with Maven then push to Coveralls and SonarCloud
       run: >
-        xvfb-run mvn verify
+        mvn verify
         org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
         -Pcoveralls 
         -DrepoToken=$COVERALLS_REPO_TOKEN

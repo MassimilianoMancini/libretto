@@ -1,8 +1,8 @@
 package com.example.libretto.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.swing.timing.Pause.pause;
 import static org.assertj.swing.driver.WaitForComponentToShowCondition.untilIsShowing;
+import static org.assertj.swing.timing.Pause.pause;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,16 +18,19 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.model.Exam;
 import com.example.libretto.model.Grade;
 import com.example.libretto.repository.mariadb.ExamMariaDBRepository;
+import com.github.caciocavallosilano.cacio.ctc.junit.CacioAssertJRunner;
 
 import ch.vorburger.exec.ManagedProcessException;
 import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 
+@RunWith(CacioAssertJRunner.class)
 public class LibrettoSwingViewIT extends AssertJSwingJUnitTestCase {
 	
 	private static final String DATE_FORMAT_IT = "dd-MM-yyyy";

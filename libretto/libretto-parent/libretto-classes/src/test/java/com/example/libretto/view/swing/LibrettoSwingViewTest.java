@@ -13,7 +13,6 @@ import javax.swing.DefaultListModel;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.fixture.JButtonFixture;
-import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,8 +22,9 @@ import org.mockito.MockitoAnnotations;
 import com.example.libretto.controller.LibrettoController;
 import com.example.libretto.model.Exam;
 import com.example.libretto.model.Grade;
+import com.github.caciocavallosilano.cacio.ctc.junit.CacioAssertJRunner;
 
-@RunWith(GUITestRunner.class)
+@RunWith(CacioAssertJRunner.class)
 public class LibrettoSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private LibrettoSwingView librettoSwingView;
