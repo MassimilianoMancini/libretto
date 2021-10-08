@@ -30,8 +30,5 @@ Sono utilizzate le seguenti tecniche:
 - Continous Integration su almeno due versioni java (11 e 15) e 3 diversi sistemi operativi (linux, windows, macos)
 - Code Quality tramite SonarCloud
 
-## Architettura
-Il progetto viene realizzatato tramite architettura MVC
-
 ## Database
 MariaDB versione 10.6.4
