@@ -1,4 +1,4 @@
-name: Linux / Java 11
+name: Linux / Java 11 Experimental
 
 on:
   push:
