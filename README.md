@@ -32,5 +32,3 @@ Sono utilizzate le seguenti tecniche:
 
 ## Database
 MariaDB versione 10.6.4
-
-Just a test
